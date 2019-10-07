@@ -26,6 +26,8 @@ public class A1p {
         list.add("%25%27");
         list.add("%60");
         list.add("%5C");
+        list.add("test'''");
+        list.add("test%27%27");
         return list;
     }
 

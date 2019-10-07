@@ -197,12 +197,12 @@ public class Scan {
                     try {
                         Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
                         Elements linksOnPage = document.select("form[action]");
-                        for (Element element : linksOnPage) {
-                            this.attackGetPost(element, sURL, payA1.SQLinjection(), sigA1.SQLinjection(), "SQL injection");
-                            this.attackGetPost(element, sURL, payA1.HTMLinjection(), sigA1.HTMLinjection(), "HTML injection");
-                            this.attackGetPost(element, sURL, payA1.XMLXPathInjection(), sigA1.XMLXPathInjection(), "XML/XPath injection");
-                            this.attackGetPost(element, sURL, payA1.IFrameInjection(), sigA1.IFrameInjection(), "IFrame injection");
-                            this.attackGetPost(element, sURL, payA3.XSS(), sigA3.XSS(), "XSS");
+                        for (Element element : linksOnPage) {                            
+                            this.attackGetPost(element, element.attr("abs:action"), payA1.SQLinjection(), sigA1.SQLinjection(), "SQL injection");
+                            this.attackGetPost(element, element.attr("abs:action"), payA1.HTMLinjection(), sigA1.HTMLinjection(), "HTML injection");
+                            this.attackGetPost(element, element.attr("abs:action"), payA1.XMLXPathInjection(), sigA1.XMLXPathInjection(), "XML/XPath injection");
+                            this.attackGetPost(element, element.attr("abs:action"), payA1.IFrameInjection(), sigA1.IFrameInjection(), "IFrame injection");
+                            this.attackGetPost(element, element.attr("abs:action"), payA3.XSS(), sigA3.XSS(), "XSS");
                         }
                     } catch (Exception e) {
                         System.out.println("Error scanVuln: " + sURL + " ||| " + e);
