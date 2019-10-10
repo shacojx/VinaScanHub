@@ -99,12 +99,13 @@ public class Scan {
 //        System.out.println(urlAction);
         Map<String, String> map = new HashMap<String, String>();
 //        System.out.println(element);
-        Elements ele = element.getElementsByAttribute("name");
+        Elements ele = null;
         boolean checkVuln = false;
 
         for (String sPay : listPay) {
             try {
                 map = new HashMap<String, String>();
+                ele = element.getElementsByAttribute("name");
                 for (Element e1 : ele) {
                     if (!e1.attr("type").contains("submit") && !e1.attr("type").contains("button")) {
                         map.put(e1.attr("name"), sPay);
@@ -116,10 +117,10 @@ public class Scan {
                 }
                 //        System.out.println(map);
                 Document doc = null;
-                if (element.attr("method").contains("get") && !hashSet.contains(element.attr("abs:action"))) {
-                    doc = Jsoup.connect(urlAction).data(map).userAgent("Mozilla").followRedirects(false).get();
-                } else {
+                if (element.attr("method").contains("post")) {                    
                     doc = Jsoup.connect(urlAction).data(map).userAgent("Mozilla").followRedirects(false).post();
+                } else {
+                    doc = Jsoup.connect(urlAction).data(map).userAgent("Mozilla").followRedirects(false).get();
                 }
 //        System.out.println(doc.toString());
 //        System.out.println(doc.location());
@@ -197,17 +198,25 @@ public class Scan {
                 } else {
                     try {
                         Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
-                        Elements linksOnPage = document.select("form[action]");
+                        Elements linksOnPage = document.select("form");
                         for (Element element : linksOnPage) {
-                            String temp = element.attr("abs:action");
-                            if (!hashSet.contains(temp)) {
-                                hashSet.add(temp);
-                                System.out.println("Hashset : "+temp);
-                                if(temp.contains("?")){
-                                    this.scanMethodGet(temp);
+                            String temp = "";
+                            try {
+                                temp = element.attr("abs:action");
+                            } catch (Exception e) {
+                            }
+                            if (temp.length() != 0) {
+                                if (!hashSet.contains(temp)) {
+                                    hashSet.add(temp);
+//                                    System.out.println("Hashset : " + temp);
+                                    if (temp.contains("?")) {
+                                        this.scanMethodGet(temp);
+                                    }
+                                    this.scanMethodGetPost(element, temp);
                                 }
-                                this.scanMethodGetPost(element, temp);
-                            }                          
+                            } else {
+                                this.scanMethodGetPost(element, sURL);
+                            }                            
                         }
                     } catch (Exception e) {
                         System.out.println("Error scanVuln: " + sURL + " ||| " + e);
@@ -217,7 +226,7 @@ public class Scan {
         }
         System.out.println("Scan End!");
     }
-    
+
     public void scanMethodGet(String urlAction) throws IOException {
         A1 sigA1 = new A1();
         A3 sigA3 = new A3();
@@ -227,9 +236,9 @@ public class Scan {
         this.attackGet(urlAction, payA1.HTMLinjection(), sigA1.HTMLinjection(), "HTML injection");
         this.attackGet(urlAction, payA1.IFrameInjection(), sigA1.IFrameInjection(), "IFrame injection");
         this.attackGet(urlAction, payA1.SQLinjection(), sigA1.SQLinjection(), "SQL injection");
-        this.attackGet(urlAction, payA1.XMLXPathInjection(), sigA1.XMLXPathInjection(), "XML/XPath injection");
         this.attackGet(urlAction, payA3.XSS(), sigA3.XSS(), "XSS");
-    }
+        this.attackGet(urlAction, payA1.XMLXPathInjection(), sigA1.XMLXPathInjection(), "XML/XPath injection");        
+}
     
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
         A1 sigA1 = new A1();
@@ -240,8 +249,8 @@ public class Scan {
         this.attackGetPost(element, urlAction, payA1.HTMLinjection(), sigA1.HTMLinjection(), "HTML injection");
         this.attackGetPost(element, urlAction, payA1.IFrameInjection(), sigA1.IFrameInjection(), "IFrame injection");
         this.attackGetPost(element, urlAction, payA1.SQLinjection(), sigA1.SQLinjection(), "SQL injection");
-        this.attackGetPost(element, urlAction, payA1.XMLXPathInjection(), sigA1.XMLXPathInjection(), "XML/XPath injection");
         this.attackGetPost(element, urlAction, payA3.XSS(), sigA3.XSS(), "XSS");
+        this.attackGetPost(element, urlAction, payA1.XMLXPathInjection(), sigA1.XMLXPathInjection(), "XML/XPath injection");        
     }
 
 }
