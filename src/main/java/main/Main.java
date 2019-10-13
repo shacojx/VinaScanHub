@@ -37,11 +37,11 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter url: ");
         url = scan.nextLine();
-        WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
-        System.out.println("Spider level: "+wc.MAX_DEPTH);
-        wc.getPageLinks(url, 0, url);
-        System.out.println("Total link: "+wc.links.size());
-        s.Scan(wc.links);
+//        WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
+//        System.out.println("Spider level: "+wc.MAX_DEPTH);
+//        wc.getPageLinks(url, 0, url);
+//        System.out.println("Total link: "+wc.links.size());
+        s.Scan(url);
         
         
     }

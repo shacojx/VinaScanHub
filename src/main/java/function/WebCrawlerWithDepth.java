@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.HashSet;
 
 public class WebCrawlerWithDepth {
-    public static final int MAX_DEPTH = 5;
+    public static final int MAX_DEPTH = 3;
     public HashSet<String> links;
     
 
@@ -33,7 +33,7 @@ public class WebCrawlerWithDepth {
     public void getPageLinks(String URL, int depth, String root_url) {
         if ( (!links.contains(URL) && (depth < MAX_DEPTH) ) 
                  && URL.contains(root_url)) {
-            //System.out.println(">> Depth: " + depth + " [" + URL + "]");
+            System.out.println(">> Depth: " + depth + " [" + URL + "]");
             try {
                 links.add(URL);
 
@@ -45,7 +45,7 @@ public class WebCrawlerWithDepth {
                     getPageLinks(page.attr("abs:href"), depth, root_url);
                 }
             } catch (IOException e) {
-                //System.err.println("For '" + URL + "': " + e.getMessage());
+                System.err.println("For '" + URL + "': " + e.getMessage());
             }
         }
     }
