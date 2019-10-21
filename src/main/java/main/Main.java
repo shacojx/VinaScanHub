@@ -14,10 +14,6 @@ import java.util.Scanner;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import signature.A1;
-import payload.A1p;
-import payload.A3p;
-import signature.A3;
 
 /**
  *
@@ -34,10 +30,10 @@ public class Main {
         System.out.println("=    Leader: Shaco JX          =");
         System.out.println("=  Member: TrungLB,HuyVT,DaiL  =");
         System.out.println("================================");
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter url: ");
-        url = scan.nextLine();
-        s.Scan(url);        
+//        Scanner scan = new Scanner(System.in);
+//        System.out.print("Enter url: ");
+//        url = scan.nextLine();
+        s.Scan("http://testphp.vulnweb.com/");        
         
     }
 

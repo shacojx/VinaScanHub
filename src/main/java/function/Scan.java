@@ -20,10 +20,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import payload.A1p;
-import payload.A3p;
-import signature.A1;
-import signature.A3;
 
 /**
  *
