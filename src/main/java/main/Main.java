@@ -34,15 +34,10 @@ public class Main {
         System.out.println("=    Leader: Shaco JX          =");
         System.out.println("=  Member: TrungLB,HuyVT,DaiL  =");
         System.out.println("================================");
-//        Scanner scan = new Scanner(System.in);
-//        System.out.print("Enter url: ");
-//        url = scan.nextLine();
-//        WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
-//        System.out.println("Spider level: "+wc.MAX_DEPTH);
-//        wc.getPageLinks(url, 0, url);
-//        System.out.println("Total link: "+wc.links.size());
-        s.Scan("http://testphp.vulnweb.com/");
-        
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter url: ");
+        url = scan.nextLine();
+        s.Scan(url);        
         
     }
 

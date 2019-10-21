@@ -5,6 +5,7 @@
  */
 package function;
 
+import Pay_Sig.P_S;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -94,7 +95,7 @@ public class Scan {
 //    }
     
 
-    public void attackGetPost(Element element, String urlAction, ArrayList<String> listPay, ArrayList<String> listSig, String vulnName) throws IOException {
+    public void attackGetPost(Element element, String urlAction, Map<String, ArrayList> paySig, String vulnName) throws IOException {
 //        System.out.println("2222222222222222222222222222222222222");
 //        System.out.println(urlAction);
         Map<String, String> map = new HashMap<String, String>();
@@ -102,13 +103,16 @@ public class Scan {
         Elements ele = null;
         boolean checkVuln = false;
 
-        for (String sPay : listPay) {
+        for (Map.Entry<String, ArrayList> entry : paySig.entrySet()) {
+            String keyPay = entry.getKey();
+            ArrayList<String> valueSig = entry.getValue();
+
             try {
                 map = new HashMap<String, String>();
                 ele = element.getElementsByAttribute("name");
                 for (Element e1 : ele) {
                     if (!e1.attr("type").contains("submit") && !e1.attr("type").contains("button")) {
-                        map.put(e1.attr("name"), sPay);
+                        map.put(e1.attr("name"), keyPay);
                     } else {
                         if (e1.attr("name").length() != 0) {
                             map.put(e1.attr("name"), e1.attr("value"));
@@ -117,17 +121,19 @@ public class Scan {
                 }
                 //        System.out.println(map);
                 Document doc = null;
-                if (element.attr("method").contains("post")) {                    
+                if (element.attr("method").contains("post")) {
                     doc = Jsoup.connect(urlAction).data(map).userAgent("Mozilla").followRedirects(false).post();
                 } else {
                     doc = Jsoup.connect(urlAction).data(map).userAgent("Mozilla").followRedirects(false).get();
                 }
 //        System.out.println(doc.toString());
 //        System.out.println(doc.location());
-                for (String sSig : listSig) {
+                for (String sSig : valueSig) {
                     if (doc.body().toString().contains(sSig)) {
                         checkVuln = true;
                         System.out.println(element.attr("method").toUpperCase() + " " + vulnName + " : " + element.attr("abs:action"));
+                        System.out.println("Pay = " + keyPay);
+                        System.out.println("Sig = " + sSig);
                         break;
                     }
                 }
@@ -140,7 +146,7 @@ public class Scan {
         }
     }
 
-    public void attackGet(String urlAction, ArrayList<String> listPay, ArrayList<String> listSig, String vulnName) throws IOException {
+    public void attackGet(String urlAction,  Map<String, ArrayList> paySig, String vulnName) throws IOException {
 //        System.out.println("3333333333333333333333333333333333");
 //        System.out.println(urlAction);
         String fURL = urlAction.split("\\?")[0];
@@ -149,14 +155,18 @@ public class Scan {
 //        System.out.println(lURL);
         Map<String, String> mapParemeter;
         boolean checkVuln = false;
-        for (String sPay : listPay) {
+        
+        for (Map.Entry<String, ArrayList> entry : paySig.entrySet()) {
+            String keyPay = entry.getKey();
+            ArrayList<String> valueSig = entry.getValue();
+
             try {
                 mapParemeter = new HashMap<>();
                 for (String s : lURL.split("&")) {
                     String key = s.split("\\=")[0];
                     String value = "";
                     try {
-                        value = s.split("\\=")[1] + sPay;
+                        value = s.split("\\=")[1] + keyPay;
                     } catch (Exception e) {
                         System.out.println("Error attackGet: " + e);
                     }
@@ -167,10 +177,12 @@ public class Scan {
                 Document doc = Jsoup.connect(fURL).data(mapParemeter).userAgent("Mozilla").followRedirects(false).get();
 //        System.out.println(doc.toString());
 //        System.out.println(doc.location());
-                for (String sSig : listSig) {
+                for (String sSig : valueSig) {
                     if (doc.body().toString().contains(sSig)) {
                         checkVuln = true;
                         System.out.println("GET " + vulnName + " : " + urlAction);
+                        System.out.println("Pay = "+ keyPay);
+                        System.out.println("Sig = "+ sSig);
                         break;
                     }
                 }
@@ -314,29 +326,23 @@ public class Scan {
     }
 
     public void scanMethodGet(String urlAction) throws IOException {
-        A1 sigA1 = new A1();
-        A3 sigA3 = new A3();
-        A1p payA1 = new A1p();
-        A3p payA3 = new A3p();
+        P_S ps = new P_S();
         
-        this.attackGet(urlAction, payA1.HTMLinjection(), sigA1.HTMLinjection(), "HTML injection");
-        this.attackGet(urlAction, payA1.IFrameInjection(), sigA1.IFrameInjection(), "IFrame injection");
-        this.attackGet(urlAction, payA1.SQLinjection(), sigA1.SQLinjection(), "SQL injection");
-        this.attackGet(urlAction, payA3.XSS(), sigA3.XSS(), "XSS");
-        this.attackGet(urlAction, payA1.XMLXPathInjection(), sigA1.XMLXPathInjection(), "XML/XPath injection");        
+        this.attackGet(urlAction, ps.HTMLinjection(), "HTML injection");
+        this.attackGet(urlAction, ps.IFrameInjection(), "IFrame injection");
+        this.attackGet(urlAction, ps.SQLinjection(), "SQL injection");
+        this.attackGet(urlAction, ps.XSS(), "XSS");
+        this.attackGet(urlAction, ps.XMLXPathInjection(), "XML/XPath injection");        
 }
     
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
-        A1 sigA1 = new A1();
-        A3 sigA3 = new A3();
-        A1p payA1 = new A1p();
-        A3p payA3 = new A3p();
+        P_S ps = new P_S();
 
-        this.attackGetPost(element, urlAction, payA1.HTMLinjection(), sigA1.HTMLinjection(), "HTML injection");
-        this.attackGetPost(element, urlAction, payA1.IFrameInjection(), sigA1.IFrameInjection(), "IFrame injection");
-        this.attackGetPost(element, urlAction, payA1.SQLinjection(), sigA1.SQLinjection(), "SQL injection");
-        this.attackGetPost(element, urlAction, payA3.XSS(), sigA3.XSS(), "XSS");
-        this.attackGetPost(element, urlAction, payA1.XMLXPathInjection(), sigA1.XMLXPathInjection(), "XML/XPath injection");        
+        this.attackGetPost(element, urlAction, ps.HTMLinjection(), "HTML injection");
+        this.attackGetPost(element, urlAction, ps.IFrameInjection(), "IFrame injection");
+        this.attackGetPost(element, urlAction, ps.SQLinjection(), "SQL injection");
+        this.attackGetPost(element, urlAction, ps.XSS(), "XSS");
+        this.attackGetPost(element, urlAction, ps.XMLXPathInjection(), "XML/XPath injection");        
     }
 
 }
