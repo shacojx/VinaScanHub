@@ -33,7 +33,7 @@ public class Main {
 //        Scanner scan = new Scanner(System.in);
 //        System.out.print("Enter url: ");
 //        url = scan.nextLine();
-        s.Scan("http://testphp.vulnweb.com/");        
+        s.Scan("http://192.168.1.17:8080/dvwa/login.php");        
         
     }
 

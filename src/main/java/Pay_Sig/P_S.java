@@ -206,5 +206,16 @@ public class P_S {
         }
         return map;
     }
+    
+    public Map<String, String> userPass(){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("admin", "password");
+        map.put("laxbaortrung", "vangta0fa");
+        map.put("bee", "bug");
+        map.put("test", "test");
+
+
+        return map;
+    }
 
 }
