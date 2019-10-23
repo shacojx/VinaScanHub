@@ -45,6 +45,8 @@ public class Scan {
 //        System.out.println("---------------------------------------------------------------------------------");
 //
 //        this.scanVuln(wc.links);
+
+
         this.bruteForce(url);
 
         System.out.println("Scan End!");
@@ -317,6 +319,7 @@ public class Scan {
             if (checkLogin1 && checkLogin2) {
                 System.out.println("Login Thanh Cong : "+ sURL);
                 System.out.println("User: "+keyUser+" ---- Password: "+valuePass);
+                break;
             }
         }
     }

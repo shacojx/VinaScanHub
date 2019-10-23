@@ -209,9 +209,11 @@ public class P_S {
     
     public Map<String, String> userPass(){
         Map<String, String> map = new HashMap<String, String>();
+        //dvwa
         map.put("admin", "password");
-        map.put("laxbaortrung", "vangta0fa");
+        //bwapp
         map.put("bee", "bug");
+        //http://testphp.vulnweb.com
         map.put("test", "test");
 
 
