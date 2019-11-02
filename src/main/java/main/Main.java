@@ -44,7 +44,7 @@ public class Main {
 //        System.out.println("Total link: "+wc.links.size());
 //        s.Scan("http://testphp.vulnweb.com/");
         ScanVuln scanV = new ScanVuln();
-        scanV.Scan("https://henhoketban.vn/login.php");
+        scanV.Scan("http://testphp.vulnweb.com/");
     }
 
 }

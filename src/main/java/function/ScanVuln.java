@@ -50,9 +50,9 @@ public class ScanVuln {
         }
         System.out.println("---------------------------------------------------------------------------------");
         ps.loadData();
-//        this.checkVuln(wc.links);
+        this.checkVuln(wc.links);
 //        attackVulnSQLinWithHTMLUNIT(null, url, ps.getArrPaySQLin());
-        this.bruteForceHTMLUNIT(url, ps.getUserPass());
+//        this.bruteForceHTMLUNIT(url, ps.getUserPass());
 //        this.bruteForceJSOUP(url, ps.getUserPass());
 
     }
@@ -61,49 +61,60 @@ public class ScanVuln {
         for (String sURL : listURL) {
             if (!sURL.contains("jpg")) {
                 if (sURL.contains("?")) {
-                    String temp = sURL.split("\\?")[0];
-                    if (!hashSet.contains(temp)) {
-                        hashSet.add(temp);
-                        this.scanMethodGet(sURL);
-                    }
-                } else {
-                    try {
-                        Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
-                        Elements linksOnPage = document.select("form");
-                        for (Element element : linksOnPage) {
-                            String temp = "";
-                            try {
-                                temp = element.attr("abs:action");
-                            } catch (Exception e) {
-                            }
-                            if (temp.length() != 0) {
-                                if (!hashSet.contains(temp)) {
-                                    hashSet.add(temp);
-//                                    System.out.println("Hashset : " + temp);
-                                    if (temp.contains("?")) {
-                                        this.scanMethodGet(temp);
-                                    }
-                                    this.scanMethodGetPost(element, temp);
-                                }
-                            } else {
-                                this.scanMethodGetPost(element, sURL);
-                            }
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Error scanVuln: " + sURL + " ||| " + e);
-                    }
+//                    String temp = sURL.split("\\?")[0];
+//                    if (!hashSet.contains(temp)) {
+//                        hashSet.add(temp);
+                    System.out.println("1");
+                    this.scanMethodGet(sURL);
+//                    }
                 }
+                try {
+                    Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
+                    Elements linksOnPage = document.select("form");
+                    for (Element element : linksOnPage) {
+                        String temp = "";
+                        try {
+                            temp = element.attr("abs:action");
+                        } catch (Exception e) {
+                        }
+                        if (temp.length() != 0) {
+                            if (!hashSet.contains(temp)) {
+                                hashSet.add(temp);
+//                                    System.out.println("Hashset : " + temp);
+                                if (temp.contains("?")) {
+                                    System.out.println("2");
+                                    this.scanMethodGet(temp);
+                                }
+                                System.out.println("3");
+                                this.scanMethodGetPost(element, temp);
+                            }
+                        } else {
+                            hashSet.add(sURL);
+                            System.out.println("4");
+                            this.scanMethodGetPost(element, sURL);
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error scanVuln: " + sURL + " ||| " + e);
+                }
+
             }
         }
         System.out.println("Scan end!");
     }
 
     public void scanMethodGet(String urlAction) throws IOException {
-        this.attackVulnSQLinWithJSOUP(null, urlAction, ps.getArrPaySQLin());
+//        this.attackVulnSQLinWithJSOUP(null, urlAction, ps.getArrPaySQLin());
+        this.attackVulnSQLinWithHTMLUNIT(null, urlAction, ps.getArrPaySQLin());
+        System.out.println("HTML1 SCAN");
+        this.attackVulnXSSHTMLUNIT(null, urlAction, "HTMLin", ps.getArrPayHTMLin());
     }
 
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
-        this.attackVulnSQLinWithJSOUP(element, urlAction, ps.getArrPaySQLin());
+//        this.attackVulnSQLinWithJSOUP(element, urlAction, ps.getArrPaySQLin());
+        this.attackVulnSQLinWithHTMLUNIT(element, urlAction, ps.getArrPaySQLin());
+        System.out.println("HTML2 SCAN");
+        this.attackVulnXSSHTMLUNIT(element, urlAction, "HTMLin", ps.getArrPayHTMLin());
     }
 
     private void attackVulnSQLinWithJSOUP(Element element, String urlAction, String[] payload) throws IOException {
@@ -184,9 +195,9 @@ public class ScanVuln {
         boolean checkVuln = false;
         WebRequest requestSettings;
         WebClient client = new WebClient();
-        client.getOptions().setCssEnabled(true);
-        client.getOptions().setJavaScriptEnabled(true);
-        client.getOptions().setRedirectEnabled(false);
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setJavaScriptEnabled(false);
+//        client.getOptions().setRedirectEnabled(false);
         List<NameValuePair> params;
 
         for (String sPay : payload) {
@@ -246,11 +257,11 @@ public class ScanVuln {
                         break;
                     }
                 }
-                if (checkVuln) {
-                    break;
-                }
             } catch (Exception e) {
                 System.out.println("Error attackVulnSQLin: " + urlAction + " ||| " + e);
+            }
+            if (checkVuln) {
+                break;
             }
         }
     }
@@ -260,13 +271,13 @@ public class ScanVuln {
         boolean checkVuln = false;
         WebRequest requestSettings;
         WebClient client = new WebClient();
-        client.getOptions().setCssEnabled(true);
+//        client.getOptions().setCssEnabled(true);
         client.getOptions().setJavaScriptEnabled(true);
-        client.getOptions().setRedirectEnabled(false);
         List<NameValuePair> params;
 
         for (String sPay : payload) {
             String[] listPay = new String[]{
+                ps.decodeValue(sPay),
                 sPay,
                 ps.encodeValue(sPay)
             };
@@ -316,9 +327,16 @@ public class ScanVuln {
                         requestSettings = new WebRequest(new URL(urlAttack), HttpMethod.GET);
                         method = "GET ";
                     }
+//                    System.out.println("-----------------------------XYZZZZZZZZZZZZZ");
+//                    System.out.println("Method: " + method);
+//                    System.out.println("Params: " + params);
                     requestSettings.setRequestParameters(params);
                     HtmlPage page = client.getPage(requestSettings);
                     String tempBody = page.asXml();
+//                    if (method.contains("POST")) {
+//                        System.out.println(tempBody);
+//                    }
+
                     if (tempBody.replaceAll("\\s+", "").contains(ps.decodeValue(sPay))) {
                         boolean tempC = true;
                         for (String s : ps.getArrSigSQLin()) {
@@ -335,15 +353,15 @@ public class ScanVuln {
                             break;
                         }
                     }
-                    if (checkVuln) {
-                        break;
-                    }
+//                    if (checkVuln) {
+//                        break;
+//                    }
                 } catch (Exception e) {
                     System.out.println("Error attackVulnXSS: " + urlAction + " ||| " + e);
                 }
-                if (checkVuln) {
-                    break;
-                }
+            }
+            if (checkVuln) {
+                break;
             }
         }
     }
@@ -511,14 +529,14 @@ public class ScanVuln {
             boolean checkLogin2 = true;
 
             for (Element e : formCheck) {
-                if (e.attr("abs:action").equals(action)) {
+                if (e.attr("abs:action").contains(action)) {
                     checkLogin1 = false;
                     break;
                 }
             }
             formCheck = document.getElementsByAttribute("href");
             for (Element e : formCheck) {
-                if (e.attr("abs:href").equals(action)) {
+                if (e.attr("abs:href").contains(sURL)) {
                     checkLogin2 = false;
                     break;
                 }
