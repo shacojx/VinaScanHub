@@ -534,13 +534,13 @@ public class ScanVuln {
                     break;
                 }
             }
-            formCheck = document.getElementsByAttribute("href");
-            for (Element e : formCheck) {
-                if (e.attr("abs:href").contains(sURL)) {
-                    checkLogin2 = false;
-                    break;
-                }
-            }
+//            formCheck = document.getElementsByAttribute("href");
+//            for (Element e : formCheck) {
+//                if (e.attr("abs:href").contains(sURL)) {
+//                    checkLogin2 = false;
+//                    break;
+//                }
+//            }
             System.out.println("Check1: " + checkLogin1);
             System.out.println("Check2: " + checkLogin2);
 
@@ -645,13 +645,13 @@ public class ScanVuln {
                     break;
                 }
             }
-            List<HtmlAnchor> formCheck2 = page.getByXPath(".//a[@href]");
-            for (HtmlAnchor a : formCheck2) {
-                if (page.getFullyQualifiedUrl(a.getAttribute("href")).toString().contains(sURL)) {
-                    checkLogin2 = false;
-                    break;
-                }
-            }
+//            List<HtmlAnchor> formCheck2 = page.getByXPath(".//a[@href]");
+//            for (HtmlAnchor a : formCheck2) {
+//                if (page.getFullyQualifiedUrl(a.getAttribute("href")).toString().contains(sURL)) {
+//                    checkLogin2 = false;
+//                    break;
+//                }
+//            }
 //            System.out.println("Check1: " + checkLogin1);
 //            System.out.println("Check2: " + checkLogin2);
 
