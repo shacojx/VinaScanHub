@@ -129,8 +129,8 @@ public class ScanVuln {
 
     public void scanMethodGet(String urlAction) throws IOException {
 //        this.attackVulnSQLinWithJSOUP(null, urlAction, ps.getArrPaySQLin());
-        this.attackVulnSQLinWithHTMLUNIT(null, urlAction, ps.getArrPaySQLin(), ps.getArrSigSQLin());
-        this.attackVulnSQLinWithHTMLUNIT(null, urlAction, ps.getArrPayXMLXPathin(), ps.getArrSigXMLXPathin());
+        this.attackVulnSQLinWithHTMLUNIT(null, urlAction, "SQLin", ps.getArrPaySQLin(), ps.getArrSigSQLin());
+        this.attackVulnSQLinWithHTMLUNIT(null, urlAction, "XMLPathin", ps.getArrPayXMLXPathin(), ps.getArrSigXMLXPathin());
 //        System.out.println("HTML1 SCAN");
         this.attackVulnXSSHTMLUNIT(null, urlAction, "HTMLin", ps.getArrPayHTMLin());
         this.attackVulnXSSHTMLUNIT(null, urlAction, "XSS", ps.getArrPayXSS());
@@ -140,8 +140,8 @@ public class ScanVuln {
 
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
 //        this.attackVulnSQLinWithJSOUP(element, urlAction, ps.getArrPaySQLin());
-        this.attackVulnSQLinWithHTMLUNIT(element, urlAction, ps.getArrPaySQLin(), ps.getArrSigSQLin());
-        this.attackVulnSQLinWithHTMLUNIT(element, urlAction, ps.getArrPayXMLXPathin(), ps.getArrSigXMLXPathin());
+        this.attackVulnSQLinWithHTMLUNIT(element, urlAction, "SQLin", ps.getArrPaySQLin(), ps.getArrSigSQLin());
+        this.attackVulnSQLinWithHTMLUNIT(element, urlAction, "XMLPathin", ps.getArrPayXMLXPathin(), ps.getArrSigXMLXPathin());
 //        System.out.println("HTML2 SCAN");
         this.attackVulnXSSHTMLUNIT(element, urlAction, "HTMLin", ps.getArrPayHTMLin());
         this.attackVulnXSSHTMLUNIT(element, urlAction, "XSS", ps.getArrPayXSS());
@@ -220,8 +220,7 @@ public class ScanVuln {
         }
     }
 
-    private void attackVulnSQLinWithHTMLUNIT(Element element, String urlAction, String[] payload, String[] Sig) throws IOException {
-        String vulnName = "SQLin";
+    private void attackVulnSQLinWithHTMLUNIT(Element element, String urlAction, String vulnName, String[] payload, String[] Sig) throws IOException {
         String urlAttack = urlAction;
         boolean checkVuln = false;
         WebRequest requestSettings;
@@ -285,7 +284,7 @@ public class ScanVuln {
                     if (page.asXml().contains(sSig)) {
                         checkVuln = true;
                         System.out.println(method + vulnName + " : " + urlAction);
-                        System.out.println(params.toString());
+                        System.out.println("        "+params.toString());
                         list_vuln.add(method + vulnName + " : " + urlAction);
                         break;
                     }
@@ -382,7 +381,7 @@ public class ScanVuln {
 //                        System.out.println(tempBody);
 //                    }
 
-                    if (tempBody.replaceAll("\\s+", "").contains(ps.decodeValue(sPay))) {
+                    if (tempBody.replaceAll("\\s+", "").replace("//<![CDATA[", "").replace("//]]>", "").contains(ps.decodeValue(sPay))) {
                         boolean tempC = true;
                         for (String s : ps.getArrSigSQLin()) {
                             if (tempBody.contains(s)) {
@@ -393,7 +392,7 @@ public class ScanVuln {
                         if (tempC) {
                             checkVuln = true;
                             System.out.println(method + vulnName + " : " + urlAction);
-                            System.out.println(params.toString());
+                            System.out.println("        "+params.toString());
                             list_vuln.add(method + vulnName + " : " + urlAction);
                             break;
                         }

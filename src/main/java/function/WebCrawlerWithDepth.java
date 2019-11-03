@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.HashSet;
 
 public class WebCrawlerWithDepth {
-    public static final int MAX_DEPTH = 5;
+    public static final int MAX_DEPTH = 20;
     public HashSet<String> links;
     
 
