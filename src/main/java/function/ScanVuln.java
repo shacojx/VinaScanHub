@@ -35,7 +35,9 @@ import org.jsoup.select.Elements;
  */
 public class ScanVuln {
 
-    private static HashSet<String> hashSet = new HashSet<>();
+    private static HashSet<String> checkURLGET = new HashSet<>();
+    private static HashSet<String> checkURLPOST = new HashSet<>();
+
     public ArrayList<String> list_vuln = new ArrayList<>();
     private PaySigVuln ps = new PaySigVuln();
 
@@ -49,7 +51,13 @@ public class ScanVuln {
             System.out.println(s);
         }
         System.out.println("---------------------------------------------------------------------------------");
+        //Data load 1 lan khi mo ung dung
         ps.loadData();
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
+
+        //Scan can lam moi khi moi lan chay 1 url moi
+        checkURLGET = new HashSet<>();
+        checkURLPOST = new HashSet<>();
         this.checkVuln(wc.links);
 //        attackVulnSQLinWithHTMLUNIT(null, url, ps.getArrPaySQLin());
 //        this.bruteForceHTMLUNIT(url, ps.getUserPass());
@@ -61,12 +69,11 @@ public class ScanVuln {
         for (String sURL : listURL) {
             if (!sURL.contains("jpg")) {
                 if (sURL.contains("?")) {
-//                    String temp = sURL.split("\\?")[0];
-//                    if (!hashSet.contains(temp)) {
-//                        hashSet.add(temp);
-                    System.out.println("1");
-                    this.scanMethodGet(sURL);
-//                    }
+                    if (!checkURLGET.contains(sURL.split("\\?")[0])) {
+//                        System.out.println("Attack: " + sURL);
+//                        System.out.println("1");
+                        this.scanMethodGet(sURL);
+                    }
                 }
                 try {
                     Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
@@ -77,21 +84,38 @@ public class ScanVuln {
                             temp = element.attr("abs:action");
                         } catch (Exception e) {
                         }
-                        if (temp.length() != 0) {
-                            if (!hashSet.contains(temp)) {
-                                hashSet.add(temp);
-//                                    System.out.println("Hashset : " + temp);
-                                if (temp.contains("?")) {
-                                    System.out.println("2");
-                                    this.scanMethodGet(temp);
-                                }
-                                System.out.println("3");
-                                this.scanMethodGetPost(element, temp);
-                            }
-                        } else {
-                            hashSet.add(sURL);
-                            System.out.println("4");
-                            this.scanMethodGetPost(element, sURL);
+//                        if (temp.length() != 0) {
+//                            if (!checkURLPOST.contains(temp)) {
+////                                checkURLPOST.add(temp);
+////                                    System.out.println("Hashset : " + temp);
+//                                if (temp.contains("?") && !checkURLGET.contains(temp)) {
+////                                    checkURLGET.add(temp);
+//                                    System.out.println("2");
+//                                    this.scanMethodGet(temp);
+//                                }
+//                                System.out.println("3");
+//                                this.scanMethodGetPost(element, temp);
+//                            }
+//                        } else {
+//                            if (!checkURLPOST.contains(sURL)) {
+////                                checkURLPOST.add(sURL);
+//                                System.out.println("4");
+//                                this.scanMethodGetPost(element, sURL);
+//                            }
+//                        }
+
+                        if (temp.length() == 0) {
+                            temp = sURL;
+                        }
+
+                        if (temp.contains("?") && !checkURLGET.contains(temp.split("\\?")[0])) {
+//                            System.out.println("2");
+                            this.scanMethodGet(temp);
+                        }
+                        if (!checkURLGET.contains(temp) && !checkURLPOST.contains(temp)) {
+//                            System.out.println("Attack: " + temp);
+//                            System.out.println("3");
+                            this.scanMethodGetPost(element, temp);
                         }
                     }
                 } catch (Exception e) {
@@ -105,19 +129,26 @@ public class ScanVuln {
 
     public void scanMethodGet(String urlAction) throws IOException {
 //        this.attackVulnSQLinWithJSOUP(null, urlAction, ps.getArrPaySQLin());
-        this.attackVulnSQLinWithHTMLUNIT(null, urlAction, ps.getArrPaySQLin());
-        System.out.println("HTML1 SCAN");
+        this.attackVulnSQLinWithHTMLUNIT(null, urlAction, ps.getArrPaySQLin(), ps.getArrSigSQLin());
+        this.attackVulnSQLinWithHTMLUNIT(null, urlAction, ps.getArrPayXMLXPathin(), ps.getArrSigXMLXPathin());
+//        System.out.println("HTML1 SCAN");
         this.attackVulnXSSHTMLUNIT(null, urlAction, "HTMLin", ps.getArrPayHTMLin());
+        this.attackVulnXSSHTMLUNIT(null, urlAction, "XSS", ps.getArrPayXSS());
+        this.attackVulnXSSHTMLUNIT(null, urlAction, "IFramein", ps.getArrPayIFramein());
+        BlindSQLinjection(urlAction);
     }
 
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
 //        this.attackVulnSQLinWithJSOUP(element, urlAction, ps.getArrPaySQLin());
-        this.attackVulnSQLinWithHTMLUNIT(element, urlAction, ps.getArrPaySQLin());
-        System.out.println("HTML2 SCAN");
+        this.attackVulnSQLinWithHTMLUNIT(element, urlAction, ps.getArrPaySQLin(), ps.getArrSigSQLin());
+        this.attackVulnSQLinWithHTMLUNIT(element, urlAction, ps.getArrPayXMLXPathin(), ps.getArrSigXMLXPathin());
+//        System.out.println("HTML2 SCAN");
         this.attackVulnXSSHTMLUNIT(element, urlAction, "HTMLin", ps.getArrPayHTMLin());
+        this.attackVulnXSSHTMLUNIT(element, urlAction, "XSS", ps.getArrPayXSS());
+        this.attackVulnXSSHTMLUNIT(element, urlAction, "IFramein", ps.getArrPayIFramein());
     }
 
-    private void attackVulnSQLinWithJSOUP(Element element, String urlAction, String[] payload) throws IOException {
+    private void attackVulnSQLinWithJSOUP(Element element, String urlAction, String[] payload, String[] Sig) throws IOException {
         String vulnName = "SQLin";
         String urlAttack = urlAction;
         Map<String, String> mapParemeter;
@@ -171,7 +202,7 @@ public class ScanVuln {
                     method = "|GET|";
                 }
 
-                for (String sSig : ps.getArrSigSQLin()) {
+                for (String sSig : Sig) {
                     if (doc.body().toString().contains(sSig)) {
                         checkVuln = true;
                         System.out.println(method + vulnName + " : " + urlAction);
@@ -189,13 +220,13 @@ public class ScanVuln {
         }
     }
 
-    private void attackVulnSQLinWithHTMLUNIT(Element element, String urlAction, String[] payload) throws IOException {
+    private void attackVulnSQLinWithHTMLUNIT(Element element, String urlAction, String[] payload, String[] Sig) throws IOException {
         String vulnName = "SQLin";
         String urlAttack = urlAction;
         boolean checkVuln = false;
         WebRequest requestSettings;
         WebClient client = new WebClient();
-        client.getOptions().setCssEnabled(false);
+//        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
 //        client.getOptions().setRedirectEnabled(false);
         List<NameValuePair> params;
@@ -242,13 +273,15 @@ public class ScanVuln {
                 if (method.toLowerCase().contains("post")) {
                     requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);
                     method = "|POST|";
+                    checkURLPOST.add(urlAction);
                 } else {
                     requestSettings = new WebRequest(new URL(urlAttack), HttpMethod.GET);
                     method = "|GET|";
+                    checkURLGET.add(urlAttack);
                 }
                 requestSettings.setRequestParameters(params);
                 HtmlPage page = client.getPage(requestSettings);
-                for (String sSig : ps.getArrSigSQLin()) {
+                for (String sSig : Sig) {
                     if (page.asXml().contains(sSig)) {
                         checkVuln = true;
                         System.out.println(method + vulnName + " : " + urlAction);
@@ -272,7 +305,7 @@ public class ScanVuln {
         WebRequest requestSettings;
         WebClient client = new WebClient();
 //        client.getOptions().setCssEnabled(true);
-        client.getOptions().setJavaScriptEnabled(true);
+        client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
 
         for (String sPay : payload) {
@@ -323,14 +356,26 @@ public class ScanVuln {
                     if (method.toLowerCase().contains("post")) {
                         requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);
                         method = "POST ";
+                        checkURLPOST.add(urlAction);
                     } else {
                         requestSettings = new WebRequest(new URL(urlAttack), HttpMethod.GET);
                         method = "GET ";
+                        checkURLGET.add(urlAttack);
                     }
 //                    System.out.println("-----------------------------XYZZZZZZZZZZZZZ");
 //                    System.out.println("Method: " + method);
 //                    System.out.println("Params: " + params);
                     requestSettings.setRequestParameters(params);
+//                    if (vulnName.contains("XSS")) {
+//                        System.out.println("2.2");
+//                        System.out.println("params: " + params);
+//                        if (method.contains("GET")) {
+//                            System.out.println("URL: " + urlAttack);
+//                        }
+//                        if (method.contains("POST")) {
+//                            System.out.println("URL: " + urlAction);
+//                        }
+//                    }
                     HtmlPage page = client.getPage(requestSettings);
                     String tempBody = page.asXml();
 //                    if (method.contains("POST")) {
