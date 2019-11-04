@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package signature;
+package function;
 
 /**
  *
- * @author Shaco JX
+ * @author toanvv1
  */
-public class A7 {
+public class ScanVuln {
     
 }

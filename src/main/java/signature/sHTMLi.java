@@ -9,15 +9,13 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Shaco JX
+ * @author toanvv1
  */
-public class A3 {
-
-    public ArrayList<String> XSS() {
+public class sHTMLi {
+     public ArrayList<String> HTMLinjection(){
         ArrayList<String> list = new ArrayList<>();
-        String payload = "<script>alert(123);</script>\n";
-        list.add("<marquee onstart='javascript:alert('1');'>=(◕_◕)=");
-        list.add("<script>alert(1);</script>");
+        list.add("<h1>Test</h1>");
+        list.add("%3Ch1%3ETest%3C/h1%3E");
         return list;
     }
 }

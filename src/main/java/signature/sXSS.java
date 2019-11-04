@@ -3,23 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package payload;
+package signature;
 
 import java.util.ArrayList;
 
 /**
  *
- * @author Shaco JX
+ * @author toanvv1
  */
-public class A3p {
-
+public class sXSS {
     public ArrayList<String> XSS() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("<script>alert(123);</script>\n");
+        String payload = "<script>alert(123);</script>\n";
         list.add("<marquee onstart='javascript:alert('1');'>=(◕_◕)=");
-        list.add("\"><marquee onstart='javascript:alert('1');'>=(◕_◕)=");
         list.add("<script>alert(1);</script>");
-        list.add("\"><script>alert(1);</script>");
         return list;
     }
 }

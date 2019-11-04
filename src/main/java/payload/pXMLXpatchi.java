@@ -9,34 +9,10 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Shaco JX
+ * @author toanvv1
  */
-public class A1p {
-
-    public ArrayList<String> SQLinjection() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("'");
-        list.add("')");
-        list.add("';");
-        list.add("\"");
-        list.add("\")");
-        list.add("\";");
-        list.add("%27");
-        list.add("%%2727");
-        list.add("%25%27");
-        list.add("%60");
-        list.add("%5C");
-        return list;
-    }
-
-    public ArrayList<String> HTMLinjection() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("<h1>Test</h1>");
-        list.add("%3Ch1%3ETest%3C/h1%3E");
-        return list;
-    }
-
-    public ArrayList<String> XMLXPathInjection() {
+public class pXMLXpatchi {
+     public ArrayList<String> XMLXPathInjection() {
         ArrayList<String> list = new ArrayList<>();
         list.add("'");
         list.add("' or '1'='1");
@@ -60,14 +36,4 @@ public class A1p {
         list.add("') or not(contains(genre, 'praveen') and '1'='2");
         return list;
     }
-
-    public ArrayList<String> IFrameInjection() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("\"><iframe><h1>Low</h1></iframe>");
-        list.add("<iframe><h1>Low</h1></iframe>");
-        return list;
-    }
-
-    
-
 }

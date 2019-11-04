@@ -5,6 +5,7 @@
  */
 package main;
 
+import function.LoadData;
 import function.Scan;
 import function.WebCrawlerWithDepth;
 import function.removeDup;
@@ -14,10 +15,7 @@ import java.util.Scanner;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import signature.A1;
-import payload.A1p;
-import payload.A3p;
-import signature.A3;
+
 
 /**
  *
@@ -27,20 +25,30 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         String url;
+        int dept;
         Scan s = new Scan();
+        LoadData data = new LoadData();
+        data.LoadPayload();
+        data.LoadSignature();
+        System.out.println("Load Data payload done!");
+        System.out.println("Load Data signature done!");
+        System.out.println("-----------------------------");
+        System.out.println("=> Payload SQLi: "+data.pay_SQLi.size());
+        System.out.println("=> Payload XSS: "+data.pay_XSS.size());
+        System.out.println("=> Signature SQLi: "+data.sig_SQLi.size());
+        System.out.println("=> Signature XSS: "+data.sig_XSS.size());
         System.out.println("================================");
         System.out.println("=        Vina Scan Hub v0.2    =");
         System.out.println("=   Code by Eyes Of God team   =");
-        System.out.println("=    Leader: Shaco JX          =");
-        System.out.println("=  Member: TrungLB,HuyVT,DaiL  =");
+        System.out.println("=            Shaco JX          =");
+        System.out.println("=             Mr.Lax           =");
         System.out.println("================================");
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter url: ");
         url = scan.nextLine();
-//        WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
-//        System.out.println("Spider level: "+wc.MAX_DEPTH);
-//        wc.getPageLinks(url, 0, url);
-//        System.out.println("Total link: "+wc.links.size());
+        System.out.print("Enter level spider: ");
+        dept = scan.nextInt();
+        scan.nextLine();
         s.Scan(url);
         
         

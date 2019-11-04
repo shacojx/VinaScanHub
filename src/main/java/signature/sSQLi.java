@@ -9,10 +9,9 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Shaco JX
+ * @author toanvv1
  */
-public class A1 {
-
+public class sSQLi {
     public ArrayList<String> SQLinjection() {
         ArrayList<String> list = new ArrayList<>();
         list.add("You have an error in your SQL syntax");
@@ -33,24 +32,4 @@ public class A1 {
         list.add("Unclosed quotation mark after the character string");
         return list;
     }
-    public ArrayList<String> HTMLinjection(){
-        ArrayList<String> list = new ArrayList<>();
-        list.add("<h1>Test</h1>");
-        list.add("%3Ch1%3ETest%3C/h1%3E");
-        return list;
-    }
-     public ArrayList<String> XMLXPathInjection(){
-        ArrayList<String> list = new ArrayList<>();
-        list.add("SimpleXMLElement::xpath()");
-        list.add("Invalid predicate in");
-        list.add("xmlXPathEval: evaluation failed in");
-        return list;
-    }
-     public ArrayList<String> IFrameInjection(){
-        ArrayList<String> list = new ArrayList<>();
-        list.add("\"><iframe><h1>Low</h1></iframe>");
-        list.add("<iframe><h1>Low</h1></iframe>");
-        return list;
-    }
-
 }
