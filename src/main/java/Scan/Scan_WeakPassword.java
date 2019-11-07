@@ -107,11 +107,10 @@ public class Scan_WeakPassword {
             requestSettings.setRequestParameters(params);
             page = client.getPage(requestSettings);
             String tempBody = page.asXml();
-//            System.out.println(page.getUrl().toString());
-            System.out.println("-----------------");
-            System.out.println("Action: " + action);
-            System.out.println("Params: " + params);
-            System.out.println("URL: " + page.getUrl());
+//            System.out.println("-----------------");
+//            System.out.println("Action: " + action);
+//            System.out.println("Params: " + params);
+//            System.out.println("URL: " + page.getUrl());
 
             List<HtmlForm> formCheck1 = page.getForms();
             boolean checkLogin1 = false;
