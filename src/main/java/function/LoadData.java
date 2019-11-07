@@ -28,5 +28,8 @@ public class LoadData {
 
         psIFramei psIFramein = new psIFramei();
         psIFramein.loadDataIFramein();
+        
+        psUserPass psUserPass = new psUserPass();
+        psUserPass.loadDataUserPass();
     }
 }

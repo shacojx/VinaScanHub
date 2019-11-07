@@ -36,7 +36,7 @@ public class Scan_WeakPassword {
         client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
         String action = "";
-        encodeValue encodeValue = new encodeValue();
+        encodeValue encode = new encodeValue();
 
         for (String[] obj : userPass) {
             String user = obj[0];
@@ -57,7 +57,7 @@ public class Scan_WeakPassword {
                 try {
                     action = page.getFullyQualifiedUrl(html.getActionAttribute()).toString();
                     name = html.getAttribute("name");
-                } catch (MalformedURLException ex) {
+                } catch (Exception ex) {
                 }
                 try {
                     id = html.getAttribute("id");
@@ -84,18 +84,18 @@ public class Scan_WeakPassword {
 //                if (xname.length() != 0 && !name.contains(xname)) {
                 if (xname.length() != 0) {
                     if (xtype.contains("submit") || xtype.contains("button")) {
-                        params.add(new NameValuePair(xname, encodeValue.encode(xvalue)));
+                        params.add(new NameValuePair(xname, encode.encode(xvalue)));
 
                     } else {
                         if (xvalue.length() != 0) {
-                            params.add(new NameValuePair(xname, encodeValue.encode(xvalue)));
+                            params.add(new NameValuePair(xname, encode.encode(xvalue)));
 
                         } else {
                             if (xtype.contains("password")) {
-                                params.add(new NameValuePair(xname, encodeValue.encode(pass)));
+                                params.add(new NameValuePair(xname, encode.encode(pass)));
 
                             } else {
-                                params.add(new NameValuePair(xname, encodeValue.encode(user)));
+                                params.add(new NameValuePair(xname, encode.encode(user)));
 
                             }
                         }
@@ -107,18 +107,59 @@ public class Scan_WeakPassword {
             requestSettings.setRequestParameters(params);
             page = client.getPage(requestSettings);
             String tempBody = page.asXml();
-            System.out.println(page.getUrl().toString());
+//            System.out.println(page.getUrl().toString());
+            System.out.println("-----------------");
+            System.out.println("Action: " + action);
+            System.out.println("Params: " + params);
+            System.out.println("URL: " + page.getUrl());
 
             List<HtmlForm> formCheck1 = page.getForms();
-            boolean checkLogin1 = true;
+            boolean checkLogin1 = false;
             boolean checkLogin2 = true;
+            System.out.println("Count: " + formCheck1.size());
+            boolean checkLogin3 = false;
+            if (action.contains(sURL)) {
+                checkLogin3 = true;
+            }
             for (HtmlForm f : formCheck1) {
-                if (page.getFullyQualifiedUrl(f.getActionAttribute()).toString().contains(action)) {
-                    checkLogin1 = false;
-                    break;
+//                System.out.println("HTML Action: " + page.getFullyQualifiedUrl(f.getActionAttribute()));
+//                System.out.println("action: " + action);
+
+                System.out.println("Form: " + f.getActionAttribute());
+                if (checkLogin3) {
+                    checkLogin1 = true;
+                    if (page.getFullyQualifiedUrl(f.getActionAttribute()).toString().contains(action)) {
+                        checkLogin1 = false;
+                        break;
+                    }
+                } else {
+                    if (page.getUrl().toString().contains(action)) {
+                        checkLogin1 = true;
+                        break;
+                    }
                 }
             }
+            if (formCheck1.size() == 0) {
+                checkLogin1 = true;
+                checkLogin2 = true;
+            }
 
+//                if (page.getFullyQualifiedUrl(f.getActionAttribute()).toString().contains(action)) {
+//                if (page.getUrl().toString().contains(action)) {
+//                    checkLogin1 = true;
+//                    System.out.println("");
+//                    break;
+//                }
+//        }
+//            List<HtmlAnchor> formCheck2 = page.getByXPath(".//a[@href]");
+//            for (HtmlAnchor a : formCheck2) {
+//                if (page.getFullyQualifiedUrl(a.getAttribute("href")).toString().contains(sURL)) {
+//                    checkLogin2 = false;
+//                    break;
+//                }
+//            }
+//            System.out.println("Check1: " + checkLogin1);
+//            System.out.println("Check2: " + checkLogin2);
             if (checkLogin1 && checkLogin2) {
                 System.out.println("Login Thanh Cong : " + sURL);
                 System.out.println("User: " + user + " ---- Password: " + pass);
