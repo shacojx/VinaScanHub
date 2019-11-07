@@ -354,11 +354,11 @@ public class ScanVuln {
                     }
                     if (method.toLowerCase().contains("post")) {
                         requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);
-                        method = "POST ";
+                        method = "|POST|";
                         checkURLPOST.add(urlAction);
                     } else {
                         requestSettings = new WebRequest(new URL(urlAttack), HttpMethod.GET);
-                        method = "GET ";
+                        method = "|GET|";
                         checkURLGET.add(urlAttack);
                     }
 //                    System.out.println("-----------------------------XYZZZZZZZZZZZZZ");
