@@ -5,9 +5,7 @@
  */
 package function;
 
-import java.util.ArrayList;
-import payload.*;
-import signature.*;
+import PaySig.*;
 
 /**
  *
@@ -15,38 +13,20 @@ import signature.*;
  */
 public class LoadData {
 
-    public ArrayList<String> pay_SQLi = new ArrayList<>();
-    public ArrayList<String> pay_XSS = new ArrayList<>();
-    public ArrayList<String> pay_xMLXpatchi = new ArrayList<>();
-    public ArrayList<String> pay_HTMLi = new ArrayList<>();
+    public void loadData() {
+        psSQLi psSQLin = new psSQLi();
+        psSQLin.loadDataSQLinjection();
 
-    public ArrayList<String> sig_HTMLi = new ArrayList<>();
-    public ArrayList<String> sig_SQLi = new ArrayList<>();
-    public ArrayList<String> sig_XMLXpatchi = new ArrayList<>();
-    public ArrayList<String> sig_XSS = new ArrayList<>();
+        psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
+        psXMLXpatchin.loadDataXMLXPathin();
 
-    
-    public void LoadPayload() {
-        pHTMLi pHTMLi = new pHTMLi();
-        pSQLi pSQLi = new pSQLi();
-        pXMLXpatchi pXMLXpatchi = new pXMLXpatchi();
-        pXSS pXSS = new pXSS();
-        pay_HTMLi = pHTMLi.HTMLinjection();
-        pay_SQLi = pSQLi.SQLinjection();
-        pay_xMLXpatchi = pXMLXpatchi.XMLXPathInjection();
-        pay_XSS = pXSS.XSS();
-        System.out.println("Load Payload successful!");
-    }
+        psHTMLi psHTMLin = new psHTMLi();
+        psHTMLin.loadDataHTMLinjection();
 
-    public void LoadSignature() {
-        sHTMLi sHTMLi = new sHTMLi();
-        sSQLi sSQLi = new sSQLi();
-        sXMLXpatchi sXMLXpathi = new sXMLXpatchi();
-        sXSS sXSS = new sXSS();
-        sig_HTMLi = sHTMLi.HTMLinjection();
-        sig_SQLi = sSQLi.SQLinjection();
-        sig_XMLXpatchi = sXMLXpathi.XMLXPathInjection();
-        sig_XSS = sXSS.XSS();
-        System.out.println("Load Signature successful!");
+        psXSS psXSS = new psXSS();
+        psXSS.loadDataXSS();
+
+        psIFramei psIFramein = new psIFramei();
+        psIFramein.loadDataIFramein();
     }
 }

@@ -5,7 +5,12 @@
  */
 package Scan;
 
-import PaySig.psSQLi;
+import PaySig.psXMLXpatchi;
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import function.Scan;
 import java.io.IOException;
 import java.net.URL;
@@ -13,20 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.util.NameValuePair;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.HttpMethod;
 
 /**
  *
- * @author toanvv1
+ * @author laxba
  */
-public class Scan_SQLi {
+public class Scan_XMLXpatchi {
 
-    public void scanSQLin(Element element, String urlAction, String[] payload) throws IOException {
-        String vulnName = "SQL Injection";
+    public void scanXMLXpatchin(Element element, String urlAction, String[] payload) throws IOException {
+        String vulnName = "XMLXpatch Injection";
         String urlAttack = urlAction;
         boolean checkVuln = false;
         WebRequest requestSettings;
@@ -34,7 +34,7 @@ public class Scan_SQLi {
 //        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
-        psSQLi psSQLi = new psSQLi();
+        psXMLXpatchi psXMLXpatchi = new psXMLXpatchi();
 
         for (String sPay : payload) {
             params = new ArrayList<>();
@@ -51,7 +51,7 @@ public class Scan_SQLi {
                             try {
                                 value = s.split("\\=")[1] + sPay;
                             } catch (Exception e) {
-                                System.out.println("Error Value attackVulnSQLin: " + e);
+                                System.out.println("Error Value attackVulnXMLXpatchin: " + e);
                             }
                             params.add(new NameValuePair(key, value));
                         }
@@ -87,7 +87,7 @@ public class Scan_SQLi {
                 }
                 requestSettings.setRequestParameters(params);
                 HtmlPage page = client.getPage(requestSettings);
-                for (String sSig : psSQLi.getArrSigSQLin()) {
+                for (String sSig : psXMLXpatchi.getArrSigXMLXPathin()) {
                     if (page.asXml().contains(sSig)) {
                         checkVuln = true;
                         System.out.println(method + vulnName + " : " + urlAction);
@@ -97,7 +97,7 @@ public class Scan_SQLi {
                     }
                 }
             } catch (IOException | RuntimeException e) {
-                System.out.println("Error attackVulnSQLin: " + urlAction + " ||| " + e);
+                System.out.println("Error attackVulnXMLXpatchin: " + urlAction + " ||| " + e);
             }
             if (checkVuln) {
                 break;

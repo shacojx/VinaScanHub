@@ -5,29 +5,29 @@
  */
 package Scan;
 
+import PaySig.psSQLi;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
+import function.Scan;
+import function.encodeValue;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import function.encodeValue;
-import PaySig.psSQLi;
-import function.Scan;
 
 /**
  *
- * @author toanvv1
+ * @author laxba
  */
-public class Scan_XSS {
+public class Scan_HTMLi {
 
-    public void scanXSS(Element element, String urlAction, String[] payload) throws IOException {
-        String vulnName = "XSS";
+    public void scanHTMLin(Element element, String urlAction, String[] payload) throws IOException {
+        String vulnName = "HTML Injection";
         String urlAttack = urlAction;
         boolean checkVuln = false;
         WebRequest requestSettings;
@@ -59,7 +59,7 @@ public class Scan_XSS {
                                 try {
                                     value = s.split("\\=")[1] + lPay;
                                 } catch (Exception e) {
-                                    System.out.println("Error Value attackVulnXSS: " + e);
+                                    System.out.println("Error Value attackHTMLin: " + e);
                                 }
                                 params.add(new NameValuePair(key, value));
                             }
@@ -117,7 +117,7 @@ public class Scan_XSS {
                     }
 
                 } catch (IOException | RuntimeException e) {
-                    System.out.println("Error attackVulnXSS: " + urlAction + " ||| " + e);
+                    System.out.println("Error attackHTMLin: " + urlAction + " ||| " + e);
                 }
             }
             if (checkVuln) {
