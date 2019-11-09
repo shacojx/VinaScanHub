@@ -51,9 +51,4 @@ public class CheckSiteAdmin {
             }
         }
  
-        public static void main(String[] args) {
-            CheckSiteAdmin checkSite = new CheckSiteAdmin();
-            checkSite.checkSiteAdmin();
- 
-        }
     }
