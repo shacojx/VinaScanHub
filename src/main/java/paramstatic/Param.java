@@ -17,4 +17,5 @@ import java.util.concurrent.Executors;
 public class Param {
     public static Set<String> listEmail = new HashSet<>();
     public static ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(1000);
+    public static HashSet<String> listAdmin = new HashSet<>();
 }

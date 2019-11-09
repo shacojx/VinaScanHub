@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import PaySig.*;
+import paramstatic.Param;
 
 /**
  *
@@ -56,6 +57,7 @@ public class Scan {
         System.out.println("---------------------------------------------------------------------------------");
         this.scanVuln(spider.links);
         this.BruteForce(spider.links);
+        this.BruteForce(Param.listAdmin);
     }
 
     public void scanVuln(HashSet<String> listURL) throws IOException {

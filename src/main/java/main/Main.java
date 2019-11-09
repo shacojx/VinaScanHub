@@ -6,6 +6,7 @@
 package main;
 
 import Information.ScanPort;
+import function.CheckSiteAdmin;
 import function.Scan;
 import java.io.IOException;
 import java.util.Scanner;
@@ -21,7 +22,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String url;
         String url1 = null;
-        int dept;
+        int dept = 5;
         Scan s = new Scan();
         ScanPort scanport = new ScanPort();
         SpiderWeb spider = new SpiderWeb();
@@ -38,25 +39,30 @@ public class Main {
         System.out.println("=             Lyser            =");
         System.out.println("================================");
         Scanner scan = new Scanner(System.in);
-        System.out.print("Enter url: ");
-        url = scan.nextLine();
+        do {
+            System.out.print("Enter url: ");
+            url = scan.nextLine();
+        } while (!url.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)"));
+
         System.out.print("Enter level spider: ");
         dept = scan.nextInt();
         scan.nextLine();
         spider.MAX_DEPTH = dept;
-        if(url.contains("//")){
-            if(url.split("//")[1].contains("/")){
+        if (url.contains("//")) {
+            if (url.split("//")[1].contains("/")) {
                 url1 = url.split("//")[1].split("/")[0];
             }
-        }else if(url.contains("/")){
-             url1 = url.split("/")[0];
-        }else{
+        } else if (url.contains("/")) {
+            url1 = url.split("/")[0];
+        } else {
             url1 = url;
         }
         scanport.url = url1;
         System.err.println("Scanning Port");
         scanport.ScanPort();
         System.out.println("Scan port end");
+        CheckSiteAdmin checkSite = new CheckSiteAdmin();
+        checkSite.checkSiteAdmin();
         s.Scan(url);
     }
 
