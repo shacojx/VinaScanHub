@@ -32,6 +32,7 @@ public class Scan_LFI {
         boolean checkVuln = false;
         WebRequest requestSettings;
         WebClient client = new WebClient();
+        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
         psLFI psLFI = new psLFI();

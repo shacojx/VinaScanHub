@@ -32,7 +32,7 @@ public class Scan_XSS {
         boolean checkVuln = false;
         WebRequest requestSettings;
         WebClient client = new WebClient();
-//        client.getOptions().setCssEnabled(true);
+        client.getOptions().setCssEnabled(true);
         client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
         encodeValue encodeValue = new encodeValue();

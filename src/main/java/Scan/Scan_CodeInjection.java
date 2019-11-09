@@ -32,6 +32,7 @@ public class Scan_CodeInjection {
         boolean checkVuln = false;
         WebRequest requestSettings;
         WebClient client = new WebClient();
+        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
         psCodeInjection psCI = new psCodeInjection();

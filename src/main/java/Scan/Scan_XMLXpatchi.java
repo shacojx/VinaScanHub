@@ -31,7 +31,7 @@ public class Scan_XMLXpatchi {
         boolean checkVuln = false;
         WebRequest requestSettings;
         WebClient client = new WebClient();
-//        client.getOptions().setCssEnabled(false);
+        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
         psXMLXpatchi psXMLXpatchi = new psXMLXpatchi();

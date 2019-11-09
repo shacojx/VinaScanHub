@@ -31,11 +31,10 @@ public class Scan_SQLi {
         boolean checkVuln = false;
         WebRequest requestSettings;
         WebClient client = new WebClient();
-//        client.getOptions().setCssEnabled(false);
+        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
         psSQLi psSQLi = new psSQLi();
-
         for (String sPay : payload) {
             params = new ArrayList<>();
             try {
