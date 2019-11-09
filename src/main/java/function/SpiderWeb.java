@@ -36,20 +36,15 @@ public class SpiderWeb {
                 && URL.contains(root_url)) {
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
             try {
-                if (URL.contains("10.1.30.123:8080")) {
+                
                     links.add(URL);
-                }
+              
 
-                Document document = Jsoup.connect(URL).userAgent(Param.USERAL).header("cookie", Param.COOKIE).get();
+                Document document = Jsoup.connect(URL).get();
                 Elements linksOnPage = document.select("a[href]");
 
                 depth++;
                 for (Element page : linksOnPage) {
-                    System.out.println("page ne: " + page);
-                    System.out.println("link ne " + page.attr("abs:href"));
-                    if (page.attr("abs:href").contains("10.1.30.123:8080")) {
-                        links.add(page.attr("abs:href"));
-                    }
 
                     getPageLinks(page.attr("abs:href"), depth, root_url);
                 }

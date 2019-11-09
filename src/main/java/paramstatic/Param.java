@@ -18,6 +18,5 @@ public class Param {
     public static Set<String> listEmail = new HashSet<>();
     public static ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(1000);
     public static HashSet<String> listAdmin = new HashSet<>();
-    public static String COOKIE = "";
-    public static String USERAL= "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36";
+   
 }
