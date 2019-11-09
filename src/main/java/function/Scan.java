@@ -31,26 +31,18 @@ public class Scan {
     Scan_XSS sXSS = new Scan_XSS();
     Scan_CodeInjection sCI = new Scan_CodeInjection();
     Scan_LFI sLFI = new Scan_LFI();
+    Scan_CMDinjection sCMDi = new Scan_CMDinjection();
+    Scan_WeakPassword sWeakPass = new Scan_WeakPassword();
 
     psSQLi psSQLin = new psSQLi();
     psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
     psXSS psXSS = new psXSS();
     psCodeInjection psCI = new psCodeInjection();
     psLFI psLFI = new psLFI();
+    psCMDInjection psCMDi = new psCMDInjection();
+    psUserPass psUP = new psUserPass();
 
     public void Scan(String url) throws IOException {
-//        WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
-//        WebCrawlerWithDepth spider = new WebCrawlerWithDepth();
-//        System.out.println("Spider level: " + spider.MAX_DEPTH);
-//        spider.getPageLinks(url, 0, url);
-//        System.out.println("==========================================");
-//        System.out.println("Total link: " + spider.links.size());
-//
-//        spider.links.forEach((s) -> {
-//            System.out.println(s);
-//        });
-//        System.out.println("---------------------------------------------------------------------------------");
-//        this.scanVuln(spider.links);
 
         SpiderWeb spider = new SpiderWeb();
         System.out.println("Spider level: " + spider.MAX_DEPTH);
@@ -63,6 +55,7 @@ public class Scan {
         });
         System.out.println("---------------------------------------------------------------------------------");
         this.scanVuln(spider.links);
+        this.BruteForce(spider.links);
     }
 
     public void scanVuln(HashSet<String> listURL) throws IOException {
@@ -105,9 +98,7 @@ public class Scan {
                                 }
                             }
                         }
-//                        if (!checkURLGET.contains(temp) && !checkURLPOST.contains(temp)) {
-//                            this.scanMethodGetPost(element, temp);
-//                        }
+
                     }
                 } catch (IOException e) {
                     System.out.println("Error scanVuln: " + sURL + " ||| " + e);
@@ -117,6 +108,15 @@ public class Scan {
         }
         System.out.println("Scan end!");
     }
+    
+    public void BruteForce(HashSet<String> listURL) throws IOException{
+        for(String url : listURL){
+            if(url.contains("login") || url.contains("sigin") || url.contains("admin")
+                    || url.contains("dang") || url.contains("nhap")){
+                sWeakPass.bruteForce(url, psUP.getUserPass());
+            }
+        }
+    }
 
     public void scanMethodGet(String urlAction) throws IOException {
         this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
@@ -124,6 +124,7 @@ public class Scan {
         this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
         this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
         this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
+        this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
 //        BlindSQLinjection(urlAction);
     }
 
@@ -133,6 +134,7 @@ public class Scan {
         this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
         this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
         this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
+        this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
 //        BlindSQLinjection(urlAction);
     }
 }

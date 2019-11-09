@@ -32,6 +32,9 @@ public class LoadData {
         psLFI psLFI = new psLFI();
         psLFI.loadDataLFI();
         
+        psCMDInjection psCMDi = new psCMDInjection();
+        psCMDi.loadDataCMDinjection();
+        
         
     }
 }

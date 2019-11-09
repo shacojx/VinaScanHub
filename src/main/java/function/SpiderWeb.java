@@ -7,10 +7,13 @@ package function;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import paramstatic.Param;
 
 /**
  *
@@ -19,7 +22,7 @@ import org.jsoup.select.Elements;
 public class SpiderWeb {
 
     public static int MAX_DEPTH = 5;
-    public HashSet<String> links = new HashSet<>();
+    public static HashSet<String> links = new HashSet<>();
 
     public SpiderWeb() {
     }
@@ -41,6 +44,20 @@ public class SpiderWeb {
                 depth++;
                 for (Element page : linksOnPage) {
                     getPageLinks(page.attr("abs:href"), depth, root_url);
+                }
+                String docString = document.body().toString();
+                String regex = "[a-zA-Z0-9-_.]+@[a-zA-Z0-9-_.]+";
+
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(docString);
+
+                while (matcher.find()) {
+                    String email = matcher.group();
+                    if(Param.listEmail.add(email)) {
+                        System.out.println("Found 1 email: "+matcher.group());
+                    }
+                    // Get the group matched using group() method 
+                    
                 }
             } catch (IOException e) {
                 System.err.println("For '" + URL + "': " + e.getMessage());
