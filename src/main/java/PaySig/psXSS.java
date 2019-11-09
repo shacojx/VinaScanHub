@@ -13,6 +13,11 @@ public class psXSS {
 
     private static String[] arrPayXSS;
 
+    public psXSS() {
+        loadDataXSS();
+    }
+
+    
     public void loadDataXSS() {
         arrPayXSS = new String[]{
             "%3Cscript%3Ealert%28123%29%3B%3C%2Fscript%3E",

@@ -13,6 +13,11 @@ public class psUserPass {
 
     private static String[][] userPass;
 
+    public psUserPass() {
+        loadDataUserPass();
+    }
+
+    
     public void loadDataUserPass() {
         userPass = new String[][]{
             {"admin", "password"},

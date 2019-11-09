@@ -14,8 +14,7 @@ public class psCMDInjection {
     private static String[] arrSigCMDi;
     private static String[] arrPayCMDi;
 
-    public void loadDataCMDinjection() {
-
+    public psCMDInjection() {
         arrSigCMDi = new String[]{
             "Reply from 127.0.0.1"};
 
@@ -28,6 +27,10 @@ public class psCMDInjection {
             "; ping 127.0.0.1 ;",
             "%0a ping –i 30 127.0.0.1 %0a",
             "` ping 127.0.0.1 `",};
+    }
+
+    public void loadDataCMDinjection() {
+
     }
 
     public String[] getArrSigCMDi() {

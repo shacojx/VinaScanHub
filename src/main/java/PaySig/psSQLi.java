@@ -14,8 +14,7 @@ public class psSQLi {
     private static String[] arrSigSQLin;
     private static String[] arrPaySQLin;
 
-    public void loadDataSQLinjection() {
-        /*List Signature SQL Injection*/
+    public psSQLi() {
         arrSigSQLin = new String[]{"You have an error in your SQL syntax",
             "supplied argument is not a valid MySQL",
             "mysql_fetch_array() expects parameter 1 to be resource, boolean given in",

@@ -12,13 +12,13 @@ package PaySig;
 public class psPHPinfo {
     private static String[] arrSigPHPinfo;
 
-    public void loadDataPHPinfo() {
-
+    public psPHPinfo() {
         arrSigPHPinfo = new String[]{
             "<title>phpinfo()</title>",
             };
 
     }
+
 
     public String[] getArrSigPHPinfo() {
         return arrSigPHPinfo;

@@ -12,15 +12,14 @@ package PaySig;
 public class psDirectorylisting {
     private static String[] arrSigCI;
 
-    public void loadDataDL() {
-
+    public psDirectorylisting() {
         arrSigCI = new String[]{
             "<title>Index of /",
             "<h1>Index of /",
             "Index of /",
             };
-
     }
+
 
     public String[] getArrSigDL() {
         return arrSigCI;

@@ -10,19 +10,18 @@ package PaySig;
  * @author Shaco JX
  */
 public class CVE_2017_9248 {
+
     private static String[] arrSigCVE;
     private static String[] arrPayCVE;
 
-    public void loadDataCVE() {
-
+    public CVE_2017_9248() {
         arrSigCVE = new String[]{
-            "Telerik.Web.UI.DialogHandler.aspx",
-           };
+            "Telerik.Web.UI.DialogHandler.aspx",};
 
         arrPayCVE = new String[]{
-            "Loading the dialog...",
-           };
+            "Loading the dialog...",};
     }
+
 
     public String[] getArrSigCVE() {
         return arrSigCVE;

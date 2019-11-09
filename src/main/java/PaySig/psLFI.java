@@ -14,8 +14,7 @@ public class psLFI {
     private static String[] arrSigLFI;
     private static String[] arrPayLFI;
 
-    public void loadDataLFI() {
-
+    public psLFI() {
         arrSigLFI = new String[]{
             "root:x:0:0",
             "root:*:0:0",
@@ -51,6 +50,7 @@ public class psLFI {
             "../../../../../../../../../../../../../../../../../../../../boot.ini",
             "../../../../../../../../../../boot.ini\0",};
     }
+
 
     public String[] getArrSigLFI() {
         return arrSigLFI;

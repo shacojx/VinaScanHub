@@ -5,20 +5,17 @@
  */
 package View;
 
+import Information.ScanPort;
 import Report.ReportPDF;
 import function.Scan;
+import function.SpiderWeb;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  *
@@ -29,6 +26,12 @@ public class VSH extends javax.swing.JFrame {
     /**
      * Creates new form VSH
      */
+    Scan s = new Scan();
+    ScanPort scanport = new ScanPort();
+    SpiderWeb spider = new SpiderWeb();
+    String url = "";
+    int dept = 0;
+    int numberOfThreads = 0;
     public VSH() {
         initComponents();
         this.setTitle("Vina Scan Hub");
@@ -36,9 +39,7 @@ public class VSH extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
     }
-    
-    Scan s = new Scan();
-    
+
     public void addRowToJTable(ArrayList<String> list) {
         DefaultTableModel model = (DefaultTableModel) this.VulnResult.getModel();
 
@@ -53,12 +54,12 @@ public class VSH extends javax.swing.JFrame {
     }
 
     public void addRowToJTable_Spider(HashSet<String> list) {
-        DefaultTableModel model = (DefaultTableModel) this.spider.getModel();
-        Object rowData[] = new Object[1];
-        for (String x : list) {
-            rowData[0] = x;
-            model.addRow(rowData);
-        }
+//        DefaultTableModel model = (DefaultTableModel) this.btnSpyt.getModel();
+//        Object rowData[] = new Object[1];
+//        for (String x : list) {
+//            rowData[0] = x;
+//            model.addRow(rowData);
+//        }
 
     }
 
@@ -74,10 +75,9 @@ public class VSH extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        url = new javax.swing.JTextField();
+        txtUrl = new javax.swing.JTextField();
         scan = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        dept = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -87,15 +87,19 @@ public class VSH extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         report = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
+        txtThread = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtDept = new javax.swing.JTextField();
+        jButton6 = new javax.swing.JButton();
         Tabmenu = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        log_console = new javax.swing.JTextArea();
+        LOG_CONSOLE = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         VulnResult = new javax.swing.JTable();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        spider = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         history = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,6 +110,8 @@ public class VSH extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText(" URL");
+
+        txtUrl.setText("https://henhoketban.vn/index.php");
 
         scan.setBackground(new java.awt.Color(102, 255, 102));
         scan.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -118,9 +124,6 @@ public class VSH extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText(" Dept");
-
-        dept.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        dept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" }));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setText("Clear");
@@ -151,6 +154,22 @@ public class VSH extends javax.swing.JFrame {
             }
         });
 
+        txtThread.setText("5");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel7.setText("Threads:");
+
+        txtDept.setText("5");
+
+        jButton6.setBackground(new java.awt.Color(255, 51, 51));
+        jButton6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton6.setText("Port");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -167,17 +186,25 @@ public class VSH extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(url, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dept, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(txtUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(txtDept, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtThread, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(report, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(scan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -197,13 +224,17 @@ public class VSH extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(url, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(txtUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(dept)))
+                                    .addComponent(txtThread, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtDept, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButton2)
@@ -216,8 +247,9 @@ public class VSH extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButton4)
                                     .addComponent(scan))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton6))))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
@@ -225,11 +257,11 @@ public class VSH extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        log_console.setColumns(20);
-        log_console.setLineWrap(true);
-        log_console.setRows(5);
-        log_console.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(log_console);
+        LOG_CONSOLE.setColumns(20);
+        LOG_CONSOLE.setLineWrap(true);
+        LOG_CONSOLE.setRows(5);
+        LOG_CONSOLE.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(LOG_CONSOLE);
 
         Tabmenu.addTab("Log", jScrollPane1);
 
@@ -245,18 +277,6 @@ public class VSH extends javax.swing.JFrame {
 
         Tabmenu.addTab("vulnerability", jScrollPane3);
 
-        spider.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                ""
-            }
-        ));
-        jScrollPane4.setViewportView(spider);
-
-        Tabmenu.addTab("Spider", jScrollPane4);
-
         history.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -268,6 +288,12 @@ public class VSH extends javax.swing.JFrame {
         jScrollPane2.setViewportView(history);
 
         Tabmenu.addTab("History", jScrollPane2);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane5.setViewportView(jTextArea1);
+
+        Tabmenu.addTab("tab5", jScrollPane5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -289,9 +315,31 @@ public class VSH extends javax.swing.JFrame {
 
 
     private void scanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scanActionPerformed
+        try {
+            String url = txtUrl.getText();
+            if(!url.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")) {
+                JOptionPane.showMessageDialog(null, "Check url11");
+                return;
+            }
+            String deptText = txtDept.getText();
+            if(!deptText.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Check dept!!");
+                return;
+            }
+            dept = Integer.parseInt(deptText);
+            String threadText = txtThread.getText();
+            if(!threadText.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Check number of threads!!");
+                return;
+            }
+            numberOfThreads = Integer.parseInt(threadText);
+            Scan s = new Scan();
+            s.Scan(url);
+        } catch (IOException ex) {
+            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-
-
+        
     }//GEN-LAST:event_scanActionPerformed
 
     private void reportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportActionPerformed
@@ -307,9 +355,16 @@ public class VSH extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Export Failed !");
             Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+
     }//GEN-LAST:event_reportActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        ScanPort scanport = new ScanPort();
+        scanport.ScanPort();
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -347,30 +402,33 @@ public class VSH extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JTextArea LOG_CONSOLE;
     private javax.swing.JTabbedPane Tabmenu;
     private javax.swing.JTable VulnResult;
-    private javax.swing.JComboBox<String> dept;
     private javax.swing.JTable history;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    public static javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextArea log_console;
     private javax.swing.JButton report;
     private javax.swing.JButton scan;
-    private javax.swing.JTable spider;
-    private javax.swing.JTextField url;
+    private javax.swing.JTextField txtDept;
+    private javax.swing.JTextField txtThread;
+    private javax.swing.JTextField txtUrl;
     // End of variables declaration//GEN-END:variables
 }

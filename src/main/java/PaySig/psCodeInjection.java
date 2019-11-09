@@ -14,8 +14,7 @@ public class psCodeInjection {
     private static String[] arrSigCI;
     private static String[] arrPayCI;
 
-    public void loadDataCI() {
-
+    public psCodeInjection() {
         arrSigCI = new String[]{
             "Fatal error</b>: preg_replace",
             "Warning: preg_replace():",
@@ -38,7 +37,6 @@ public class psCodeInjection {
             "/e\0",
             "a;exit(base64_decode('dzRwMXQxX2V2YWw='));//",};
     }
-
     public String[] getArrSigCI() {
         return arrSigCI;
     }

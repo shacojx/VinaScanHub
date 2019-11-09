@@ -36,16 +36,12 @@ public class SpiderWeb {
                 && URL.contains(root_url)) {
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
             try {
-                
-                    links.add(URL);
-              
-
+                links.add(URL);
                 Document document = Jsoup.connect(URL).get();
                 Elements linksOnPage = document.select("a[href]");
 
                 depth++;
                 for (Element page : linksOnPage) {
-
                     getPageLinks(page.attr("abs:href"), depth, root_url);
                 }
 

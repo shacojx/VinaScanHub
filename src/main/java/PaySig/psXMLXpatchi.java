@@ -14,6 +14,11 @@ public class psXMLXpatchi {
     private static String[] arrPayXMLXPathin;
     private static String[] arrSigXMLXPathin;
 
+    public psXMLXpatchi() {
+        loadDataXMLXPathin();
+    }
+
+    
     public void loadDataXMLXPathin() {
         arrPayXMLXPathin = new String[]{
             "'",

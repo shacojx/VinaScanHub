@@ -14,29 +14,28 @@ import PaySig.*;
 public class LoadData {
 
     public void loadData() {
-        psSQLi psSQLin = new psSQLi();
-        psSQLin.loadDataSQLinjection();
-
-        psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
-        psXMLXpatchin.loadDataXMLXPathin();
-
-        psXSS psXSS = new psXSS();
-        psXSS.loadDataXSS();
-
-        psUserPass psUserPass = new psUserPass();
-        psUserPass.loadDataUserPass();
-        
-        psCodeInjection psCI = new psCodeInjection();
-        psCI.loadDataCI();
-        
-        psLFI psLFI = new psLFI();
-        psLFI.loadDataLFI();
-        
-        psCMDInjection psCMDi = new psCMDInjection();
-        psCMDi.loadDataCMDinjection();
-        
-        psDirectorylisting psDirList = new psDirectorylisting() ;
-        psDirList.loadDataDL();
-        
+//        psSQLi psSQLin = new psSQLi();
+//
+//        psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
+//        psXMLXpatchin.loadDataXMLXPathin();
+//
+//        psXSS psXSS = new psXSS();
+//        psXSS.loadDataXSS();
+//
+//        psUserPass psUserPass = new psUserPass();
+//        psUserPass.loadDataUserPass();
+//        
+//        psCodeInjection psCI = new psCodeInjection();
+//        psCI.loadDataCI();
+//        
+//        psLFI psLFI = new psLFI();
+//        psLFI.loadDataLFI();
+//        
+//        psCMDInjection psCMDi = new psCMDInjection();
+//        psCMDi.loadDataCMDinjection();
+//        
+//        psDirectorylisting psDirList = new psDirectorylisting() ;
+//        psDirList.loadDataDL();
+//        
     }
 }

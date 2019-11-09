@@ -10,18 +10,20 @@ package PaySig;
  * @author Shaco JX
  */
 public class MS15_034 {
+
     private static String[] arrSigCVE;
     private static String[] arrPayCVE;
 
-    public void loadDataMS() {
-
+    public MS15_034() {
         arrSigCVE = new String[]{
-            "welcome.png",
-           };
+            "welcome.png",};
 
         arrPayCVE = new String[]{
-            "<title>IIS",
-           };
+            "<title>IIS",};
+    }
+
+    public void loadDataMS() {
+
     }
 
     public String[] getArrSigMS() {

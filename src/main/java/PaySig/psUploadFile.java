@@ -10,14 +10,12 @@ package PaySig;
  * @author Shaco JX
  */
 public class psUploadFile {
+
     private static String[] arrSigUploadFile;
 
-    public void loadDataUploadFile() {
-
+    public psUploadFile() {
         arrSigUploadFile = new String[]{
-            "<input type=\"file\"",
-            };
-
+            "<input type=\"file\"",};
     }
 
     public String[] getArrSigUploadFile() {
