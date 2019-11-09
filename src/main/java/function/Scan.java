@@ -57,6 +57,12 @@ public class Scan {
         System.out.println("---------------------------------------------------------------------------------");
         this.scanVuln(spider.links);
         this.BruteForce(spider.links);
+        for(String xxx : Param.listAdmin){
+            Document documentxxx = Jsoup.connect(xxx).userAgent("Mozilla").followRedirects(false).get();
+            if(!documentxxx.body().toString().contains("form")){
+                Param.listAdmin.remove(xxx);
+            }
+        }
         this.BruteForce(Param.listAdmin);
     }
 
