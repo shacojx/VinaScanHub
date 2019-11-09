@@ -5,7 +5,6 @@
  */
 package function;
 
-import static function.WebCrawlerWithDepth.MAX_DEPTH;
 import java.io.IOException;
 import java.util.HashSet;
 import org.jsoup.Jsoup;
@@ -15,11 +14,11 @@ import org.jsoup.select.Elements;
 
 /**
  *
- * @author laxba
+ * @author Shaco JX
  */
 public class SpiderWeb {
 
-    public final int MAX_DEPTH = 5;
+    public static int MAX_DEPTH = 5;
     public HashSet<String> links = new HashSet<>();
 
     public SpiderWeb() {

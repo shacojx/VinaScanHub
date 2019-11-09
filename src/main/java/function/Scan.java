@@ -26,17 +26,17 @@ public class Scan {
     public static HashSet<String> checkURLPOST = new HashSet<>();
 
     Scan_BlindSQLi sBlinkSQLi = new Scan_BlindSQLi();
-    Scan_HTMLi sHTMLi = new Scan_HTMLi();
-    Scan_IFramei sIFramei = new Scan_IFramei();
     Scan_SQLi sSQLi = new Scan_SQLi();
     Scan_XMLXpatchi sXMLXpatchi = new Scan_XMLXpatchi();
     Scan_XSS sXSS = new Scan_XSS();
+    Scan_CodeInjection sCI = new Scan_CodeInjection();
+    Scan_LFI sLFI = new Scan_LFI();
 
     psSQLi psSQLin = new psSQLi();
     psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
-    psHTMLi psHTMLin = new psHTMLi();
     psXSS psXSS = new psXSS();
-    psIFramei psIFramein = new psIFramei();
+    psCodeInjection psCI = new psCodeInjection();
+    psLFI psLFI = new psLFI();
 
     public void Scan(String url) throws IOException {
 //        WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
@@ -109,18 +109,18 @@ public class Scan {
     public void scanMethodGet(String urlAction) throws IOException {
         this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
         this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-        this.sHTMLi.scanHTMLin(null, urlAction, this.psHTMLin.getArrPayHTMLin());
         this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
-        this.sIFramei.scanIFramein(null, urlAction, this.psIFramein.getArrPayIFramein());
+        this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
+        this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
 //        BlindSQLinjection(urlAction);
     }
 
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
         this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin());
         this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-        this.sHTMLi.scanHTMLin(element, urlAction, this.psHTMLin.getArrPayHTMLin());
         this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
-        this.sIFramei.scanIFramein(element, urlAction, this.psIFramein.getArrPayIFramein());
+        this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
+        this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
 //        BlindSQLinjection(urlAction);
     }
 }

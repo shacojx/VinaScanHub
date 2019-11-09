@@ -7,8 +7,6 @@ package View;
 
 import Report.ReportPDF;
 import function.Scan;
-import function.WebCrawlerWithDepth;
-import static function.WebCrawlerWithDepth.MAX_DEPTH;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -291,25 +289,7 @@ public class VSH extends javax.swing.JFrame {
 
 
     private void scanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scanActionPerformed
-        try {
-            // TODO add your handling code here:
-            
-            WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
-
-            String url = this.url.getText();
-            String spider = "Spider level:" + wc.MAX_DEPTH + "\n";
-            wc.getPageLinks(url, 0, url);
-            spider = spider + "Total link: " + wc.links.size() + "\n";
-            this.log_console.append(spider);
-            for (String x : wc.links) {
-                this.log_console.append(x + "\n");
-            }
-            s.scanVuln(wc.links);
-            addRowToJTable_Spider(wc.links);
-            addRowToJTable(s.list_vuln);
-        } catch (IOException ex) {
-            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 
 
     }//GEN-LAST:event_scanActionPerformed

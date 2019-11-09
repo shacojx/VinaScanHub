@@ -20,16 +20,18 @@ public class LoadData {
         psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
         psXMLXpatchin.loadDataXMLXPathin();
 
-        psHTMLi psHTMLin = new psHTMLi();
-        psHTMLin.loadDataHTMLinjection();
-
         psXSS psXSS = new psXSS();
         psXSS.loadDataXSS();
 
-        psIFramei psIFramein = new psIFramei();
-        psIFramein.loadDataIFramein();
-        
         psUserPass psUserPass = new psUserPass();
         psUserPass.loadDataUserPass();
+        
+        psCodeInjection psCI = new psCodeInjection();
+        psCI.loadDataCI();
+        
+        psLFI psLFI = new psLFI();
+        psLFI.loadDataLFI();
+        
+        
     }
 }

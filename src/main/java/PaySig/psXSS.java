@@ -27,7 +27,9 @@ public class psXSS {
             "%3Cscript%3Ealert%28%2FXSS%22%29%3C%2Fscript%3E",
             "%3Cscript%3Ealert%28%2FXSS%2F%29%3C%2Fscript%3E",
             "%3C%2Fscript%3E%3Cscript%3Ealert%281%29%3C%2Fscript%3E",
-            "%27%3B+alert%281%29%3B",};
+            "%27%3B+alert%281%29%3B",
+            "%3Ch1%3ETest12345%3C%2Fh1%3E",
+            "%3Ciframe%3E%3Ch1%3ETest12345%3C%2Fh1%3E%3C%2Fiframe%3E",};
     }
 
     public String[] getArrPayXSS() {
