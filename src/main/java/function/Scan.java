@@ -57,9 +57,9 @@ public class Scan {
         System.out.println("---------------------------------------------------------------------------------");
         this.scanVuln(spider.links);
         
-        for(String xxx : Param.listAdmin){
-            spider.links.add(xxx);
-        }
+//        for(String xxx : Param.listAdmin){
+//            spider.links.add(xxx);
+//        }
         this.BruteForce(spider.links);
         
         
@@ -127,21 +127,21 @@ public class Scan {
 
     public void scanMethodGet(String urlAction) throws IOException {
         this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
-//        this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-//        this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
-//        this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
-//        this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
-//        this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
+        this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+        this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
+        this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
+        this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
+        this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
 //        BlindSQLinjection(urlAction);
     }
 
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
         this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin());
-//        this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-//        this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
-//        this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
-//        this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
-//        this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
+        this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+        this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
+        this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
+        this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
+        this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
 //        BlindSQLinjection(urlAction);
     }
 
