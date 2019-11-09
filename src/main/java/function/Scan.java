@@ -44,8 +44,8 @@ public class Scan {
     psUserPass psUP = new psUserPass();
 
     public void Scan(String url) throws IOException {
-
         SpiderWeb spider = new SpiderWeb();
+        removeDup remove = new removeDup();
         System.out.println("Spider level: " + spider.MAX_DEPTH);
         spider.getPageLinks(url, 0, url);
         System.out.println("==========================================");

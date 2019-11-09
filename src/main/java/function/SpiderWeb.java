@@ -40,9 +40,13 @@ public class SpiderWeb {
 
                 Document document = Jsoup.connect(URL).get();
                 Elements linksOnPage = document.select("a[href]");
+                
 
                 depth++;
                 for (Element page : linksOnPage) {
+//                    System.out.println("page ne: "+page);
+//                    System.out.println("link ne "+page.attr("abs:href"));
+                    links.add(page.attr("abs:href"));
                     getPageLinks(page.attr("abs:href"), depth, root_url);
                 }
                 String docString = document.body().toString();
