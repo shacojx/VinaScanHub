@@ -34,6 +34,7 @@ public class Scan {
     Scan_LFI sLFI = new Scan_LFI();
     Scan_CMDinjection sCMDi = new Scan_CMDinjection();
     Scan_WeakPassword sWeakPass = new Scan_WeakPassword();
+    Scan_DirList sDirList = new Scan_DirList();
 
     psSQLi psSQLin = new psSQLi();
     psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
@@ -63,6 +64,8 @@ public class Scan {
             }
         }
         this.BruteForce(Param.listAdmin);
+        
+        
     }
 
     public void scanVuln(HashSet<String> listURL) throws IOException {
@@ -144,4 +147,6 @@ public class Scan {
         this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
 //        BlindSQLinjection(urlAction);
     }
+
+    
 }

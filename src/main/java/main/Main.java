@@ -6,6 +6,7 @@
 package main;
 
 import Information.ScanPort;
+import function.Authen;
 import function.CheckSiteAdmin;
 import function.Scan;
 import java.io.IOException;
@@ -21,7 +22,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         String url;
-        String url1 = null;
         int dept = 5;
         Scan s = new Scan();
         ScanPort scanport = new ScanPort();
@@ -46,23 +46,17 @@ public class Main {
 
         System.out.print("Enter level spider: ");
         dept = scan.nextInt();
+
         scan.nextLine();
+        Authen au = new Authen();
+        au.Authen();
         spider.MAX_DEPTH = dept;
-        if (url.contains("//")) {
-            if (url.split("//")[1].contains("/")) {
-                url1 = url.split("//")[1].split("/")[0];
-            }
-        } else if (url.contains("/")) {
-            url1 = url.split("/")[0];
-        } else {
-            url1 = url;
-        }
-        scanport.url = url1;
+        scanport.url = url;
         System.err.println("Scanning Port");
         scanport.ScanPort();
         System.out.println("Scan port end");
         CheckSiteAdmin checkSite = new CheckSiteAdmin();
-        checkSite.checkSiteAdmin();
+        checkSite.checkSiteAdmin(url);
         s.Scan(url);
     }
 

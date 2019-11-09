@@ -38,7 +38,7 @@ public class SpiderWeb {
             try {
                 links.add(URL);
 
-                Document document = Jsoup.connect(URL).get();
+                Document document = Jsoup.connect(URL).userAgent(Param.USERAL).header("cookie", Param.COOKIE).get();
                 Elements linksOnPage = document.select("a[href]");
                 
 
@@ -46,7 +46,7 @@ public class SpiderWeb {
                 for (Element page : linksOnPage) {
 //                    System.out.println("page ne: "+page);
 //                    System.out.println("link ne "+page.attr("abs:href"));
-                    links.add(page.attr("abs:href"));
+//                    links.add(page.attr("abs:href"));
                     getPageLinks(page.attr("abs:href"), depth, root_url);
                 }
                 String docString = document.body().toString();

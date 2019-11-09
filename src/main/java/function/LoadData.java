@@ -35,6 +35,8 @@ public class LoadData {
         psCMDInjection psCMDi = new psCMDInjection();
         psCMDi.loadDataCMDinjection();
         
+        psDirectorylisting psDirList = new psDirectorylisting() ;
+        psDirList.loadDataDL();
         
     }
 }

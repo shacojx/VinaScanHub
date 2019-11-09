@@ -8,6 +8,7 @@ package function;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import main.Main;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import paramstatic.Param;
@@ -18,12 +19,13 @@ import paramstatic.Param;
  */
 public class CheckSiteAdmin {
  
-    public void checkSiteAdmin() {
+    public void checkSiteAdmin(String link) {
+        
         String data = ReadFileIO.readFile(System.getProperty("user.dir") + File.separator + "admin.txt");
         String[] urls = data.split("\\s+");
         ExecutorService excutor = Executors.newFixedThreadPool(100);
         for (String url : urls) {
-            excutor.execute(new thread("http://testphp.vulnweb.com/" + url));
+            excutor.execute(new thread( link+ url));
         }
         excutor.shutdown();
     }
