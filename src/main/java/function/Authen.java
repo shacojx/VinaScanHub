@@ -38,7 +38,7 @@ public class Authen {
         
         userPass = new String[][]{{"admin", "password"}};
         WebClient ee = bruteForce("http://10.1.30.123:8080/dvwa/login.php", userPass);
-        Param.COOKIE = ee.getCookieManager().getCookies().toString();
+        Param.COOKIE = ee.getCookieManager().getCookies().toString().replace("[", "").replace("]", "");
         System.out.println(Param.COOKIE);
     }
 
@@ -46,7 +46,7 @@ public class Authen {
         WebRequest requestSettings;
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
-        client.getOptions().setJavaScriptEnabled(false);
+//        client.getOptions().setJavaScriptEnabled(false);
         List<NameValuePair> params;
         String action = "";
         encodeValue encode = new encodeValue();
@@ -58,7 +58,7 @@ public class Authen {
 
 //            Connection.Response resp = Jsoup.connect(sURL).userAgent("Mozilla").method(Connection.Method.GET).execute();
             requestSettings = new WebRequest(new URL(sURL), HttpMethod.GET);
-            requestSettings.setAdditionalHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36");
+            requestSettings.setAdditionalHeader("User-Agent", Param.USERAL);
             requestSettings.setAdditionalHeader("Cookie", Param.COOKIE);
             HtmlPage page = client.getPage(requestSettings);
             List<HtmlForm> htmlForm = page.getForms();
