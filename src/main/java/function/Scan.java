@@ -90,12 +90,24 @@ public class Scan {
                             temp = sURL;
                         }
 
-                        if (temp.contains("?") && !checkURLGET.contains(temp.split("\\?")[0])) {
+                        if (temp.contains("?") && sURL.contains("=") && !checkURLGET.contains(temp.split("\\?")[0])) {
                             this.scanMethodGet(temp);
                         }
-                        if (!checkURLGET.contains(temp) && !checkURLPOST.contains(temp)) {
-                            this.scanMethodGetPost(element, temp);
+                        String method = element.attr("method").toLowerCase();
+                        if (method.contains("get")) {
+                            if (!checkURLGET.contains(temp)) {
+                                this.scanMethodGetPost(element, temp);
+                            }
+                        } else {
+                            if (method.contains("post")) {
+                                if (!checkURLPOST.contains(temp)) {
+                                    this.scanMethodGetPost(element, temp);
+                                }
+                            }
                         }
+//                        if (!checkURLGET.contains(temp) && !checkURLPOST.contains(temp)) {
+//                            this.scanMethodGetPost(element, temp);
+//                        }
                     }
                 } catch (IOException e) {
                     System.out.println("Error scanVuln: " + sURL + " ||| " + e);
