@@ -18,6 +18,7 @@ import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.HttpMethod;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -26,6 +27,7 @@ import com.gargoylesoftware.htmlunit.HttpMethod;
 public class Scan_SQLi {
 
     public void scanSQLin(Element element, String urlAction, String[] payload) throws IOException {
+        LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
         String vulnName = "SQL Injection";
         String urlAttack = urlAction;
         boolean checkVuln = false;
@@ -50,12 +52,12 @@ public class Scan_SQLi {
                             try {
                                 value = s.split("\\=")[1] + sPay;
                             } catch (Exception e) {
-                                System.out.println("Error Value attackVulnSQLin: " + e);
+//                                System.out.println("Error Value attackVulnSQLin: " + e);
                             }
                             params.add(new NameValuePair(key, value));
                         }
                     } catch (Exception e) {
-                        System.out.println("ERROR Case 1: " + e);
+                        //System.out.println("ERROR Case 1: " + e);
                     }
                 } else {
                     Elements ele = element.getElementsByAttribute("name");
@@ -96,7 +98,7 @@ public class Scan_SQLi {
                     }
                 }
             } catch (IOException | RuntimeException e) {
-                System.out.println("Error attackVulnSQLin: " + urlAction + " ||| " + e);
+//                System.out.println("Error attackVulnSQLin: " + urlAction + " ||| " + e);
             }
             if (checkVuln) {
                 break;

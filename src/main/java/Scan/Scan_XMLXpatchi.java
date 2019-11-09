@@ -51,12 +51,12 @@ public class Scan_XMLXpatchi {
                             try {
                                 value = s.split("\\=")[1] + sPay;
                             } catch (Exception e) {
-                                System.out.println("Error Value attackVulnXMLXpatchin: " + e);
+                                //System.out.println("Error Value attackVulnXMLXpatchin: " + e);
                             }
                             params.add(new NameValuePair(key, value));
                         }
                     } catch (Exception e) {
-                        System.out.println("ERROR Case 1: " + e);
+                        //System.out.println("ERROR Case 1: " + e);
                     }
                 } else {
                     Elements ele = element.getElementsByAttribute("name");
@@ -97,7 +97,7 @@ public class Scan_XMLXpatchi {
                     }
                 }
             } catch (IOException | RuntimeException e) {
-                System.out.println("Error attackVulnXMLXpatchin: " + urlAction + " ||| " + e);
+                //System.out.println("Error attackVulnXMLXpatchin: " + urlAction + " ||| " + e);
             }
             if (checkVuln) {
                 break;

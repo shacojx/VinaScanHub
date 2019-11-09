@@ -59,12 +59,12 @@ public class Scan_XSS {
                                 try {
                                     value = s.split("\\=")[1] + lPay;
                                 } catch (Exception e) {
-                                    System.out.println("Error Value attackVulnXSS: " + e);
+                                    //System.out.println("Error Value attackVulnXSS: " + e);
                                 }
                                 params.add(new NameValuePair(key, value));
                             }
                         } catch (Exception e) {
-                            System.out.println("ERROR Case 1: " + e);
+                            //System.out.println("ERROR Case 1: " + e);
                         }
                     } else {
                         Elements ele = element.getElementsByAttribute("name");
@@ -117,7 +117,7 @@ public class Scan_XSS {
                     }
 
                 } catch (IOException | RuntimeException e) {
-                    System.out.println("Error attackVulnXSS: " + urlAction + " ||| " + e);
+                    //System.out.println("Error attackVulnXSS: " + urlAction + " ||| " + e);
                 }
             }
             if (checkVuln) {

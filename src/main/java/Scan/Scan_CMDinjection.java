@@ -51,12 +51,12 @@ public class Scan_CMDinjection {
                             try {
                                 value = s.split("\\=")[1] + sPay;
                             } catch (Exception e) {
-                                System.out.println("Error Value attack Vuln: " + e);
+//                                System.out.println("Error Value attack Vuln: " + e);
                             }
                             params.add(new NameValuePair(key, value));
                         }
                     } catch (Exception e) {
-                        System.out.println("ERROR Case 1: " + e);
+                        //System.out.println("ERROR Case 1: " + e);
                     }
                 } else {
                     Elements ele = element.getElementsByAttribute("name");
@@ -97,7 +97,7 @@ public class Scan_CMDinjection {
                     }
                 }
             } catch (IOException | RuntimeException e) {
-                System.out.println("Error attack Vuln: " + urlAction + " ||| " + e);
+//                System.out.println("Error attack Vuln: " + urlAction + " ||| " + e);
             }
             if (checkVuln) {
                 break;

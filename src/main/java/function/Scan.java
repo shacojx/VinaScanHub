@@ -56,14 +56,11 @@ public class Scan {
         });
         System.out.println("---------------------------------------------------------------------------------");
         this.scanVuln(spider.links);
-        this.BruteForce(spider.links);
+        
         for(String xxx : Param.listAdmin){
-            Document documentxxx = Jsoup.connect(xxx).userAgent("Mozilla").followRedirects(false).get();
-            if(!documentxxx.body().toString().contains("form")){
-                Param.listAdmin.remove(xxx);
-            }
+            spider.links.add(xxx);
         }
-        this.BruteForce(Param.listAdmin);
+        this.BruteForce(spider.links);
         
         
     }
@@ -111,7 +108,7 @@ public class Scan {
 
                     }
                 } catch (IOException e) {
-                    System.out.println("Error scanVuln: " + sURL + " ||| " + e);
+                    //System.out.println("Error scanVuln: " + sURL + " ||| " + e);
                 }
 
             }

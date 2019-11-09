@@ -43,7 +43,7 @@ public class CheckSiteAdmin {
 //                System.out.println(url);
                 try {
                     Connection.Response response = Jsoup.connect(url).timeout(5000).execute();
-                    if (response.statusCode() != 404) {
+                    if (response.statusCode() != 404 && response.body().toString().contains("form")) {
                         System.err.println("Found url[" + url + "] CODE: " + response.statusCode());
                         Param.listAdmin.add(url);
                     }
