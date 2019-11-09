@@ -55,8 +55,8 @@ public class Main {
         System.err.println("Scanning Port");
         scanport.ScanPort();
         System.out.println("Scan port end");
-        CheckSiteAdmin checkSite = new CheckSiteAdmin();
-        checkSite.checkSiteAdmin(url);
+//        CheckSiteAdmin checkSite = new CheckSiteAdmin();
+//        checkSite.checkSiteAdmin(url);
         s.Scan(url);
     }
 
