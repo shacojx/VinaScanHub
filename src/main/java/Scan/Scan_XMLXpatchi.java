@@ -25,6 +25,9 @@ import org.jsoup.select.Elements;
  */
 public class Scan_XMLXpatchi {
 
+    public Scan_XMLXpatchi() {
+    }
+
     public void scanXMLXpatchin(Element element, String urlAction, String[] payload) throws IOException {
         String vulnName = "XMLXpatch Injection";
         String urlAttack = urlAction;

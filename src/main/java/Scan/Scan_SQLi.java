@@ -26,6 +26,10 @@ import org.apache.commons.logging.LogFactory;
  */
 public class Scan_SQLi {
 
+    public Scan_SQLi() {
+    }
+
+    
     public void scanSQLin(Element element, String urlAction, String[] payload) throws IOException {
         LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
         String vulnName = "SQL Injection";

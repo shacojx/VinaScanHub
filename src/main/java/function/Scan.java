@@ -14,13 +14,22 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import PaySig.*;
-import paramstatic.Param;
+import View.VSH;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static paramstatic.Param.EXECUTOR_SERVICE;
 
 /**
  *
  * @author Shaco JX
  */
 public class Scan {
+
+    public Scan() {
+    }
 
     public static ArrayList<String> list_vuln = new ArrayList<>();
     public static HashSet<String> checkURLGET = new HashSet<>();
@@ -44,28 +53,46 @@ public class Scan {
     psCMDInjection psCMDi = new psCMDInjection();
     psUserPass psUP = new psUserPass();
 
-    public void Scan(String url) throws IOException {
+    public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
         SpiderWeb spider = new SpiderWeb();
         System.out.println("Spider level: " + spider.MAX_DEPTH);
-        spider.getPageLinks(url, 0, url);
-        System.out.println("==========================================");
-        System.out.println("Total link: " + spider.links.size());
+        VSH.LOG_CONSOLE.append("Spider level: " + spider.MAX_DEPTH + "\n");
+        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+        EXECUTOR_SERVICE = Executors.newFixedThreadPool(VSH.numberOfThreads);
+        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(url, 0, url));
+        new Thread(() -> {
+            try {
+                EXECUTOR_SERVICE.awaitTermination(20, TimeUnit.SECONDS);
+                EXECUTOR_SERVICE.shutdown();
+                System.out.println("==========================================");
+                VSH.LOG_CONSOLE.append("Total link: " + spider.links.size() + "\n");
+                VSH.LOG_CONSOLE.append("=========================================" + "\n");
+                VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+                System.out.println("Total link: " + spider.links.size());
+                spider.links.forEach((s) -> {
+                    System.out.println(s);
+                });
+                System.out.println("---------------------------------------------------------------------------------");
 
-        spider.links.forEach((s) -> {
-            System.out.println(s);
-        });
-        System.out.println("---------------------------------------------------------------------------------");
-        this.scanVuln(spider.links);
-        
+                this.scanVuln(spider.links);
+
 //        for(String xxx : Param.listAdmin){
 //            spider.links.add(xxx);
 //        }
-        this.BruteForce(spider.links);
-        
-        
+                this.BruteForce(spider.links);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }).start();
+
     }
+    ExecutorService service;
 
     public void scanVuln(HashSet<String> listURL) throws IOException {
+        service = Executors.newFixedThreadPool(VSH.numberOfThreads);
         for (String sURL : listURL) {
             if (!sURL.contains("png") && !sURL.contains("jpg")) {
                 if (sURL.contains("#")) {
@@ -113,37 +140,118 @@ public class Scan {
 
             }
         }
+        service.shutdown();
         System.out.println("Scan end!");
     }
-    
-    public void BruteForce(HashSet<String> listURL) throws IOException{
-        for(String url : listURL){
-            if(url.contains("login") || url.contains("sigin") || url.contains("admin")
-                    || url.contains("dang") || url.contains("nhap")){
+
+    public void BruteForce(HashSet<String> listURL) throws IOException {
+        for (String url : listURL) {
+            if (url.contains("login") || url.contains("sigin") || url.contains("admin")
+                    || url.contains("dang") || url.contains("nhap")) {
                 sWeakPass.bruteForce(url, psUP.getUserPass());
             }
         }
     }
 
     public void scanMethodGet(String urlAction) throws IOException {
-        this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
-        this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-        this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
-        this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
-        this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
-        this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
+        service.execute(() -> {
+            try {
+                this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
 //        BlindSQLinjection(urlAction);
     }
 
     public void scanMethodGetPost(Element element, String urlAction) throws IOException {
-        this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin());
-        this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-        this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
-        this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
-        this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
-        this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
-//        BlindSQLinjection(urlAction);
-    }
+        service.execute(() -> {
+            try {
+                this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin());
 
-    
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
+
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
 }

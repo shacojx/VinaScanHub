@@ -29,6 +29,9 @@ import org.jsoup.select.Elements;
  */
 public class Scan_WeakPassword {
 
+    public Scan_WeakPassword() {
+    }
+
     public void bruteForce(String sURL, String[][] userPass) throws IOException {
         WebRequest requestSettings;
         WebClient client = new WebClient();

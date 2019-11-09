@@ -5,6 +5,7 @@
  */
 package paramstatic;
 
+import View.VSH;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +17,7 @@ import java.util.concurrent.Executors;
  */
 public class Param {
     public static Set<String> listEmail = new HashSet<>();
-    public static ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(1000);
+    public static ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(VSH.dept);
     public static HashSet<String> listAdmin = new HashSet<>();
    
 }

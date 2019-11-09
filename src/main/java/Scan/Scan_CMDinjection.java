@@ -25,6 +25,10 @@ import org.jsoup.select.Elements;
  * @author Shaco JX
  */
 public class Scan_CMDinjection {
+
+    public Scan_CMDinjection() {
+    }
+    
     public void scanCMDi(Element element, String urlAction, String[] payload) throws IOException {
         String vulnName = "OS CMD Injection";
         String urlAttack = urlAction;

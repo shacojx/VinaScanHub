@@ -30,8 +30,8 @@ public class VSH extends javax.swing.JFrame {
     ScanPort scanport = new ScanPort();
     SpiderWeb spider = new SpiderWeb();
     String url = "";
-    int dept = 0;
-    int numberOfThreads = 0;
+    public static int dept = 0;
+    public static int numberOfThreads = 0;
     public VSH() {
         initComponents();
         this.setTitle("Vina Scan Hub");
@@ -336,6 +336,8 @@ public class VSH extends javax.swing.JFrame {
             Scan s = new Scan();
             s.Scan(url);
         } catch (IOException ex) {
+            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
             Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
         }
         

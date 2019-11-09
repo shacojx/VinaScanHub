@@ -26,6 +26,9 @@ import function.Scan;
  */
 public class Scan_XSS {
 
+    public Scan_XSS() {
+    }
+
     public void scanXSS(Element element, String urlAction, String[] payload) throws IOException {
         String vulnName = "XSS";
         String urlAttack = urlAction;

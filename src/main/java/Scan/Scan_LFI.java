@@ -6,7 +6,6 @@
 package Scan;
 
 import PaySig.psLFI;
-import PaySig.psSQLi;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -25,6 +24,9 @@ import org.jsoup.select.Elements;
  * @author Shaco JX
  */
 public class Scan_LFI {
+
+    public Scan_LFI() {
+    }
 
     public void scanLFI(Element element, String urlAction, String[] payload) throws IOException {
         String vulnName = "Local File Inclusion (LFI)";

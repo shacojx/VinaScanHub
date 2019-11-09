@@ -5,6 +5,7 @@
  */
 package function;
 
+import View.VSH;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.regex.Matcher;
@@ -31,10 +32,12 @@ public class SpiderWeb {
         this.links = links;
     }
 
-    public void getPageLinks(String URL, int depth, String root_url) {
-        if ((!links.contains(URL) && (depth < MAX_DEPTH))
+    public static void getPageLinks(String URL, int depth, String root_url) {
+        if ((!links.contains(URL) && (depth < VSH.dept))
                 && URL.contains(root_url)) {
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
+            VSH.LOG_CONSOLE.append(">> Depth: " + depth + " [" + URL + "]" + "\n");
+            VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
             try {
                 links.add(URL);
                 Document document = Jsoup.connect(URL).get();
@@ -42,7 +45,7 @@ public class SpiderWeb {
 
                 depth++;
                 for (Element page : linksOnPage) {
-                    getPageLinks(page.attr("abs:href"), depth, root_url);
+                    Param.EXECUTOR_SERVICE.submit(new thread(page.attr("abs:href"), depth, root_url));
                 }
 
                 String docString = document.body().toString();
@@ -55,6 +58,8 @@ public class SpiderWeb {
                     String email = matcher.group();
                     if (Param.listEmail.add(email)) {
                         System.out.println("Found 1 email: " + matcher.group());
+                        VSH.LOG_CONSOLE.append("Found 1 email: " + matcher.group() + "\n");
+                        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                     }
                     // Get the group matched using group() method 
 
@@ -63,5 +68,28 @@ public class SpiderWeb {
                 System.err.println("For '" + URL + "': " + e.getMessage());
             }
         }
+    }
+
+    public static class thread implements Runnable {
+
+        String url;
+        int dept;
+        String root_url;
+
+        public thread(String url, int dept, String root_url) {
+            this.url = url;
+            this.dept = dept;
+            this.root_url = root_url;
+        }
+
+        @Override
+        public void run() {
+            try {
+                getPageLinks(url, dept, root_url);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

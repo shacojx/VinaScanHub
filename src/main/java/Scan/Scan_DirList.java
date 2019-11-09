@@ -17,6 +17,10 @@ import org.jsoup.nodes.Document;
  * @author Shaco JX
  */
 public class Scan_DirList {
+
+    public Scan_DirList() {
+    }
+    
     public void Scan_DirList(HashSet<String> listurl) throws IOException{
         psDirectorylisting psDirList = new psDirectorylisting();
         Scan s = new Scan();

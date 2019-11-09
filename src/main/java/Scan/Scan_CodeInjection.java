@@ -26,6 +26,10 @@ import org.jsoup.select.Elements;
  */
 public class Scan_CodeInjection {
 
+    
+    public Scan_CodeInjection() {
+    }
+
     public void scanCI(Element element, String urlAction, String[] payload) throws IOException {
         String vulnName = "Code Injection";
         String urlAttack = urlAction;

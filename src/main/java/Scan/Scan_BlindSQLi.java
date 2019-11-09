@@ -15,6 +15,10 @@ import org.jsoup.nodes.Document;
  * @author toanvv1
  */
 public class Scan_BlindSQLi {
+
+    public Scan_BlindSQLi() {
+    }
+    
     
     public void BlindSQLinjection(String urlAction) throws IOException {
         Scan s = new Scan();
