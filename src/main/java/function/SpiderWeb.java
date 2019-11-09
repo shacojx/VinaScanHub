@@ -49,6 +49,11 @@ public class SpiderWeb {
                     links.add(page.attr("abs:href"));
                     getPageLinks(page.attr("abs:href"), depth, root_url);
                 }
+                for(String s : links){
+                    if(!s.contains("http://10.1.30.123:8080/")){
+                        links.remove(s);
+                    }
+                }
                 String docString = document.body().toString();
                 String regex = "[a-zA-Z0-9-_.]+@[a-zA-Z0-9-_.]+";
 
