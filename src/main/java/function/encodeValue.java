@@ -16,6 +16,9 @@ import java.nio.charset.StandardCharsets;
  */
 public class encodeValue {
 
+    public encodeValue() {
+    }
+
     // Method to encode a string value using `UTF-8` encoding scheme
     public String encode(String value) throws UnsupportedEncodingException {
         try {

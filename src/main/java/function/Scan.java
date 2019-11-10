@@ -55,8 +55,8 @@ public class Scan {
 
     public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
         SpiderWeb spider = new SpiderWeb();
-        System.out.println("Spider level: " + spider.MAX_DEPTH);
-        VSH.LOG_CONSOLE.append("Spider level: " + spider.MAX_DEPTH + "\n");
+        System.out.println("Spider level: " + VSH.dept);
+        VSH.LOG_CONSOLE.append("Spider level: " + VSH.dept + "\n");
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(VSH.numberOfThreads);
         EXECUTOR_SERVICE.execute(new SpiderWeb.thread(url, 0, url));
@@ -92,6 +92,7 @@ public class Scan {
     ExecutorService service;
 
     public void scanVuln(HashSet<String> listURL) throws IOException {
+        Scan scan = new Scan();
         service = Executors.newFixedThreadPool(VSH.numberOfThreads);
         for (String sURL : listURL) {
             if (!sURL.contains("png") && !sURL.contains("jpg")) {
@@ -100,6 +101,7 @@ public class Scan {
                 }
                 if (sURL.contains("?") && sURL.contains("=")) {
                     if (!checkURLGET.contains(sURL.split("\\?")[0])) {
+                        scan.checkURLGET.add(sURL.split("\\?")[0]);
                         this.scanMethodGet(sURL);
                     }
                 }
@@ -118,18 +120,17 @@ public class Scan {
                         }
 
                         if (temp.contains("?") && sURL.contains("=") && !checkURLGET.contains(temp.split("\\?")[0])) {
+                            scan.checkURLGET.add(temp.split("\\?")[0]);
                             this.scanMethodGet(temp);
                         }
                         String method = element.attr("method").toLowerCase();
-                        if (method.contains("get")) {
-                            if (!checkURLGET.contains(temp)) {
+                        if (method.contains("get") && !checkURLGET.contains(temp)) {
+                            scan.checkURLGET.add(temp);
                                 this.scanMethodGetPost(element, temp);
-                            }
                         } else {
-                            if (method.contains("post")) {
-                                if (!checkURLPOST.contains(temp)) {
-                                    this.scanMethodGetPost(element, temp);
-                                }
+                            if (method.contains("post") && !checkURLPOST.contains(temp)) {
+                                scan.checkURLPOST.add(temp);
+                                    this.scanMethodGetPost(element, temp);                                
                             }
                         }
 
