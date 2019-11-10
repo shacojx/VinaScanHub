@@ -7,6 +7,7 @@ package Scan;
 
 import PaySig.psCodeInjection;
 import PaySig.psLFI;
+import View.VSH;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -100,6 +101,9 @@ public class Scan_CodeInjection {
                         System.out.println("        " + params.toString());
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                         dtm.addRow(new Object[]{method + vulnName ,urlAction});
+                        VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
+                        VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
+                        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                         scan.list_vuln.add(method + vulnName + " : " + urlAction);
                         break;
                     }

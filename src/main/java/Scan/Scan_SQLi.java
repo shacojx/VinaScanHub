@@ -6,6 +6,7 @@
 package Scan;
 
 import PaySig.psSQLi;
+import View.VSH;
 import function.Scan;
 import java.io.IOException;
 import java.net.URL;
@@ -100,6 +101,9 @@ public class Scan_SQLi {
                         System.out.println("        " + params.toString());
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                         dtm.addRow(new Object[]{method + vulnName ,urlAction});
+                        VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
+                        VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
+                        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                         scan.list_vuln.add(method + vulnName + " : " + urlAction);
                         break;
                     }

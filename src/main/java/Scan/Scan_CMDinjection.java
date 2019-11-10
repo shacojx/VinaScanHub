@@ -7,6 +7,7 @@ package Scan;
 
 import PaySig.psCMDInjection;
 import PaySig.psSQLi;
+import View.VSH;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -29,7 +30,7 @@ public class Scan_CMDinjection {
 
     public Scan_CMDinjection() {
     }
-    
+
     public void scanCMDi(Element element, String urlAction, String[] payload) throws IOException {
         String vulnName = "OS CMD Injection";
         String urlAttack = urlAction;
@@ -98,7 +99,10 @@ public class Scan_CMDinjection {
                         System.out.println(method + vulnName + " : " + urlAction);
                         System.out.println("        " + params.toString());
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                        dtm.addRow(new Object[]{method + vulnName ,urlAction});
+                        dtm.addRow(new Object[]{method + vulnName, urlAction});
+                        VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
+                        VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
+                        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                         scan.list_vuln.add(method + vulnName + " : " + urlAction);
                         break;
                     }

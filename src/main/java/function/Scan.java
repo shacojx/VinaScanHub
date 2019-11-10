@@ -126,11 +126,11 @@ public class Scan {
                         String method = element.attr("method").toLowerCase();
                         if (method.contains("get") && !checkURLGET.contains(temp)) {
                             scan.checkURLGET.add(temp);
-                                this.scanMethodGetPost(element, temp);
+                            this.scanMethodGetPost(element, temp);
                         } else {
                             if (method.contains("post") && !checkURLPOST.contains(temp)) {
                                 scan.checkURLPOST.add(temp);
-                                    this.scanMethodGetPost(element, temp);                                
+                                this.scanMethodGetPost(element, temp);
                             }
                         }
 
@@ -143,6 +143,8 @@ public class Scan {
         }
         service.shutdown();
         System.out.println("Scan end!");
+        VSH.LOG_CONSOLE.append("Scan end!" + "\n");
+        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
     }
 
     public void BruteForce(HashSet<String> listURL) throws IOException {

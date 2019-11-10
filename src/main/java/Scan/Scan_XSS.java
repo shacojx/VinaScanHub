@@ -18,6 +18,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import function.encodeValue;
 import PaySig.psSQLi;
+import View.VSH;
 import function.Scan;
 import javax.swing.table.DefaultTableModel;
 
@@ -117,6 +118,9 @@ public class Scan_XSS {
                             System.out.println("        " + params.toString());
                             DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                             dtm.addRow(new Object[]{method + vulnName, urlAction});
+                            VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
+                            VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
+                            VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                             scan.list_vuln.add(method + vulnName + " : " + urlAction);
                             break;
                         }
