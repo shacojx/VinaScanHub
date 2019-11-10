@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -96,6 +97,8 @@ public class Scan_CMDinjection {
                         checkVuln = true;
                         System.out.println(method + vulnName + " : " + urlAction);
                         System.out.println("        " + params.toString());
+                        DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
+                        dtm.addRow(new Object[]{method + vulnName ,urlAction});
                         scan.list_vuln.add(method + vulnName + " : " + urlAction);
                         break;
                     }
