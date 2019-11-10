@@ -111,7 +111,7 @@ public class VSH extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText(" URL");
 
-        txtUrl.setText("https://henhoketban.vn/index.php");
+        txtUrl.setText("http://testphp.vulnweb.com/");
 
         scan.setBackground(new java.awt.Color(102, 255, 102));
         scan.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -154,12 +154,12 @@ public class VSH extends javax.swing.JFrame {
             }
         });
 
-        txtThread.setText("5");
+        txtThread.setText("50");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setText("Threads:");
 
-        txtDept.setText("5");
+        txtDept.setText("10");
 
         jButton6.setBackground(new java.awt.Color(255, 51, 51));
         jButton6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N

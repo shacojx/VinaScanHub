@@ -175,7 +175,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtUrl">
           <Properties>
-            <Property name="text" type="java.lang.String" value="https://henhoketban.vn/index.php"/>
+            <Property name="text" type="java.lang.String" value="http://testphp.vulnweb.com/"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="scan">
@@ -273,7 +273,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtThread">
           <Properties>
-            <Property name="text" type="java.lang.String" value="5"/>
+            <Property name="text" type="java.lang.String" value="50"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
@@ -286,7 +286,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtDept">
           <Properties>
-            <Property name="text" type="java.lang.String" value="5"/>
+            <Property name="text" type="java.lang.String" value="10"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton6">
