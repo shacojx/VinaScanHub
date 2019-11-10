@@ -62,7 +62,7 @@ public class Scan {
         EXECUTOR_SERVICE.execute(new SpiderWeb.thread(url, 0, url));
         new Thread(() -> {
             try {
-                EXECUTOR_SERVICE.awaitTermination(20, TimeUnit.SECONDS);
+                EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS);
                 EXECUTOR_SERVICE.shutdown();
                 System.out.println("==========================================");
                 VSH.LOG_CONSOLE.append("Total link: " + spider.links.size() + "\n");

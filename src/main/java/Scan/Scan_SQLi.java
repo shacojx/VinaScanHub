@@ -18,6 +18,7 @@ import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.HttpMethod;
+import javax.swing.table.DefaultTableModel;
 import org.apache.commons.logging.LogFactory;
 
 /**
@@ -97,6 +98,8 @@ public class Scan_SQLi {
                         checkVuln = true;
                         System.out.println(method + vulnName + " : " + urlAction);
                         System.out.println("        " + params.toString());
+                        DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
+                        dtm.addRow(new Object[]{method + vulnName ,urlAction});
                         scan.list_vuln.add(method + vulnName + " : " + urlAction);
                         break;
                     }

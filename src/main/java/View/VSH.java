@@ -406,7 +406,7 @@ public class VSH extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTextArea LOG_CONSOLE;
     private javax.swing.JTabbedPane Tabmenu;
-    private javax.swing.JTable VulnResult;
+    public static javax.swing.JTable VulnResult;
     private javax.swing.JTable history;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

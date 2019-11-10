@@ -19,7 +19,7 @@ import function.SpiderWeb;
  */
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         String url;
         int dept = 5;
         Scan s = new Scan();
