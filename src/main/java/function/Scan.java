@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import paramstatic.Param;
 import static paramstatic.Param.EXECUTOR_SERVICE;
 
 /**
@@ -76,9 +77,9 @@ public class Scan {
 
                 this.scanVuln(spider.links);
 
-//        for(String xxx : Param.listAdmin){
-//            spider.links.add(xxx);
-//        }
+                for (String xxx : Param.listAdmin) {
+                    spider.links.add(xxx);
+                }
                 this.BruteForce(spider.links);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
