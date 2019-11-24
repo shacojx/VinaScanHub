@@ -5,6 +5,7 @@
  */
 package function;
 
+
 import Scan.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class Scan {
     psLFI psLFI = new psLFI();
     psCMDInjection psCMDi = new psCMDInjection();
     psUserPass psUP = new psUserPass();
+   
 
     public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
         SpiderWeb spider = new SpiderWeb();
@@ -205,6 +207,14 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+//        service.execute(() -> {
+//            try {
+//                this.fuzz.Fuzzing(null, urlAction, this.payload.getArrPay());
+//
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
 
 //        BlindSQLinjection(urlAction);
     }
@@ -257,5 +267,13 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+//        service.execute(() -> {
+//            try {
+//                this.fuzz.Fuzzing(element, urlAction, this.payload.getArrPay());
+//
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
     }
 }

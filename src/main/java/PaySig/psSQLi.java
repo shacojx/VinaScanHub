@@ -30,7 +30,8 @@ public class psSQLi {
             "DB2 SQL error:",
             "Interbase Injection",
             "Sybase message:",
-            "Unclosed quotation mark after the character string"};
+            "Unclosed quotation mark after the character string",
+            "Incorrect syntax near"};
 
 
         /*List Payload SQL Injection*/
