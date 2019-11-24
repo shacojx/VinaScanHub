@@ -5,7 +5,6 @@
  */
 package function;
 
-
 import Scan.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +53,6 @@ public class Scan {
     psLFI psLFI = new psLFI();
     psCMDInjection psCMDi = new psCMDInjection();
     psUserPass psUP = new psUserPass();
-   
 
     public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
         SpiderWeb spider = new SpiderWeb();
@@ -76,9 +74,9 @@ public class Scan {
                     System.out.println(s);
                 });
                 System.out.println("---------------------------------------------------------------------------------");
-
+                CheckSiteAdmin checkSite = new CheckSiteAdmin();
+                checkSite.checkSiteAdmin(url);
                 this.scanVuln(spider.links);
-
                 for (String xxx : Param.listAdmin) {
                     spider.links.add(xxx);
                 }
@@ -163,7 +161,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -171,7 +168,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -179,7 +175,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -187,7 +182,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -195,7 +189,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -207,14 +200,6 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-//        service.execute(() -> {
-//            try {
-//                this.fuzz.Fuzzing(null, urlAction, this.payload.getArrPay());
-//
-//            } catch (IOException ex) {
-//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        });
 
 //        BlindSQLinjection(urlAction);
     }
@@ -223,7 +208,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -231,7 +215,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -239,7 +222,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -247,7 +229,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -255,7 +236,6 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
-
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -267,13 +247,6 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-//        service.execute(() -> {
-//            try {
-//                this.fuzz.Fuzzing(element, urlAction, this.payload.getArrPay());
-//
-//            } catch (IOException ex) {
-//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        });
+
     }
 }

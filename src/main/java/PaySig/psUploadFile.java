@@ -15,7 +15,8 @@ public class psUploadFile {
 
     public psUploadFile() {
         arrSigUploadFile = new String[]{
-            "<input type=\"file\"",};
+            "<input type=\"file\"",
+            "type=\"file\""};
     }
 
     public String[] getArrSigUploadFile() {

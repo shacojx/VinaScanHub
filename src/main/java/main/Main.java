@@ -10,7 +10,6 @@ import function.CheckSiteAdmin;
 import function.Scan;
 import java.io.IOException;
 import java.util.Scanner;
-import function.LoadData;
 import function.SpiderWeb;
 
 /**
@@ -25,8 +24,8 @@ public class Main {
         Scan s = new Scan();
         ScanPort scanport = new ScanPort();
         SpiderWeb spider = new SpiderWeb();
-        LoadData loadDB = new LoadData();
-        loadDB.loadData();
+        
+        
         System.out.println("Load Data payload done!");
         System.out.println("Load Data signature done!");
         System.out.println("-----------------------------");

@@ -16,9 +16,11 @@ public class psCMDInjection {
 
     public psCMDInjection() {
         arrSigCMDi = new String[]{
+            "desktop-4ui0p1m",
             "Reply from 127.0.0.1"};
 
         arrPayCMDi = new String[]{
+            "127.0.0.1 && whoami",
             "|| ping -i 30 127.0.0.1 ; x || ping -n 30 127.0.0.1 &",
             "| ping –i 30 127.0.0.1 |",
             "| ping –n 30 127.0.0.1 |",
