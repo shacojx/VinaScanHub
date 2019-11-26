@@ -39,6 +39,7 @@ public class Scan_XSS {
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(true);
         client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
         List<NameValuePair> params;
         encodeValue encodeValue = new encodeValue();
         psSQLi psSQLi = new psSQLi();

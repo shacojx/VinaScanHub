@@ -41,6 +41,7 @@ public class Scan_SQLi {
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
         List<NameValuePair> params;
         psSQLi psSQLi = new psSQLi();
         for (String sPay : payload) {
@@ -95,6 +96,7 @@ public class Scan_SQLi {
                 requestSettings.setRequestParameters(params);
                 HtmlPage page = client.getPage(requestSettings);
                 for (String sSig : psSQLi.getArrSigSQLin()) {
+                    
                     if (page.asXml().contains(sSig)) {
                         checkVuln = true;
                         System.out.println(method + vulnName + " : " + urlAction);

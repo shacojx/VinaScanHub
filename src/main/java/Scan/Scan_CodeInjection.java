@@ -40,6 +40,7 @@ public class Scan_CodeInjection {
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
         List<NameValuePair> params;
         psCodeInjection psCI = new psCodeInjection();
 

@@ -38,6 +38,7 @@ public class Scan_LFI {
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
         List<NameValuePair> params;
         psLFI psLFI = new psLFI();
 

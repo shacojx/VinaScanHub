@@ -15,7 +15,9 @@ public class psSQLi {
     private static String[] arrPaySQLin;
 
     public psSQLi() {
-        arrSigSQLin = new String[]{"You have an error in your SQL syntax",
+        arrSigSQLin = new String[]{
+            "Incorrect syntax near",
+            "You have an error in your SQL syntax",
             "supplied argument is not a valid MySQL",
             "mysql_fetch_array() expects parameter 1 to be resource, boolean given in",
             "java.sql.SQLException: Syntax error or access violation",

@@ -38,6 +38,7 @@ public class Scan_XMLXpatchi {
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
         List<NameValuePair> params;
         psXMLXpatchi psXMLXpatchi = new psXMLXpatchi();
 

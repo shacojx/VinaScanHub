@@ -39,6 +39,7 @@ public class Scan_CMDinjection {
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
         List<NameValuePair> params;
         psCMDInjection psCMDi = new psCMDInjection();
 
