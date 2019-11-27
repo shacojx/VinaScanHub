@@ -5,6 +5,7 @@
  */
 package function;
 
+import Information.Info;
 import Scan.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,6 +57,10 @@ public class Scan {
 
     public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
         SpiderWeb spider = new SpiderWeb();
+        Info in = new Info();
+        in.info(url);
+        VSH.Action.setText("Scaning");
+        VSH.Loading.setText("");
         System.out.println("Spider level: " + VSH.dept);
         VSH.LOG_CONSOLE.append("Spider level: " + VSH.dept + "\n");
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());

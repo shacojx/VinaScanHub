@@ -411,6 +411,9 @@
                     <Property name="text" type="java.lang.String" value="[ Information website ]&#xa;"/>
                     <Property name="wrapStyleWord" type="boolean" value="true"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -423,6 +426,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Loading |===================&gt;|"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="Fuzz">
           <Properties>
@@ -479,6 +485,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Do Nothing"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

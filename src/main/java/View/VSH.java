@@ -5,6 +5,7 @@
  */
 package View;
 
+import Information.Info;
 import Information.ScanPort;
 import Report.ReportPDF;
 import function.Scan;
@@ -27,6 +28,7 @@ public class VSH extends javax.swing.JFrame {
      * Creates new form VSH
      */
     Scan s = new Scan();
+    Info in = new Info();
     ScanPort scanport = new ScanPort();
     SpiderWeb spider = new SpiderWeb();
     String url = "";
@@ -53,15 +55,6 @@ public class VSH extends javax.swing.JFrame {
 
     }
 
-    public void addRowToJTable_Spider(HashSet<String> list) {
-//        DefaultTableModel model = (DefaultTableModel) this.btnSpyt.getModel();
-//        Object rowData[] = new Object[1];
-//        for (String x : list) {
-//            rowData[0] = x;
-//            model.addRow(rowData);
-//        }
-
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -592,14 +585,14 @@ public class VSH extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton About;
-    private javax.swing.JLabel Action;
+    public static javax.swing.JLabel Action;
     private javax.swing.JButton Addpay;
     private javax.swing.JButton Clear;
     private javax.swing.JButton Delete;
     private javax.swing.JButton Fuzz;
-    private javax.swing.JTextArea Info;
+    public static javax.swing.JTextArea Info;
     public static javax.swing.JTextArea LOG_CONSOLE;
-    private javax.swing.JLabel Loading;
+    public static javax.swing.JLabel Loading;
     private javax.swing.JButton Port;
     private javax.swing.JButton Report;
     private javax.swing.JButton Save;
