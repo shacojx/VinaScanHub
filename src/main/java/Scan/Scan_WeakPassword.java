@@ -167,7 +167,7 @@ public class Scan_WeakPassword {
                 System.out.println("Login Thanh Cong : " + sURL);
                 System.out.println("User: " + user + " ---- Password: " + pass);
                 DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                        dtm.addRow(new Object[]{"Weak password, user:"+user+", pass:"+pass ,sURL});
+                        dtm.addRow(new Object[]{"Weak password",sURL, "Username: "+user, "Password: "+pass});
                 break;
             }
         }

@@ -100,9 +100,9 @@ public class VSH extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         history = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        LinkResult = new javax.swing.JTable();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        PortResult = new javax.swing.JTable();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
 
@@ -406,7 +406,7 @@ public class VSH extends javax.swing.JFrame {
 
         Tabmenu.addTab("History", jScrollPane2);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        LinkResult.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -414,11 +414,11 @@ public class VSH extends javax.swing.JFrame {
                 "URL", "Status"
             }
         ));
-        jScrollPane5.setViewportView(jTable1);
+        jScrollPane5.setViewportView(LinkResult);
 
         Tabmenu.addTab("Link", jScrollPane5);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        PortResult.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -426,7 +426,7 @@ public class VSH extends javax.swing.JFrame {
                 "Port", "Status"
             }
         ));
-        jScrollPane6.setViewportView(jTable2);
+        jScrollPane6.setViewportView(PortResult);
 
         Tabmenu.addTab("Port", jScrollPane6);
 
@@ -592,8 +592,10 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JButton Fuzz;
     public static javax.swing.JTextArea Info;
     public static javax.swing.JTextArea LOG_CONSOLE;
+    public static javax.swing.JTable LinkResult;
     public static javax.swing.JLabel Loading;
     private javax.swing.JButton Port;
+    public static javax.swing.JTable PortResult;
     private javax.swing.JButton Report;
     private javax.swing.JButton Save;
     private javax.swing.JButton Scan;
@@ -617,8 +619,6 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtDept;

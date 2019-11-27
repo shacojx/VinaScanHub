@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -63,6 +64,8 @@ public class ScanPort {
                 socket.close();
                 ListPort.add(port);
                 VSH.LOG_CONSOLE.append("Port " + port + " is open" + "\n");
+                DefaultTableModel dtm = (DefaultTableModel) View.VSH.PortResult.getModel();
+                dtm.addRow(new Object[]{port, "Open"});
                 VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                 System.out.println("Port " + port + " is open");
 

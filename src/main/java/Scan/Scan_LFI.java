@@ -99,7 +99,7 @@ public class Scan_LFI {
                         System.out.println(method + vulnName + " : " + urlAction);
                         System.out.println("        " + params.toString());
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                        dtm.addRow(new Object[]{method + vulnName ,urlAction});
+                        dtm.addRow(new Object[]{method + vulnName ,urlAction, params.toString(), sSig});
                         VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
                         VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
