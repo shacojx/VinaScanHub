@@ -76,7 +76,7 @@ public class VSH extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtUrl = new javax.swing.JTextField();
-        scan = new javax.swing.JButton();
+        Scan = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         Clear = new javax.swing.JButton();
         Save = new javax.swing.JButton();
@@ -90,15 +90,15 @@ public class VSH extends javax.swing.JFrame {
         txtThread = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtDept = new javax.swing.JTextField();
-        jButton6 = new javax.swing.JButton();
+        Port = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jLabel8 = new javax.swing.JLabel();
+        Info = new javax.swing.JTextArea();
+        Loading = new javax.swing.JLabel();
         Fuzz = new javax.swing.JButton();
         Addpay = new javax.swing.JButton();
         About = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
+        Action = new javax.swing.JLabel();
         Tabmenu = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         LOG_CONSOLE = new javax.swing.JTextArea();
@@ -125,12 +125,12 @@ public class VSH extends javax.swing.JFrame {
 
         txtUrl.setText("http://testphp.vulnweb.com/");
 
-        scan.setBackground(new java.awt.Color(102, 255, 102));
-        scan.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        scan.setText("Scan");
-        scan.addActionListener(new java.awt.event.ActionListener() {
+        Scan.setBackground(new java.awt.Color(102, 255, 102));
+        Scan.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Scan.setText("Scan");
+        Scan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scanActionPerformed(evt);
+                ScanActionPerformed(evt);
             }
         });
 
@@ -202,22 +202,22 @@ public class VSH extends javax.swing.JFrame {
 
         txtDept.setText("10");
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 0));
-        jButton6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton6.setText("Port");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        Port.setBackground(new java.awt.Color(204, 204, 0));
+        Port.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Port.setText("Port");
+        Port.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                PortActionPerformed(evt);
             }
         });
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setColumns(20);
-        jTextArea2.setLineWrap(true);
-        jTextArea2.setRows(5);
-        jTextArea2.setText("[ Information website ]\n");
-        jTextArea2.setWrapStyleWord(true);
-        jScrollPane4.setViewportView(jTextArea2);
+        Info.setEditable(false);
+        Info.setColumns(20);
+        Info.setLineWrap(true);
+        Info.setRows(5);
+        Info.setText("[ Information website ]\n");
+        Info.setWrapStyleWord(true);
+        jScrollPane4.setViewportView(Info);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -230,8 +230,8 @@ public class VSH extends javax.swing.JFrame {
             .addComponent(jScrollPane4)
         );
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel8.setText("Loading |===================>|");
+        Loading.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Loading.setText("Loading |===================>|");
 
         Fuzz.setBackground(new java.awt.Color(204, 204, 0));
         Fuzz.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -262,8 +262,8 @@ public class VSH extends javax.swing.JFrame {
             }
         });
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel9.setText("Do Nothing");
+        Action.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Action.setText("Do Nothing");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -302,8 +302,8 @@ public class VSH extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Report, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(scan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(Scan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Port, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -315,9 +315,9 @@ public class VSH extends javax.swing.JFrame {
                             .addComponent(Addpay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(About, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
+                        .addComponent(Loading)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(Action, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -363,10 +363,10 @@ public class VSH extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(Stop)
-                                            .addComponent(scan))
+                                            .addComponent(Scan))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jButton6)
+                                            .addComponent(Port)
                                             .addComponent(Fuzz)
                                             .addComponent(About)))))
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -376,8 +376,8 @@ public class VSH extends javax.swing.JFrame {
                                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel9)))))
+                                .addComponent(Loading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Action)))))
                 .addContainerGap())
         );
 
@@ -442,7 +442,7 @@ public class VSH extends javax.swing.JFrame {
 
             },
             new String [] {
-                "URL", "Status", "Fuzzing"
+                "URL", "Status"
             }
         ));
         jScrollPane7.setViewportView(jTable3);
@@ -468,7 +468,7 @@ public class VSH extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void scanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scanActionPerformed
+    private void ScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ScanActionPerformed
         try {
             String url = txtUrl.getText();
             if(!url.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")) {
@@ -496,7 +496,7 @@ public class VSH extends javax.swing.JFrame {
         }
         
         
-    }//GEN-LAST:event_scanActionPerformed
+    }//GEN-LAST:event_ScanActionPerformed
 
     private void ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportActionPerformed
         try {
@@ -515,12 +515,12 @@ public class VSH extends javax.swing.JFrame {
 
     }//GEN-LAST:event_ReportActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void PortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PortActionPerformed
         // TODO add your handling code here:
         ScanPort scanport = new ScanPort();
         scanport.ScanPort();
         
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_PortActionPerformed
 
     private void AboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutActionPerformed
         // TODO add your handling code here:
@@ -592,18 +592,22 @@ public class VSH extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton About;
+    private javax.swing.JLabel Action;
     private javax.swing.JButton Addpay;
     private javax.swing.JButton Clear;
     private javax.swing.JButton Delete;
     private javax.swing.JButton Fuzz;
+    private javax.swing.JTextArea Info;
     public static javax.swing.JTextArea LOG_CONSOLE;
+    private javax.swing.JLabel Loading;
+    private javax.swing.JButton Port;
     private javax.swing.JButton Report;
     private javax.swing.JButton Save;
+    private javax.swing.JButton Scan;
     private javax.swing.JButton Stop;
     private javax.swing.JTabbedPane Tabmenu;
     public static javax.swing.JTable VulnResult;
     private javax.swing.JTable history;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -611,8 +615,6 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -625,9 +627,7 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JButton scan;
     private javax.swing.JTextField txtDept;
     private javax.swing.JTextField txtThread;
     private javax.swing.JTextField txtUrl;
