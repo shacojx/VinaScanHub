@@ -42,19 +42,6 @@ public class VSH extends javax.swing.JFrame {
 
     }
 
-//    public void addRowToJTable(ArrayList<String> list) {
-//        DefaultTableModel model = (DefaultTableModel) this.VulnResult.getModel();
-//
-//        Object rowData[] = new Object[2];
-//
-//        for (String x : list) {
-//            rowData[0] = x.split(": ")[0];
-//            rowData[1] = x.split(": ")[1];
-//            model.addRow(rowData);
-//        }
-//
-//    }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -104,7 +91,7 @@ public class VSH extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         PortResult = new javax.swing.JTable();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        FuzzResult = new javax.swing.JTable();
         jScrollPane8 = new javax.swing.JScrollPane();
         OtherResult = new javax.swing.JTable();
 
@@ -432,7 +419,7 @@ public class VSH extends javax.swing.JFrame {
 
         Tabmenu.addTab("Port", jScrollPane6);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        FuzzResult.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -440,7 +427,7 @@ public class VSH extends javax.swing.JFrame {
                 "URL", "Status"
             }
         ));
-        jScrollPane7.setViewportView(jTable3);
+        jScrollPane7.setViewportView(FuzzResult);
 
         Tabmenu.addTab("Fuzz", jScrollPane7);
 
@@ -592,6 +579,7 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JButton Clear;
     private javax.swing.JButton Delete;
     private javax.swing.JButton Fuzz;
+    public static javax.swing.JTable FuzzResult;
     public static javax.swing.JTextArea Info;
     public static javax.swing.JTextArea LOG_CONSOLE;
     public static javax.swing.JTable LinkResult;
@@ -623,7 +611,6 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtDept;
     private javax.swing.JTextField txtThread;

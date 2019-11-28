@@ -31,7 +31,6 @@ public class Scan_SQLi {
     public Scan_SQLi() {
     }
 
-    
     public void scanSQLin(Element element, String urlAction, String[] payload) throws IOException {
         LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
         String vulnName = "SQL Injection";
@@ -96,18 +95,21 @@ public class Scan_SQLi {
                 requestSettings.setRequestParameters(params);
                 HtmlPage page = client.getPage(requestSettings);
                 for (String sSig : psSQLi.getArrSigSQLin()) {
-                    
+
                     if (page.asXml().contains(sSig)) {
                         checkVuln = true;
                         System.out.println(method + vulnName + " : " + urlAction);
                         System.out.println("        " + params.toString());
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                        dtm.addRow(new Object[]{method + vulnName ,urlAction, params.toString(), sSig});
+                        dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), sSig});
                         VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
                         VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                         scan.list_vuln.add(method + vulnName + " : " + urlAction);
                         break;
+                    } else {
+                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
+                        dtmz.addRow(new Object[]{urlAction, params.toString()});
                     }
                 }
             } catch (IOException | RuntimeException e) {

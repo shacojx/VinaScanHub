@@ -124,6 +124,9 @@ public class Scan_XSS {
                             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                             scan.list_vuln.add(method + vulnName + " : " + urlAction);
                             break;
+                        }else{
+                            DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
+                            dtmz.addRow(new Object[]{urlAction, params.toString()});
                         }
                     }
 
