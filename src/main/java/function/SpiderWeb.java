@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.table.DefaultTableModel;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,7 +42,11 @@ public class SpiderWeb {
             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
             try {
                 links.add(URL);
-                Document document = Jsoup.connect(URL).get();
+//                Document document = Jsoup.connect(URL).get();
+                Connection.Response resp = (Connection.Response) Jsoup.connect(URL).execute();
+                Document document = resp.parse();
+                DefaultTableModel dtm = (DefaultTableModel) View.VSH.LinkResult.getModel();
+                dtm.addRow(new Object[]{URL, resp.statusCode()});
                 Elements linksOnPage = document.select("a[href]");
 
                 depth++;
@@ -58,6 +64,8 @@ public class SpiderWeb {
                     String email = matcher.group();
                     if (Param.listEmail.add(email)) {
                         System.out.println("Found 1 email: " + matcher.group());
+                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.OtherResult.getModel();
+                        dtmz.addRow(new Object[]{"Found 1 email: " + matcher.group()});
                         VSH.LOG_CONSOLE.append("Found 1 email: " + matcher.group() + "\n");
                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                     }

@@ -46,6 +46,7 @@ public class Scan {
     Scan_CMDinjection sCMDi = new Scan_CMDinjection();
     Scan_WeakPassword sWeakPass = new Scan_WeakPassword();
     Scan_DirList sDirList = new Scan_DirList();
+    Scan_CVE_2017_9248 scan_telerik = new Scan_CVE_2017_9248();
 
     psSQLi psSQLin = new psSQLi();
     psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
@@ -59,6 +60,7 @@ public class Scan {
         SpiderWeb spider = new SpiderWeb();
         Info in = new Info();
         in.info(url);
+        scan_telerik.scan(url);
         VSH.Action.setText("Scaning");
         VSH.Loading.setText("");
         System.out.println("Spider level: " + VSH.dept);

@@ -42,18 +42,18 @@ public class VSH extends javax.swing.JFrame {
 
     }
 
-    public void addRowToJTable(ArrayList<String> list) {
-        DefaultTableModel model = (DefaultTableModel) this.VulnResult.getModel();
-
-        Object rowData[] = new Object[2];
-
-        for (String x : list) {
-            rowData[0] = x.split(": ")[0];
-            rowData[1] = x.split(": ")[1];
-            model.addRow(rowData);
-        }
-
-    }
+//    public void addRowToJTable(ArrayList<String> list) {
+//        DefaultTableModel model = (DefaultTableModel) this.VulnResult.getModel();
+//
+//        Object rowData[] = new Object[2];
+//
+//        for (String x : list) {
+//            rowData[0] = x.split(": ")[0];
+//            rowData[1] = x.split(": ")[1];
+//            model.addRow(rowData);
+//        }
+//
+//    }
 
 
     /**
@@ -105,6 +105,8 @@ public class VSH extends javax.swing.JFrame {
         PortResult = new javax.swing.JTable();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        OtherResult = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -442,6 +444,18 @@ public class VSH extends javax.swing.JFrame {
 
         Tabmenu.addTab("Fuzz", jScrollPane7);
 
+        OtherResult.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Action"
+            }
+        ));
+        jScrollPane8.setViewportView(OtherResult);
+
+        Tabmenu.addTab("Other", jScrollPane8);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -492,19 +506,7 @@ public class VSH extends javax.swing.JFrame {
     }//GEN-LAST:event_ScanActionPerformed
 
     private void ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportActionPerformed
-        try {
-            // TODO add your handling code here:
-            ReportPDF rp = new ReportPDF();
-            rp.genFileHTML(s.list_vuln);
-            String inputFile = "demo1.html";
-            String outputFile = "TestPdf.pdf";
-            rp.generatePDF(inputFile, outputFile);
-            JOptionPane.showMessageDialog(this, "Export file report done!");
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Export Failed !");
-            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
 
     }//GEN-LAST:event_ReportActionPerformed
 
@@ -594,6 +596,7 @@ public class VSH extends javax.swing.JFrame {
     public static javax.swing.JTextArea LOG_CONSOLE;
     public static javax.swing.JTable LinkResult;
     public static javax.swing.JLabel Loading;
+    public static javax.swing.JTable OtherResult;
     private javax.swing.JButton Port;
     public static javax.swing.JTable PortResult;
     private javax.swing.JButton Report;
@@ -619,6 +622,7 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtDept;

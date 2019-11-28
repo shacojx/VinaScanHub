@@ -15,13 +15,14 @@ public class CVE_2017_9248 {
     private static String[] arrPayCVE;
 
     public CVE_2017_9248() {
-        arrSigCVE = new String[]{
-            "Telerik.Web.UI.DialogHandler.aspx",};
-
         arrPayCVE = new String[]{
+            "Telerik.Web.UI.DialogHandler.aspx",
+            "DesktopModules/Admin/RadEditorProvider/DialogHandler.aspx",
+            "Providers/HtmlEditorProviders/Telerik/Telerik.Web.UI.DialogHandler.aspx"};
+
+        arrSigCVE = new String[]{
             "Loading the dialog...",};
     }
-
 
     public String[] getArrSigCVE() {
         return arrSigCVE;
