@@ -31,8 +31,10 @@ public class Scan_SQLi {
     public Scan_SQLi() {
     }
 
-    public void scanSQLin(Element element, String urlAction, String[] payload) throws IOException {
-        LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+    public void scanSQLin(Element element, String urlAction, String[] payload, WebClient cClient, String method) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
+
         String vulnName = "SQL Injection";
         String urlAttack = urlAction;
         boolean checkVuln = false;
@@ -41,6 +43,10 @@ public class Scan_SQLi {
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cClient != null) {
+            client = cClient;
+//            System.out.println("Khac NULLLLLLLLLLLLLLLLLLLLLLLLL");
+        }
         List<NameValuePair> params;
         psSQLi psSQLi = new psSQLi();
         for (String sPay : payload) {
@@ -77,11 +83,7 @@ public class Scan_SQLi {
                         }
                     }
                 }
-                String method = "";
-                try {
-                    method = element.attr("method");
-                } catch (Exception e) {
-                }
+
                 function.Scan scan = new Scan();
                 if (method.toLowerCase().contains("post")) {
                     requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);

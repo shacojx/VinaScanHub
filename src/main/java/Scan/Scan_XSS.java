@@ -31,15 +31,25 @@ public class Scan_XSS {
     public Scan_XSS() {
     }
 
-    public void scanXSS(Element element, String urlAction, String[] payload) throws IOException {
+    public void scanXSS(Element element, String urlAction, String[] payload, WebClient cClient, String method) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
+
         String vulnName = "XSS";
         String urlAttack = urlAction;
         boolean checkVuln = false;
-        WebRequest requestSettings;
+        WebRequest requestSettings = null;
         WebClient client = new WebClient();
-        client.getOptions().setCssEnabled(true);
+        client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cClient != null) {
+            client = cClient;
+//            System.out.println("Khac NULLLLLLLLLLLLLLLLLLLLLLLLL");
+        }
+        requestSettings = new WebRequest(new URL(urlAction), HttpMethod.GET);
+        HtmlPage page = client.getPage(requestSettings);
+
         List<NameValuePair> params;
         encodeValue encodeValue = new encodeValue();
         psSQLi psSQLi = new psSQLi();
@@ -83,11 +93,10 @@ public class Scan_XSS {
                                 }
                             }
                         }
-                    }
-                    String method = "";
-                    try {
-                        method = element.attr("method");
-                    } catch (Exception e) {
+//                        if (urlAction.contains("/master/vulnerabilities/xss_r/")) {
+//                            System.out.println("METHODDDDDDDDDDDDDDDDDDD2 : " + method);
+//                            System.out.println(element.toString());
+//                        }
                     }
                     Scan scan = new Scan();
                     if (method.toLowerCase().contains("post")) {
@@ -102,8 +111,12 @@ public class Scan_XSS {
 
                     requestSettings.setRequestParameters(params);
 
-                    HtmlPage page = client.getPage(requestSettings);
+                    page = client.getPage(requestSettings);
                     String tempBody = page.asXml();
+//                    System.out.println("Param: " + params.toString());
+//                    System.out.println("URL: " + urlAction);
+//                    System.out.println("Page: " + page.getUrl().toString());
+//                    System.out.println(tempBody.replaceAll("\\s+", "").replace("//<![CDATA[", "").replace("//]]>", ""));
 
                     if (tempBody.replaceAll("\\s+", "").replace("//<![CDATA[", "").replace("//]]>", "").contains(encodeValue.decode(sPay))) {
                         boolean tempC = true;
@@ -124,14 +137,14 @@ public class Scan_XSS {
                             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                             scan.list_vuln.add(method + vulnName + " : " + urlAction);
                             break;
-                        }else{
+                        } else {
                             DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
                             dtmz.addRow(new Object[]{urlAction, params.toString()});
                         }
                     }
 
-                } catch (IOException | RuntimeException e) {
-                    //System.out.println("Error attackVulnXSS: " + urlAction + " ||| " + e);
+                } catch (Exception e) {
+                    System.out.println("Error attackVulnXSS: " + urlAction + " ||| " + e);
                 }
             }
             if (checkVuln) {

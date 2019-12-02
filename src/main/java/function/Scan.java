@@ -16,6 +16,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import PaySig.*;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.util.NameValuePair;
+import java.net.URL;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -29,14 +37,15 @@ import static paramstatic.Param.EXECUTOR_SERVICE;
  * @author Shaco JX
  */
 public class Scan {
-
+    
     public Scan() {
     }
-
+    
     public static ArrayList<String> list_vuln = new ArrayList<>();
     public static HashSet<String> checkURLGET = new HashSet<>();
     public static HashSet<String> checkURLPOST = new HashSet<>();
-
+    Scan_WeakPassword wp = new Scan_WeakPassword();
+    
     Scan_BlindSQLi sBlinkSQLi = new Scan_BlindSQLi();
     Scan_SQLi sSQLi = new Scan_SQLi();
     Scan_XMLXpatchi sXMLXpatchi = new Scan_XMLXpatchi();
@@ -47,7 +56,7 @@ public class Scan {
     Scan_WeakPassword sWeakPass = new Scan_WeakPassword();
     Scan_DirList sDirList = new Scan_DirList();
     Scan_CVE_2017_9248 scan_telerik = new Scan_CVE_2017_9248();
-
+    
     psSQLi psSQLin = new psSQLi();
     psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
     psXSS psXSS = new psXSS();
@@ -55,19 +64,31 @@ public class Scan {
     psLFI psLFI = new psLFI();
     psCMDInjection psCMDi = new psCMDInjection();
     psUserPass psUP = new psUserPass();
-
+    
     public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
+        if (VSH.cbLogin.isSelected()) {
+            String tUser = VSH.tfUser.getText();
+            String tPass = VSH.tfPass.getText();
+            String[][] uP = {
+                {tUser, tPass}
+            };
+            wp.bruteForce(url, uP);
+            url = wp.urlScan;
+        }
+        final String urlS = url;
+        
         SpiderWeb spider = new SpiderWeb();
         Info in = new Info();
-        in.info(url);
-        scan_telerik.scan(url);
+//        in.info(urlS);
+//        scan_telerik.scan(urlS);
         VSH.Action.setText("Scaning");
         VSH.Loading.setText("");
         System.out.println("Spider level: " + VSH.dept);
         VSH.LOG_CONSOLE.append("Spider level: " + VSH.dept + "\n");
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(VSH.numberOfThreads);
-        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(url, 0, url));
+        String baseUrl = urlS.split("/")[0] + "/" + urlS.split("/")[1] + "/" + urlS.split("/")[2] + "/";
+        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(urlS, 0, baseUrl, wp.webClient));
         new Thread(() -> {
             try {
                 EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS);
@@ -82,8 +103,8 @@ public class Scan {
                 });
                 System.out.println("---------------------------------------------------------------------------------");
                 CheckSiteAdmin checkSite = new CheckSiteAdmin();
-                checkSite.checkSiteAdmin(url);
-                this.scanVuln(spider.links);
+                checkSite.checkSiteAdmin(urlS);
+                this.scanVuln(spider.links, wp.webClient);
                 for (String xxx : Param.listAdmin) {
                     spider.links.add(xxx);
                 }
@@ -93,60 +114,92 @@ public class Scan {
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
         }).start();
-
+        
     }
     ExecutorService service;
-
-    public void scanVuln(HashSet<String> listURL) throws IOException {
+    
+    public void scanVuln(HashSet<String> listURL, WebClient cClient) throws IOException {
         Scan scan = new Scan();
         service = Executors.newFixedThreadPool(VSH.numberOfThreads);
         for (String sURL : listURL) {
-            if (!sURL.contains("png") && !sURL.contains("jpg")) {
+            if (!sURL.contains("png") && !sURL.contains("jpg") && !sURL.contains("logout") && !sURL.contains("setup") && !sURL.contains("security") && !sURL.contains("pdf")) {
                 if (sURL.contains("#")) {
                     sURL = sURL.split("#")[0];
                 }
                 if (sURL.contains("?") && sURL.contains("=")) {
                     if (!checkURLGET.contains(sURL.split("\\?")[0])) {
                         scan.checkURLGET.add(sURL.split("\\?")[0]);
-                        this.scanMethodGet(sURL);
+                        String method = "get";
+                        this.scanMethodGet(sURL, method);
                     }
                 }
                 try {
-                    Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
-                    Elements linksOnPage = document.select("form");
-                    for (Element element : linksOnPage) {
-                        String temp = "";
+                    WebRequest requestSettings;
+                    WebClient client = new WebClient();
+                    client.getOptions().setCssEnabled(false);
+                    client.getOptions().setJavaScriptEnabled(false);
+                    client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+                    List<NameValuePair> params;
+                    if (cClient != null) {
+                        client = cClient;
+                    }
+                    requestSettings = new WebRequest(new URL(sURL), HttpMethod.GET);
+                    HtmlPage page = client.getPage(requestSettings);
+                    List<HtmlForm> htmlForm = page.getForms();
+//                    Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
+//                    Elements linksOnPage = document.select("form");
+                    for (HtmlForm form : htmlForm) {
+//                    for (Element element : linksOnPage) {
+                        String temp = sURL;
+//                        boolean ch = false;
+//                        if (temp.contains("/master/vulnerabilities/xss_r/")) {
+//                            System.out.println("METHODDDDDDDDDDDDDDDDDDD1 : " + temp);
+//                            System.out.println(form.asXml());
+//                            ch = true;
+//                        }
                         try {
-                            temp = element.attr("abs:action");
+                            if (!form.getActionAttribute().equals("#")) {
+                                temp = page.getFullyQualifiedUrl(form.getActionAttribute()).toString();
+//                            if (ch) {
+//                                System.out.println("METHODDDDDDDDDDDDDDDDDDD12 : " + temp);
+//                            }
+                            }
+//                            temp = element.attr("abs:action");
                         } catch (Exception e) {
                         }
-
+                        
                         if (temp.length() == 0) {
                             temp = sURL;
                         }
-
+                        String method = "get";
+                        try {
+                            method = form.getMethodAttribute().toLowerCase();
+                        } catch (Exception e) {
+                        }
                         if (temp.contains("?") && sURL.contains("=") && !checkURLGET.contains(temp.split("\\?")[0])) {
                             scan.checkURLGET.add(temp.split("\\?")[0]);
-                            this.scanMethodGet(temp);
+                            this.scanMethodGet(temp, method);
                         }
-                        String method = element.attr("method").toLowerCase();
+                        Document doc = Jsoup.parse(form.asXml());
+                        Element element = doc;
+//                        String method = element.attr("method").toLowerCase();
                         if (method.contains("get") && !checkURLGET.contains(temp)) {
                             scan.checkURLGET.add(temp);
-                            this.scanMethodGetPost(element, temp);
+                            this.scanMethodGetPost(element, temp, method);
                         } else {
                             if (method.contains("post") && !checkURLPOST.contains(temp)) {
                                 scan.checkURLPOST.add(temp);
-                                this.scanMethodGetPost(element, temp);
+                                this.scanMethodGetPost(element, temp, method);
                             }
                         }
-
+                        
                     }
-                } catch (IOException e) {
-                    //System.out.println("Error scanVuln: " + sURL + " ||| " + e);
+                } catch (Exception e) {
+                    System.out.println("Error scanVuln: " + sURL + " ||| " + e);
                 }
-
+                
             }
         }
         service.shutdown();
@@ -154,7 +207,7 @@ public class Scan {
         VSH.LOG_CONSOLE.append("Scan end!" + "\n");
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
     }
-
+    
     public void BruteForce(HashSet<String> listURL) throws IOException {
         for (String url : listURL) {
             if (url.contains("login") || url.contains("sigin") || url.contains("admin")
@@ -163,97 +216,97 @@ public class Scan {
             }
         }
     }
-
-    public void scanMethodGet(String urlAction) throws IOException {
+    
+    public void scanMethodGet(String urlAction, String method) throws IOException {
+//        service.execute(() -> {
+//            try {
+//                this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin(), wp.webClient, method);
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
         service.execute(() -> {
             try {
-                this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
+                this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS(), wp.webClient, method);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        service.execute(() -> {
-            try {
-                this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+//        service.execute(() -> {
+//            try {
+//                this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
 
 //        BlindSQLinjection(urlAction);
     }
-
-    public void scanMethodGetPost(Element element, String urlAction) throws IOException {
+    
+    public void scanMethodGetPost(Element element, String urlAction, String method) throws IOException {
+//        service.execute(() -> {
+//            try {
+//                this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin(), wp.webClient, method);
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
         service.execute(() -> {
             try {
-                this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin());
+                this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS(), wp.webClient, method);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        service.execute(() -> {
-            try {
-                this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+//        service.execute(() -> {
+//            try {
+//                this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
 
     }
 }
