@@ -7,6 +7,7 @@ package Scan;
 
 import PaySig.psSQLi;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
 import function.Scan;
 import java.io.IOException;
 import java.net.URL;
@@ -31,7 +32,7 @@ public class Scan_SQLi {
     public Scan_SQLi() {
     }
 
-    public void scanSQLin(Element element, String urlAction, String[] payload) throws IOException {
+    public void scanSQLin(Element element, String urlAction, String[] payload, String method, CookieManager cookie) throws IOException {
         LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
         String vulnName = "SQL Injection";
         String urlAttack = urlAction;
@@ -41,6 +42,9 @@ public class Scan_SQLi {
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cookie != null) {
+            client.setCookieManager(cookie);
+        }
         List<NameValuePair> params;
         psSQLi psSQLi = new psSQLi();
         for (String sPay : payload) {
@@ -77,11 +81,11 @@ public class Scan_SQLi {
                         }
                     }
                 }
-                String method = "";
-                try {
-                    method = element.attr("method");
-                } catch (Exception e) {
-                }
+//                String method = "";
+//                try {
+//                    method = element.attr("method");
+//                } catch (Exception e) {
+//                }
                 function.Scan scan = new Scan();
                 if (method.toLowerCase().contains("post")) {
                     requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);

@@ -5,6 +5,7 @@
  */
 package Scan;
 
+import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -30,14 +31,47 @@ import org.jsoup.select.Elements;
  */
 public class Scan_WeakPassword {
 
+    private WebClient webClient = null;
+    private String urlScan = "";
+    private CookieManager cookieManager = null;
+
+    public WebClient getWebClient() {
+        return webClient;
+    }
+
+    public void setWebClient(WebClient webClient) {
+        this.webClient = webClient;
+    }
+
+    public String getUrlScan() {
+        return urlScan;
+    }
+
+    public void setUrlScan(String urlScan) {
+        this.urlScan = urlScan;
+    }
+
+    public CookieManager getCookieManager() {
+        return cookieManager;
+    }
+
+    public void setCookieManager(CookieManager cookieManager) {
+        this.cookieManager = cookieManager;
+    }
+
     public Scan_WeakPassword() {
     }
 
     public void bruteForce(String sURL, String[][] userPass) throws IOException {
+        webClient = null;
+        urlScan = "";
+
         WebRequest requestSettings;
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+
         List<NameValuePair> params;
         String action = "";
         encodeValue encode = new encodeValue();
@@ -119,7 +153,7 @@ public class Scan_WeakPassword {
             List<HtmlForm> formCheck1 = page.getForms();
             boolean checkLogin1 = false;
             boolean checkLogin2 = true;
-            System.out.println("Count: " + formCheck1.size());
+//            System.out.println("Count: " + formCheck1.size());
             boolean checkLogin3 = false;
             if (action.contains(sURL)) {
                 checkLogin3 = true;
@@ -128,7 +162,7 @@ public class Scan_WeakPassword {
 //                System.out.println("HTML Action: " + page.getFullyQualifiedUrl(f.getActionAttribute()));
 //                System.out.println("action: " + action);
 
-                System.out.println("Form: " + f.getActionAttribute());
+//                System.out.println("Form: " + f.getActionAttribute());
                 if (checkLogin3) {
                     checkLogin1 = true;
                     if (page.getFullyQualifiedUrl(f.getActionAttribute()).toString().contains(action)) {
@@ -167,7 +201,10 @@ public class Scan_WeakPassword {
                 System.out.println("Login Thanh Cong : " + sURL);
                 System.out.println("User: " + user + " ---- Password: " + pass);
                 DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                        dtm.addRow(new Object[]{"Weak password",sURL, "Username: "+user, "Password: "+pass});
+                dtm.addRow(new Object[]{"Weak password", sURL, "Username: " + user, "Password: " + pass});
+                webClient = client;
+                urlScan = page.getUrl().toString();
+                cookieManager = webClient.getCookieManager();
                 break;
             }
         }

@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 import function.encodeValue;
 import PaySig.psSQLi;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
 import function.Scan;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,7 +32,10 @@ public class Scan_XSS {
     public Scan_XSS() {
     }
 
-    public void scanXSS(Element element, String urlAction, String[] payload) throws IOException {
+    public void scanXSS(Element element, String urlAction, String[] payload, String method, CookieManager cookie) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
+//        System.out.println(method + " Tan Cong: " + urlAction);
         String vulnName = "XSS";
         String urlAttack = urlAction;
         boolean checkVuln = false;
@@ -40,6 +44,9 @@ public class Scan_XSS {
         client.getOptions().setCssEnabled(true);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cookie != null) {
+            client.setCookieManager(cookie);
+        }
         List<NameValuePair> params;
         encodeValue encodeValue = new encodeValue();
         psSQLi psSQLi = new psSQLi();
@@ -76,21 +83,30 @@ public class Scan_XSS {
                         Elements ele = element.getElementsByAttribute("name");
                         for (Element e1 : ele) {
                             if (!e1.attr("type").contains("submit") && !e1.attr("type").contains("button")) {
-                                params.add(new NameValuePair(e1.attr("name"), lPay));
+//                                String loai = e1.attr("name");
+//                                if (loai.contains("guestform")) {
+//                                } else {
+
+                                    params.add(new NameValuePair(e1.attr("name"), lPay));
+//
+//                                }
                             } else {
                                 if (e1.attr("name").length() != 0) {
-                                    params.add(new NameValuePair(e1.attr("name"), e1.attr("value")));
+//                                    String loai = e1.attr("name");
+//                                    if (!loai.contains("btnClear")) {
+                                        params.add(new NameValuePair(e1.attr("name"), encodeValue.encode(e1.attr("value"))));
+//                                    }
                                 }
                             }
                         }
                     }
-                    String method = "";
-                    try {
-                        method = element.attr("method");
-                    } catch (Exception e) {
-                    }
+
+//                    try {
+//                        method = element.attr("method");
+//                    } catch (Exception e) {
+//                    }
                     Scan scan = new Scan();
-                    if (method.toLowerCase().contains("post")) {
+                    if (method.equalsIgnoreCase("post")) {
                         requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);
                         method = "|POST|";
                         scan.checkURLPOST.add(urlAction);
@@ -104,6 +120,13 @@ public class Scan_XSS {
 
                     HtmlPage page = client.getPage(requestSettings);
                     String tempBody = page.asXml();
+//                    if (urlAction.contains("master/vulnerabilities/xss_s/")) {
+//                        System.out.println("Method: " + method);
+//                        System.out.println("Param: " + params.toString());
+//                        System.out.println("URL: " + urlAction);
+//                        System.out.println("Page: " + page.getUrl().toString());
+//                        System.out.println(tempBody.replaceAll("\\s+", "").replace("//<![CDATA[", "").replace("//]]>", ""));
+//                    }
 
                     if (tempBody.replaceAll("\\s+", "").replace("//<![CDATA[", "").replace("//]]>", "").contains(encodeValue.decode(sPay))) {
                         boolean tempC = true;
@@ -124,14 +147,15 @@ public class Scan_XSS {
                             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                             scan.list_vuln.add(method + vulnName + " : " + urlAction);
                             break;
-                        }else{
+                        } else {
                             DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
                             dtmz.addRow(new Object[]{urlAction, params.toString()});
                         }
                     }
 
-                } catch (IOException | RuntimeException e) {
-                    //System.out.println("Error attackVulnXSS: " + urlAction + " ||| " + e);
+                } catch (Exception e) {
+                    System.out.println("Error attackVulnXSS: " + urlAction + " ||| ");
+                    e.printStackTrace();
                 }
             }
             if (checkVuln) {
