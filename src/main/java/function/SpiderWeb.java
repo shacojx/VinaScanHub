@@ -6,8 +6,16 @@
 package function;
 
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.table.DefaultTableModel;
@@ -34,27 +42,53 @@ public class SpiderWeb {
         this.links = links;
     }
 
-    public static void getPageLinks(String URL, int depth, String root_url) {
-        if ((!links.contains(URL) && (depth < VSH.dept))
-                && URL.contains(root_url)) {
+    public static void getPageLinks(String URL, int depth, String root_url, CookieManager cooki) {
+        if ((!links.contains(URL)
+                && (depth < VSH.dept))
+                && URL.contains(root_url)
+                && !URL.contains("logout")
+                && !URL.contains("dangxuat")
+                && !URL.contains("thoat")) {
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
             VSH.LOG_CONSOLE.append(">> Depth: " + depth + " [" + URL + "]" + "\n");
             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+
+            /* turn off annoying htmlunit warnings */
+            java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
+            WebRequest requestSettings;
+            WebClient client = new WebClient();
+            client.getOptions().setCssEnabled(true);
+            client.getOptions().setJavaScriptEnabled(false);
+            client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+            if (cooki != null) {
+                client.setCookieManager(cooki);
+            }
+
             try {
                 links.add(URL);
+
+                requestSettings = new WebRequest(new URL(URL), HttpMethod.GET);
+                HtmlPage htmlPage = client.getPage(requestSettings);
+                List<HtmlAnchor> htmlAnchor = htmlPage.getAnchors();
+
 //                Document document = Jsoup.connect(URL).get();
-                Connection.Response resp = (Connection.Response) Jsoup.connect(URL).execute();
-                Document document = resp.parse();
+//                Connection.Response resp = (Connection.Response) Jsoup.connect(URL).execute();
+//                Document document = resp.parse();
                 DefaultTableModel dtm = (DefaultTableModel) View.VSH.LinkResult.getModel();
-                dtm.addRow(new Object[]{URL, resp.statusCode()});
-                Elements linksOnPage = document.select("a[href]");
+                dtm.addRow(new Object[]{URL, htmlPage.getWebResponse().getStatusCode()});
+//                dtm.addRow(new Object[]{URL, resp.statusCode()});
+//                Elements linksOnPage = document.select("a[href]");
 
                 depth++;
-                for (Element page : linksOnPage) {
-                    Param.EXECUTOR_SERVICE.submit(new thread(page.attr("abs:href"), depth, root_url));
+                for (HtmlAnchor htmlAnchor1 : htmlAnchor) {
+//                for (Element page : linksOnPage) {
+                    String tUrl = htmlPage.getFullyQualifiedUrl(htmlAnchor1.getAttribute("href")).toString();
+                    Param.EXECUTOR_SERVICE.submit(new thread(tUrl, depth, root_url, cooki));
+//                    Param.EXECUTOR_SERVICE.submit(new thread(page.attr("abs:href"), depth, root_url));
                 }
 
-                String docString = document.body().toString();
+//                String docString = document.body().toString();
+                String docString = htmlPage.asXml();
                 String regex = "[a-zA-Z0-9-_.]+@[a-zA-Z0-9-_.]+";
 
                 Pattern pattern = Pattern.compile(regex);
@@ -72,8 +106,9 @@ public class SpiderWeb {
                     // Get the group matched using group() method 
 
                 }
-            } catch (IOException e) {
-                System.err.println("For '" + URL + "': " + e.getMessage());
+            } catch (Exception e) {
+                System.err.println("ERROR spiderWeb : " + URL);
+                e.printStackTrace();
             }
         }
     }
@@ -83,17 +118,19 @@ public class SpiderWeb {
         String url;
         int dept;
         String root_url;
+        CookieManager cooki;
 
-        public thread(String url, int dept, String root_url) {
+        public thread(String url, int dept, String root_url, CookieManager cooki) {
             this.url = url;
             this.dept = dept;
             this.root_url = root_url;
+            this.cooki = cooki;
         }
 
         @Override
         public void run() {
             try {
-                getPageLinks(url, dept, root_url);
+                getPageLinks(url, dept, root_url, cooki);
             } catch (Exception e) {
                 e.printStackTrace();
             }

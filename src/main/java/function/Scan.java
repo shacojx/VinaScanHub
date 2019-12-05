@@ -16,6 +16,15 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import PaySig.*;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.util.NameValuePair;
+import java.net.URL;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -57,6 +66,15 @@ public class Scan {
     psUserPass psUP = new psUserPass();
 
     public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
+        Scan_WeakPassword sw = new Scan_WeakPassword();
+        if (false) {
+            sw.setCheckLogin(true);
+            String[][] ps = {
+                {"admin", "password"},};
+            sw.bruteForce(url, ps);
+        }
+        String urlS = url;
+
         SpiderWeb spider = new SpiderWeb();
         Info in = new Info();
         in.info(url);
@@ -67,7 +85,17 @@ public class Scan {
         VSH.LOG_CONSOLE.append("Spider level: " + VSH.dept + "\n");
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(VSH.numberOfThreads);
-        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(url, 0, url));
+//        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(url, 0, url));
+        String baseUrl = urlS.split("/")[0] + "/" + urlS.split("/")[1] + "/" + urlS.split("/")[2] + "/";
+        try {
+            if (sw.getUrlS().length() != 0) {
+                urlS = sw.getUrlS();
+            }
+            System.out.println("Cooki Test : " + sw.getCooki().getCookies().toString());
+        } catch (Exception e) {
+        }
+        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(urlS, 0, baseUrl, sw.getCooki()));
+
         new Thread(() -> {
             try {
                 EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS);
@@ -83,7 +111,7 @@ public class Scan {
                 System.out.println("---------------------------------------------------------------------------------");
                 CheckSiteAdmin checkSite = new CheckSiteAdmin();
                 checkSite.checkSiteAdmin(url);
-                this.scanVuln(spider.links);
+                this.scanVuln(spider.links, sw.getCooki());
                 for (String xxx : Param.listAdmin) {
                     spider.links.add(xxx);
                 }
@@ -99,27 +127,52 @@ public class Scan {
     }
     ExecutorService service;
 
-    public void scanVuln(HashSet<String> listURL) throws IOException {
+    public void scanVuln(HashSet<String> listURL, CookieManager cooki) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
         Scan scan = new Scan();
         service = Executors.newFixedThreadPool(VSH.numberOfThreads);
         for (String sURL : listURL) {
-            if (!sURL.contains("png") && !sURL.contains("jpg")) {
+            if (!sURL.contains("png")
+                    && !sURL.contains("jpg")
+                    && !sURL.contains("/vulnerabilities/weak_id/")
+                    && !sURL.contains("/vulnerabilities/csrf/")
+                    && !sURL.contains("logout")
+                    && !sURL.contains("security")) {
                 if (sURL.contains("#")) {
                     sURL = sURL.split("#")[0];
                 }
                 if (sURL.contains("?") && sURL.contains("=")) {
                     if (!checkURLGET.contains(sURL.split("\\?")[0])) {
                         scan.checkURLGET.add(sURL.split("\\?")[0]);
-                        this.scanMethodGet(sURL);
+                        this.scanMethodGet(sURL, cooki);
                     }
                 }
                 try {
-                    Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
-                    Elements linksOnPage = document.select("form");
-                    for (Element element : linksOnPage) {
-                        String temp = "";
+                    WebRequest requestSettings;
+                    WebClient client = new WebClient();
+                    client.getOptions().setCssEnabled(false);
+                    client.getOptions().setJavaScriptEnabled(false);
+                    client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+                    List<NameValuePair> params;
+                    if (cooki != null) {
+                        client.setCookieManager(cooki);
+                    }
+
+                    requestSettings = new WebRequest(new URL(sURL), HttpMethod.GET);
+                    HtmlPage page = client.getPage(requestSettings);
+                    List<HtmlForm> htmlForm = page.getForms();
+
+//                    Document document = Jsoup.connect(sURL).userAgent("Mozilla").followRedirects(false).get();
+//                    Elements linksOnPage = document.select("form");
+                    for (HtmlForm form : htmlForm) {
+
+//                    for (Element element : linksOnPage) {
+                        String temp = sURL;
                         try {
-                            temp = element.attr("abs:action");
+//                            temp = element.attr("abs:action");
+                            temp = page.getFullyQualifiedUrl(form.getActionAttribute()).toString();
+                            temp = temp.replaceAll("#", "");
                         } catch (Exception e) {
                         }
 
@@ -129,24 +182,31 @@ public class Scan {
 
                         if (temp.contains("?") && sURL.contains("=") && !checkURLGET.contains(temp.split("\\?")[0])) {
                             scan.checkURLGET.add(temp.split("\\?")[0]);
-                            this.scanMethodGet(temp);
+                            this.scanMethodGet(temp, cooki);
                         }
-                        String method = element.attr("method").toLowerCase();
+//                        String method = element.attr("method").toLowerCase();
+                        String method = "get";
+                        try {
+                            method = form.getMethodAttribute().toLowerCase();
+                        } catch (Exception e) {
+                        }
+                        Document doc = Jsoup.parse(form.asXml());
+                        Element element = doc;
                         if (method.contains("get") && !checkURLGET.contains(temp)) {
                             scan.checkURLGET.add(temp);
-                            this.scanMethodGetPost(element, temp);
+                            this.scanMethodGetPost(element, temp, method, cooki);
                         } else {
                             if (method.contains("post") && !checkURLPOST.contains(temp)) {
                                 scan.checkURLPOST.add(temp);
-                                this.scanMethodGetPost(element, temp);
+                                this.scanMethodGetPost(element, temp, method, cooki);
                             }
                         }
 
                     }
-                } catch (IOException e) {
-                    //System.out.println("Error scanVuln: " + sURL + " ||| " + e);
+                } catch (Exception e) {
+                    System.out.println("Error scanVuln: " + sURL + " ||| ");
+                    e.printStackTrace();
                 }
-
             }
         }
         service.shutdown();
@@ -164,96 +224,96 @@ public class Scan {
         }
     }
 
-    public void scanMethodGet(String urlAction) throws IOException {
+    public void scanMethodGet(String urlAction, CookieManager cooki) throws IOException {
         service.execute(() -> {
             try {
-                this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
+                this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin(), "get", cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+//        service.execute(() -> {
+//            try {
+//                this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
         service.execute(() -> {
             try {
-                this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+                this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS(), "get", cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        service.execute(() -> {
-            try {
-                this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+//        service.execute(() -> {
+//            try {
+//                this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
 
 //        BlindSQLinjection(urlAction);
     }
 
-    public void scanMethodGetPost(Element element, String urlAction) throws IOException {
+    public void scanMethodGetPost(Element element, String urlAction, String method, CookieManager cooki) throws IOException {
         service.execute(() -> {
             try {
-                this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin());
+                this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin(), method, cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+//        service.execute(() -> {
+//            try {
+//                this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
         service.execute(() -> {
             try {
-                this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin());
+                this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS(), method, cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        service.execute(() -> {
-            try {
-                this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        service.execute(() -> {
-            try {
-                this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
-            } catch (IOException ex) {
-                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+//        service.execute(() -> {
+//            try {
+//                this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        service.execute(() -> {
+//            try {
+//                this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
 
     }
 }
