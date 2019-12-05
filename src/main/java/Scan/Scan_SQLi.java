@@ -120,6 +120,15 @@ public class Scan_SQLi {
                         }
                         requestSettings.setRequestParameters(params);
                         HtmlPage page = client.getPage(requestSettings);
+                        if (urlAction.contains("/vulnerabilities/brute/")) {
+                            System.out.println("~~~~~~~~~~~~~~~~~~~");
+                            System.out.println("Method: " + method);
+                            System.out.println("Param: " + params.toString());
+                            System.out.println("URL_Action: " + urlAction);
+                            System.out.println("URL_Attack: " + urlAttack);
+                            System.out.println("Page: " + page.getUrl().toString());
+                            System.out.println(page.asXml().replaceAll("\\s+", "").replace("//<![CDATA[", "").replace("//]]>", ""));
+                        }
                         for (String sSig : psSQLi.getArrSigSQLin()) {
 
                             if (page.asXml().contains(sSig)) {

@@ -190,6 +190,14 @@ public class Scan {
                             method = form.getMethodAttribute().toLowerCase();
                         } catch (Exception e) {
                         }
+
+                        if (temp.contains("/vulnerabilities/brute/")) {
+                            System.out.println("FORMXYZ : " + method);
+                            System.out.println("URLXYZ : " + temp);
+                            System.out.println(form.asXml());
+                            method = "get";
+                        }
+
                         Document doc = Jsoup.parse(form.asXml());
                         Element element = doc;
                         if (method.contains("get") && !checkURLGET.contains(temp)) {
