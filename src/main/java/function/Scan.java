@@ -47,6 +47,7 @@ public class Scan {
     Scan_WeakPassword sWeakPass = new Scan_WeakPassword();
     Scan_DirList sDirList = new Scan_DirList();
     Scan_CVE_2017_9248 scan_telerik = new Scan_CVE_2017_9248();
+    Scan_FileUpload sFileUp = new Scan_FileUpload();
 
     psSQLi psSQLin = new psSQLi();
     psXMLXpatchi psXMLXpatchin = new psXMLXpatchi();
@@ -55,6 +56,7 @@ public class Scan {
     psLFI psLFI = new psLFI();
     psCMDInjection psCMDi = new psCMDInjection();
     psUserPass psUP = new psUserPass();
+    psUploadFile psUpFile = new psUploadFile();
 
     public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
         SpiderWeb spider = new SpiderWeb();
@@ -203,6 +205,20 @@ public class Scan {
         service.execute(() -> {
             try {
                 this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi());
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.scan_telerik.scan(urlAction);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sFileUp.uploadfile(urlAction);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
