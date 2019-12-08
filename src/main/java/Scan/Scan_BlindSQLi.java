@@ -36,11 +36,6 @@ public class Scan_BlindSQLi {
     public void scanBlindSQLin(Element element, String urlAction) throws IOException {
         LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
         boolean check_blind = false;
-        String[] payload = new String[]{
-            " and 1=1",
-            " and 1=2",
-            "' and 1=1",
-            "' and 1=2"};
         String vulnName = "Blind SQL Injection";
         String urlAttack = urlAction;
         boolean checkVuln = false;
@@ -50,82 +45,125 @@ public class Scan_BlindSQLi {
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
         List<NameValuePair> params;
+        List<NameValuePair> params1;
+        List<NameValuePair> params2;
+        List<NameValuePair> params3;
+        List<NameValuePair> params4;
         psSQLi psSQLi = new psSQLi();
-        for (String sPay : payload) {
-            params = new ArrayList<>();
-            try {
-                if (element == null) {
-                    try {
-                        String fURL = urlAction.split("\\?")[0];
-                        String lURL = urlAction.split("\\?")[1];
-                        urlAttack = fURL;
 
-                        for (String s : lURL.split("&")) {
-                            String key = s.split("\\=")[0];
-                            String value = "";
-                            try {
-                                value = s.split("\\=")[1] + sPay;
-                            } catch (Exception e) {
-//                                System.out.println("Error Value attackVulnSQLin: " + e);
-                            }
-                            params.add(new NameValuePair(key, value));
-                        }
-                    } catch (Exception e) {
-                        //System.out.println("ERROR Case 1: " + e);
-                    }
-                } else {
-                    Elements ele = element.getElementsByAttribute("name");
-                    for (Element e1 : ele) {
-                        if (!e1.attr("type").contains("submit") && !e1.attr("type").contains("button")) {
-                            params.add(new NameValuePair(e1.attr("name"), sPay));
-                        } else {
-                            if (e1.attr("name").length() != 0) {
-                                params.add(new NameValuePair(e1.attr("name"), e1.attr("value")));
-                            }
-                        }
-                    }
-                }
-                String method = "";
+        params = new ArrayList<>();
+        params1 = new ArrayList<>();
+        params2 = new ArrayList<>();
+        params3 = new ArrayList<>();
+        params4 = new ArrayList<>();
+        try {
+            if (element == null) {
                 try {
-                    method = element.attr("method");
-                } catch (Exception e) {
-                }
-                function.Scan scan = new Scan();
-                if (method.toLowerCase().contains("post")) {
-                    requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);
-                    method = "|POST|";
-                    scan.checkURLPOST.add(urlAction);
-                } else {
-                    requestSettings = new WebRequest(new URL(urlAttack), HttpMethod.GET);
-                    method = "|GET|";
-                    scan.checkURLGET.add(urlAttack);
-                }
-                requestSettings.setRequestParameters(params);
-                HtmlPage page = client.getPage(requestSettings);
-                for (String sSig : psSQLi.getArrSigSQLin()) {
+                    String fURL = urlAction.split("\\?")[0];
+                    String lURL = urlAction.split("\\?")[1];
+                    urlAttack = fURL;
 
-                    if (page.asXml().contains(sSig) == false && check_blind == true) {
-                        checkVuln = true;
-                        System.out.println(method + vulnName + " : " + urlAction);
-                        System.out.println("        " + params.toString());
-                        DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                        dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), sSig});
-                        VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
-                        VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
-                        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
-                        scan.list_vuln.add(method + vulnName + " : " + urlAction);
-                        break;
+                    for (String s : lURL.split("&")) {
+                        String key = s.split("\\=")[0];
+                        String value = "";
+                        String value1 = "";
+                        String value2 = "";
+                        String value3 = "";
+                        String value4 = "";
+                        try {
+                            value = s.split("\\=")[1] + "";
+                            value1 = s.split("\\=")[1] + " and 1=1#";
+                            value2 = s.split("\\=")[1] + " and 1=2#";
+                            value3 = s.split("\\=")[1] + "' and 1=1#";
+                            value4 = s.split("\\=")[1] + "' and 1=2#";
+                        } catch (Exception e) {
+//                                System.out.println("Error Value attackVulnSQLin: " + e);
+                        }
+                        params.add(new NameValuePair(key, value));
+                        params1.add(new NameValuePair(key, value1));
+                        params2.add(new NameValuePair(key, value2));
+                        params3.add(new NameValuePair(key, value3));
+                        params4.add(new NameValuePair(key, value4));
+                    }
+                } catch (Exception e) {
+                    //System.out.println("ERROR Case 1: " + e);
+                }
+            } else {
+                Elements ele = element.getElementsByAttribute("name");
+                for (Element e1 : ele) {
+                    if (!e1.attr("type").contains("submit") && !e1.attr("type").contains("button")) {
+                        params.add(new NameValuePair(e1.attr("name"), "1"));
+                        params1.add(new NameValuePair(e1.attr("name"), "1 and 1=1#"));
+                        params2.add(new NameValuePair(e1.attr("name"), "1 and 1=2#"));
+                        params3.add(new NameValuePair(e1.attr("name"), "1' and 1=1#"));
+                        params4.add(new NameValuePair(e1.attr("name"), "1' and 1=2#"));
                     } else {
-                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
-                        dtmz.addRow(new Object[]{urlAction, params.toString()});
+                        if (e1.attr("name").length() != 0) {
+                            params.add(new NameValuePair(e1.attr("name"), e1.attr("value")));
+                            params1.add(new NameValuePair(e1.attr("name"), e1.attr("value1")));
+                            params2.add(new NameValuePair(e1.attr("name"), e1.attr("value2")));
+                            params3.add(new NameValuePair(e1.attr("name"), e1.attr("value3")));
+                            params4.add(new NameValuePair(e1.attr("name"), e1.attr("value4")));
+                        }
                     }
                 }
-            } catch (IOException | RuntimeException e) {
+            }
+            String method = "";
+            try {
+                method = element.attr("method");
+            } catch (Exception e) {
+            }
+            function.Scan scan = new Scan();
+            if (method.toLowerCase().contains("post")) {
+                requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);
+                method = "|POST|";
+                scan.checkURLPOST.add(urlAction);
+            } else {
+                requestSettings = new WebRequest(new URL(urlAttack), HttpMethod.GET);
+                method = "|GET|";
+                scan.checkURLGET.add(urlAttack);
+            }
+            requestSettings.setRequestParameters(params1);
+            HtmlPage page1 = client.getPage(requestSettings);
+            requestSettings.setRequestParameters(params2);
+            HtmlPage page2 = client.getPage(requestSettings);
+            requestSettings.setRequestParameters(params3);
+            HtmlPage page3 = client.getPage(requestSettings);
+            requestSettings.setRequestParameters(params4);
+            HtmlPage page4 = client.getPage(requestSettings);
+
+            requestSettings.setRequestParameters(params);
+            HtmlPage page = client.getPage(requestSettings);
+
+            if ((page.asXml().equals(page1.asXml()) == true && page.asXml().equals(page2.asXml()) == false)
+                    || (page.asXml().equals(page3.asXml()) == true && page.asXml().equals(page4.asXml()) == false)) {
+                check_blind = true;
+            }
+
+            for (String sSig : psSQLi.getArrSigSQLin()) {
+
+                if (page.asXml().contains(sSig) == false && check_blind == true) {
+                    
+                    System.out.println(method + vulnName + " : " + urlAction);
+                    System.out.println("        " + params.toString());
+                    DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
+                    dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), sSig});
+                    VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
+                    VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
+                    VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+                    scan.list_vuln.add(method + vulnName + " : " + urlAction);
+                    break;
+                } else {
+                    DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
+                    dtmz.addRow(new Object[]{urlAction, params.toString()});
+                }
+            }
+        } catch (IOException | RuntimeException e) {
 //                System.out.println("Error attackVulnSQLin: " + urlAction + " ||| " + e);
-            }
-            if (checkVuln) {
-                break;
-            }
         }
+//            if (checkVuln) {
+//                break;
+//            }
+
     }
 }

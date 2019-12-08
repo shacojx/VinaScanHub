@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -352,6 +353,11 @@ public class VSH extends javax.swing.JFrame {
         LOG_CONSOLE.setLineWrap(true);
         LOG_CONSOLE.setRows(5);
         LOG_CONSOLE.setWrapStyleWord(true);
+        LOG_CONSOLE.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LOG_CONSOLEMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(LOG_CONSOLE);
 
         Tabmenu.addTab("Log", jScrollPane1);
@@ -521,6 +527,16 @@ public class VSH extends javax.swing.JFrame {
     private void FuzzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuzzActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_FuzzActionPerformed
+
+    private void LOG_CONSOLEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LOG_CONSOLEMouseClicked
+        // TODO add your handling code here:
+        JTable source = (JTable)evt.getSource();
+            int row = source.rowAtPoint( evt.getPoint() );
+            int column = source.columnAtPoint( evt.getPoint() );
+            String s=source.getModel().getValueAt(row, column)+"";
+
+            JOptionPane.showMessageDialog(null, s);
+    }//GEN-LAST:event_LOG_CONSOLEMouseClicked
 
     /**
      * @param args the command line arguments

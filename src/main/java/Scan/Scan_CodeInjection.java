@@ -109,6 +109,7 @@ public class Scan_CodeInjection {
                     } else {
                         DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
                         dtmz.addRow(new Object[]{urlAction, params.toString()});
+//                        View.FuzzResult.FuzzOutput.append(page.asXml());
                     }
                 }
             } catch (IOException | RuntimeException e) {

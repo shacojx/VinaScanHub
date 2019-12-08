@@ -127,6 +127,7 @@ public class Scan_XSS {
                         }else{
                             DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
                             dtmz.addRow(new Object[]{urlAction, params.toString()});
+//                            View.FuzzResult.FuzzOutput.append(tempBody.replaceAll("\\s+", "").replace("//<![CDATA[", "").replace("//]]>", ""));
                         }
                     }
 

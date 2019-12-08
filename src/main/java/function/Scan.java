@@ -169,6 +169,13 @@ public class Scan {
     public void scanMethodGet(String urlAction) throws IOException {
         service.execute(() -> {
             try {
+                this.sFileUp.uploadfile(urlAction);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
                 this.sSQLi.scanSQLin(null, urlAction, this.psSQLin.getArrPaySQLin());
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
@@ -188,6 +195,14 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        service.execute(() -> {
+            try {
+                this.scan_telerik.scan(urlAction);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
         service.execute(() -> {
             try {
                 this.sLFI.scanLFI(null, urlAction, this.psLFI.getArrPayLFI());
@@ -211,11 +226,15 @@ public class Scan {
         });
         service.execute(() -> {
             try {
-                this.scan_telerik.scan(urlAction);
+                this.sBlinkSQLi.scanBlindSQLin(null, urlAction);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+
+    }
+
+    public void scanMethodGetPost(Element element, String urlAction) throws IOException {
         service.execute(() -> {
             try {
                 this.sFileUp.uploadfile(urlAction);
@@ -223,11 +242,6 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-
-//        BlindSQLinjection(urlAction);
-    }
-
-    public void scanMethodGetPost(Element element, String urlAction) throws IOException {
         service.execute(() -> {
             try {
                 this.sSQLi.scanSQLin(element, urlAction, this.psSQLin.getArrPaySQLin());
@@ -251,6 +265,14 @@ public class Scan {
         });
         service.execute(() -> {
             try {
+                this.scan_telerik.scan(urlAction);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        service.execute(() -> {
+            try {
                 this.sLFI.scanLFI(element, urlAction, this.psLFI.getArrPayLFI());
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
@@ -270,6 +292,14 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+         service.execute(() -> {
+            try {
+                this.sBlinkSQLi.scanBlindSQLin(element, urlAction);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
 
     }
 }
