@@ -32,8 +32,8 @@ import org.jsoup.select.Elements;
 public class Scan_WeakPassword {
 
     private static boolean checkLogin = false;
-    private CookieManager cookieManager = null;
-    private String urlS = "";
+    private static CookieManager cookieManager = null;
+    private static String urlS = "";
 
     public Scan_WeakPassword() {
     }
@@ -215,20 +215,19 @@ public class Scan_WeakPassword {
         Scan_WeakPassword.checkLogin = checkLogin;
     }
 
-    public CookieManager getCookieManager() {
+    public static CookieManager getCookieManager() {
         return cookieManager;
     }
 
-    public void setCookieManager(CookieManager cookieManager) {
-        this.cookieManager = cookieManager;
+    public static void setCookieManager(CookieManager cookieManager) {
+        Scan_WeakPassword.cookieManager = cookieManager;
     }
 
-    public String getUrlS() {
+    public static String getUrlS() {
         return urlS;
     }
 
-    public void setUrlS(String urlS) {
-        this.urlS = urlS;
+    public static void setUrlS(String urlS) {
+        Scan_WeakPassword.urlS = urlS;
     }
-
 }

@@ -77,13 +77,21 @@ public class Scan {
                 {user, pass},};
             sw.bruteForce(url, ps, null);
         }
-        String urlS = url;
         CookieManager cookieM = sw.getCookieManager();
+        String urlTemp = url;
+        try {
+            if (sw.getUrlS().length() != 0) {
+                urlTemp = sw.getUrlS();
+            }
+            System.out.println("Cookie Test : " + cookieM.getCookies().toString());
+        } catch (Exception e) {
+        }
+        final String urlScan = urlTemp;
 
         SpiderWeb spider = new SpiderWeb();
         Info in = new Info();
-        in.info(url, cookieM);
-        scan_telerik.scan(url, cookieM);
+        in.info(urlScan, cookieM);
+        scan_telerik.scan(urlScan, cookieM);
         VSH.Action.setText("Scaning");
         VSH.Loading.setText("");
         System.out.println("Spider level: " + VSH.dept);
@@ -91,15 +99,9 @@ public class Scan {
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(VSH.numberOfThreads);
 
-        String baseUrl = urlS.split("/")[0] + "/" + urlS.split("/")[1] + "/" + urlS.split("/")[2] + "/";
-        try {
-            if (sw.getUrlS().length() != 0) {
-                urlS = sw.getUrlS();
-            }
-            System.out.println("Cookie Test : " + cookieM.getCookies().toString());
-        } catch (Exception e) {
-        }
-        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(urlS, 0, baseUrl, cookieM));
+        String baseUrl = urlScan.split("/")[0] + "/" + urlScan.split("/")[1] + "/" + urlScan.split("/")[2] + "/";
+
+        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(urlScan, 0, baseUrl, cookieM));
 //        EXECUTOR_SERVICE.execute(new SpiderWeb.thread(url, 0, url));
         new Thread(() -> {
             try {
@@ -118,7 +120,7 @@ public class Scan {
 //                });
                 System.out.println("---------------------------------------------------------------------------------");
                 CheckSiteAdmin checkSite = new CheckSiteAdmin();
-                checkSite.checkSiteAdmin(url, cookieM);
+                checkSite.checkSiteAdmin(urlScan, cookieM);
                 this.scanVuln(spider.links, cookieM);
                 for (String xxx : Param.listAdmin) {
                     spider.links.add(xxx);

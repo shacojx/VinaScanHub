@@ -8,6 +8,7 @@ package View;
 import Information.Info;
 import Information.ScanPort;
 import Report.ReportPDF;
+import Scan.Scan_WeakPassword;
 import function.Scan;
 import function.SpiderWeb;
 import java.io.IOException;
@@ -39,13 +40,13 @@ public class VSH extends javax.swing.JFrame {
     String url = "";
     public static int dept = 0;
     public static int numberOfThreads = 0;
-    
+
     public VSH() {
         initComponents();
         this.setTitle("Vina Scan Hub");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        
+
     }
 
     /**
@@ -150,7 +151,7 @@ public class VSH extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setText(" Code by Shaco JX, Trung Lax. We are Eyes Of God Team");
+        jLabel4.setText(" Code by Shaco JX, Trung Baor Lax. We are Eyes Of God Team");
 
         Stop.setBackground(new java.awt.Color(204, 0, 0));
         Stop.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -210,7 +211,7 @@ public class VSH extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,7 +344,7 @@ public class VSH extends javax.swing.JFrame {
                         .addComponent(Loading)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Action, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -522,7 +523,7 @@ public class VSH extends javax.swing.JFrame {
         int row = source.rowAtPoint(evt.getPoint());
         int column = source.columnAtPoint(evt.getPoint());
         String s = source.getModel().getValueAt(row, column) + "";
-        
+
         JOptionPane.showMessageDialog(null, s);
     }//GEN-LAST:event_LOG_CONSOLEMouseClicked
 
@@ -559,25 +560,41 @@ public class VSH extends javax.swing.JFrame {
         s.list_vuln = new ArrayList<>();
         s.checkURLGET = new HashSet<>();
         s.checkURLPOST = new HashSet<>();
+
         ScanPort sp = new ScanPort();
         sp.ListPort = new ArrayList<>();
+
         SpiderWeb sw = new SpiderWeb();
         sw.links = new HashSet<>();
+
         Param p = new Param();
         p.listEmail = new HashSet<>();
         p.listAdmin = new HashSet<>();
+
+        Scan_WeakPassword wp = new Scan_WeakPassword();
+        wp.setCookieManager(null);
+        wp.setUrlS("");
+        wp.setCheckLogin(false);
+
         Info.setText("[ Information website ]\n");
+
         LOG_CONSOLE.setText("");
+
         DefaultTableModel vulnresult = (DefaultTableModel) View.VSH.VulnResult.getModel();
         vulnresult.getDataVector().removeAllElements();
+
         DefaultTableModel historyresult = (DefaultTableModel) View.VSH.HistoryResult.getModel();
         historyresult.getDataVector().removeAllElements();
+
         DefaultTableModel linkresult = (DefaultTableModel) View.VSH.LinkResult.getModel();
         linkresult.getDataVector().removeAllElements();
+
         DefaultTableModel portresult = (DefaultTableModel) View.VSH.PortResult.getModel();
         portresult.getDataVector().removeAllElements();
+
         DefaultTableModel fuzzresult = (DefaultTableModel) View.VSH.FuzzResult.getModel();
         fuzzresult.getDataVector().removeAllElements();
+
         DefaultTableModel otherresult = (DefaultTableModel) View.VSH.OtherResult.getModel();
         otherresult.getDataVector().removeAllElements();
     }//GEN-LAST:event_DeleteActionPerformed
@@ -625,7 +642,7 @@ public class VSH extends javax.swing.JFrame {
         try {
             setAllViewEnable(false);
             btnScan.setEnabled(false);
-            
+
             String url = tfUrl.getText();
             if (!url.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")) {
                 JOptionPane.showMessageDialog(null, "Check url11");
@@ -693,7 +710,7 @@ public class VSH extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public static void setAllViewEnable(boolean en) {
         lbAuthen.setEnabled(en);
         lbDept.setEnabled(en);
@@ -708,7 +725,7 @@ public class VSH extends javax.swing.JFrame {
         tfUser.setEnabled(en);
         cbAuthen.setEnabled(en);
     }
-    
+
     public static void setViewAuthenEnable(boolean en) {
         if (en) {
             lbUser.setEnabled(true);
