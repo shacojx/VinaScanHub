@@ -7,6 +7,7 @@ package Scan;
 
 import PaySig.psXMLXpatchi;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -30,7 +31,9 @@ public class Scan_XMLXpatchi {
     public Scan_XMLXpatchi() {
     }
 
-    public void scanXMLXpatchin(Element element, String urlAction, String[] payload) throws IOException {
+    public void scanXMLXpatchin(Element element, String urlAction, String[] payload, String method, CookieManager cooki) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
         String vulnName = "XMLXpatch Injection";
         String urlAttack = urlAction;
         boolean checkVuln = false;
@@ -39,6 +42,9 @@ public class Scan_XMLXpatchi {
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cooki != null) {
+            client.setCookieManager(cooki);
+        }
         List<NameValuePair> params;
         psXMLXpatchi psXMLXpatchi = new psXMLXpatchi();
 
@@ -76,11 +82,11 @@ public class Scan_XMLXpatchi {
                         }
                     }
                 }
-                String method = "";
-                try {
-                    method = element.attr("method");
-                } catch (Exception e) {
-                }
+//                String method = "";
+//                try {
+//                    method = element.attr("method");
+//                } catch (Exception e) {
+//                }
                 function.Scan scan = new Scan();
                 if (method.toLowerCase().contains("post")) {
                     requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);

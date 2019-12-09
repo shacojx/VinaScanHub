@@ -7,8 +7,14 @@ package Scan;
 
 import PaySig.psUploadFile;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import function.Scan;
 import java.io.IOException;
+import java.net.URL;
 import javax.swing.table.DefaultTableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,12 +25,27 @@ import org.jsoup.nodes.Document;
  */
 public class Scan_FileUpload {
 
-    public void uploadfile(String url) throws IOException {
+    public void uploadfile(String url, CookieManager cooki) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
+        WebRequest requestSettings;
+        WebClient client = new WebClient();
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cooki != null) {
+            client.setCookieManager(cooki);
+        }
+
         psUploadFile psUp = new psUploadFile();
         Scan s = new Scan();
-        Document doc = Jsoup.connect(url).get();
+        requestSettings = new WebRequest(new URL(url), HttpMethod.GET);
+        HtmlPage page = client.getPage(requestSettings);
+        String tempBody = page.asXml();
+//        Document doc = Jsoup.connect(url).get();
         for (String x : psUp.getArrSigUploadFile()) {
-            if (doc.body().toString().contains(x)) {
+            if (tempBody.contains(x)) {
+//            if (doc.body().toString().contains(x)) {
                 s.list_vuln.add("Upload File: " + url);
                 DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                 dtm.addRow(new Object[]{"Upload File ", url, "", x});

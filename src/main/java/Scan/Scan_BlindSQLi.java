@@ -7,6 +7,7 @@ package Scan;
 
 import PaySig.psSQLi;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -33,8 +34,9 @@ public class Scan_BlindSQLi {
     public Scan_BlindSQLi() {
     }
 
-    public void scanBlindSQLin(Element element, String urlAction) throws IOException {
-        LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+    public void scanBlindSQLin(Element element, String urlAction, String method, CookieManager cooki) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
         boolean check_blind = false;
         String vulnName = "Blind SQL Injection";
         String urlAttack = urlAction;
@@ -44,6 +46,9 @@ public class Scan_BlindSQLi {
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cooki != null) {
+            client.setCookieManager(cooki);
+        }
         List<NameValuePair> params;
         List<NameValuePair> params1;
         List<NameValuePair> params2;
@@ -108,11 +113,11 @@ public class Scan_BlindSQLi {
                     }
                 }
             }
-            String method = "";
-            try {
-                method = element.attr("method");
-            } catch (Exception e) {
-            }
+//            String method = "";
+//            try {
+//                method = element.attr("method");
+//            } catch (Exception e) {
+//            }
             function.Scan scan = new Scan();
             if (method.toLowerCase().contains("post")) {
                 requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);
@@ -143,7 +148,7 @@ public class Scan_BlindSQLi {
             for (String sSig : psSQLi.getArrSigSQLin()) {
 
                 if (page.asXml().contains(sSig) == false && check_blind == true) {
-                    
+
                     System.out.println(method + vulnName + " : " + urlAction);
                     System.out.println("        " + params.toString());
                     DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();

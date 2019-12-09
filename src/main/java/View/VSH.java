@@ -13,11 +13,15 @@ import function.SpiderWeb;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import paramstatic.Param;
+import static paramstatic.Param.EXECUTOR_SERVICE;
 
 /**
  *
@@ -35,14 +39,14 @@ public class VSH extends javax.swing.JFrame {
     String url = "";
     public static int dept = 0;
     public static int numberOfThreads = 0;
+    
     public VSH() {
         initComponents();
         this.setTitle("Vina Scan Hub");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-
+        
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,10 +59,10 @@ public class VSH extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtUrl = new javax.swing.JTextField();
-        Scan = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        lbUrl = new javax.swing.JLabel();
+        tfUrl = new javax.swing.JTextField();
+        btnScan = new javax.swing.JButton();
+        lbDept = new javax.swing.JLabel();
         Clear = new javax.swing.JButton();
         Save = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -66,9 +70,9 @@ public class VSH extends javax.swing.JFrame {
         Delete = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         Report = new javax.swing.JButton();
-        txtThread = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txtDept = new javax.swing.JTextField();
+        tfThread = new javax.swing.JTextField();
+        lbThread = new javax.swing.JLabel();
+        tfDept = new javax.swing.JTextField();
         Port = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -78,13 +82,19 @@ public class VSH extends javax.swing.JFrame {
         Addpay = new javax.swing.JButton();
         About = new javax.swing.JButton();
         Action = new javax.swing.JLabel();
+        lbAuthen = new javax.swing.JLabel();
+        cbAuthen = new javax.swing.JCheckBox();
+        lbUser = new javax.swing.JLabel();
+        tfUser = new javax.swing.JTextField();
+        lbPassword = new javax.swing.JLabel();
+        tfPassword = new javax.swing.JTextField();
         Tabmenu = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         LOG_CONSOLE = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         VulnResult = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        history = new javax.swing.JTable();
+        HistoryResult = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
         LinkResult = new javax.swing.JTable();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -97,26 +107,27 @@ public class VSH extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(0, 0));
 
         jLabel1.setFont(new java.awt.Font("Wide Latin", 3, 14)); // NOI18N
         jLabel1.setText("Vina Scan Hub");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setText(" URL");
+        lbUrl.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbUrl.setText(" URL");
 
-        txtUrl.setText("http://testphp.vulnweb.com/");
+        tfUrl.setText("http://testphp.vulnweb.com/");
 
-        Scan.setBackground(new java.awt.Color(102, 255, 102));
-        Scan.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        Scan.setText("Scan");
-        Scan.addActionListener(new java.awt.event.ActionListener() {
+        btnScan.setBackground(new java.awt.Color(102, 255, 102));
+        btnScan.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnScan.setText("Scan");
+        btnScan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ScanActionPerformed(evt);
+                btnScanActionPerformed(evt);
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText(" Dept");
+        lbDept.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbDept.setText(" Dept");
 
         Clear.setBackground(new java.awt.Color(51, 51, 255));
         Clear.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -171,12 +182,12 @@ public class VSH extends javax.swing.JFrame {
             }
         });
 
-        txtThread.setText("50");
+        tfThread.setText("50");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel7.setText("Threads:");
+        lbThread.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbThread.setText("Threads:");
 
-        txtDept.setText("10");
+        tfDept.setText("10");
 
         Port.setBackground(new java.awt.Color(204, 204, 0));
         Port.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -199,11 +210,13 @@ public class VSH extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         Loading.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -241,6 +254,31 @@ public class VSH extends javax.swing.JFrame {
         Action.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         Action.setText("Do Nothing");
 
+        lbAuthen.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbAuthen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbAuthen.setText("Authen ");
+        lbAuthen.setFocusable(false);
+        lbAuthen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        cbAuthen.setText("Yes / No");
+        cbAuthen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAuthenActionPerformed(evt);
+            }
+        });
+
+        lbUser.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbUser.setText("User :");
+        lbUser.setEnabled(false);
+
+        tfUser.setEnabled(false);
+
+        lbPassword.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbPassword.setText("Password :");
+        lbPassword.setEnabled(false);
+
+        tfPassword.setEnabled(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -250,32 +288,49 @@ public class VSH extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel4)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(txtUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lbDept, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfDept, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(txtDept, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtThread, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(18, 18, 18)
+                                .addComponent(lbUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tfUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(lbThread)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(tfThread, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbPassword)
+                            .addComponent(lbUser))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbAuthen)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbAuthen)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Report, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Scan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Port, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnScan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Port, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(About, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -283,70 +338,78 @@ public class VSH extends javax.swing.JFrame {
                             .addComponent(Delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Fuzz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Addpay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(About, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(Addpay, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(Loading)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Action, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Action, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(1, 1, 1)
-                                                .addComponent(txtUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGap(2, 2, 2)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtThread, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtDept, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(2, 2, 2)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                    .addComponent(Clear)
-                                                    .addComponent(Report)))
-                                            .addComponent(Addpay, javax.swing.GroupLayout.Alignment.TRAILING))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(Save)
-                                            .addComponent(Delete))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(Stop)
-                                            .addComponent(Scan))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(Port)
-                                            .addComponent(Fuzz)
-                                            .addComponent(About)))))
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Loading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Action))))
-                .addContainerGap())
+                                            .addComponent(Clear)
+                                            .addComponent(Report)))
+                                    .addComponent(Addpay, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(Save)
+                                    .addComponent(Delete))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(Stop)
+                                    .addComponent(btnScan))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(Port)
+                                    .addComponent(Fuzz))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(About)
+                                .addGap(9, 9, 9)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(Loading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(Action))
+                                .addGap(29, 29, 29))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addGap(1, 1, 1)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                                    .addComponent(lbDept, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tfDept)
+                                    .addComponent(lbThread, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tfThread, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbAuthen)
+                                    .addComponent(cbAuthen))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbUser)
+                                    .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbPassword)
+                                    .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         LOG_CONSOLE.setColumns(20);
@@ -374,7 +437,7 @@ public class VSH extends javax.swing.JFrame {
 
         Tabmenu.addTab("Vulnerability", jScrollPane3);
 
-        history.setModel(new javax.swing.table.DefaultTableModel(
+        HistoryResult.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -382,7 +445,7 @@ public class VSH extends javax.swing.JFrame {
                 "Date", "URL", "Total Vuln"
             }
         ));
-        jScrollPane2.setViewportView(history);
+        jScrollPane2.setViewportView(HistoryResult);
 
         Tabmenu.addTab("History", jScrollPane2);
 
@@ -438,62 +501,30 @@ public class VSH extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1067, Short.MAX_VALUE)
             .addComponent(Tabmenu, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Tabmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Tabmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void ScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ScanActionPerformed
-        try {
-            String url = txtUrl.getText();
-            if(!url.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")) {
-                JOptionPane.showMessageDialog(null, "Check url11");
-                return;
-            }
-            String deptText = txtDept.getText();
-            if(!deptText.matches("\\d+")) {
-                JOptionPane.showMessageDialog(null, "Check dept!!");
-                return;
-            }
-            dept = Integer.parseInt(deptText);
-            String threadText = txtThread.getText();
-            if(!threadText.matches("\\d+")) {
-                JOptionPane.showMessageDialog(null, "Check number of threads!!");
-                return;
-            }
-            numberOfThreads = Integer.parseInt(threadText);
-            Scan s = new Scan();
-            s.Scan(url);
-        } catch (IOException ex) {
-            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-    }//GEN-LAST:event_ScanActionPerformed
-
-    private void ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportActionPerformed
-        
-
-    }//GEN-LAST:event_ReportActionPerformed
-
-    private void PortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PortActionPerformed
+    private void LOG_CONSOLEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LOG_CONSOLEMouseClicked
         // TODO add your handling code here:
-        ScanPort scanport = new ScanPort();
-        scanport.ScanPort();
+        JTable source = (JTable) evt.getSource();
+        int row = source.rowAtPoint(evt.getPoint());
+        int column = source.columnAtPoint(evt.getPoint());
+        String s = source.getModel().getValueAt(row, column) + "";
         
-    }//GEN-LAST:event_PortActionPerformed
+        JOptionPane.showMessageDialog(null, s);
+    }//GEN-LAST:event_LOG_CONSOLEMouseClicked
 
     private void AboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutActionPerformed
         // TODO add your handling code here:
@@ -507,36 +538,126 @@ public class VSH extends javax.swing.JFrame {
         ap.setVisible(true);
     }//GEN-LAST:event_AddpayActionPerformed
 
-    private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
+    private void FuzzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuzzActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_ClearActionPerformed
+    }//GEN-LAST:event_FuzzActionPerformed
+
+    private void PortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PortActionPerformed
+        // TODO add your handling code here:
+        ScanPort scanport = new ScanPort();
+        scanport.ScanPort(tfUrl.getText());
+
+    }//GEN-LAST:event_PortActionPerformed
+
+    private void ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportActionPerformed
+
+    }//GEN-LAST:event_ReportActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
         // TODO add your handling code here:
+        Scan s = new Scan();
+        s.list_vuln = new ArrayList<>();
+        s.checkURLGET = new HashSet<>();
+        s.checkURLPOST = new HashSet<>();
+        ScanPort sp = new ScanPort();
+        sp.ListPort = new ArrayList<>();
+        SpiderWeb sw = new SpiderWeb();
+        sw.links = new HashSet<>();
+        Param p = new Param();
+        p.listEmail = new HashSet<>();
+        p.listAdmin = new HashSet<>();
+        Info.setText("[ Information website ]\n");
+        LOG_CONSOLE.setText("");
+        DefaultTableModel vulnresult = (DefaultTableModel) View.VSH.VulnResult.getModel();
+        vulnresult.getDataVector().removeAllElements();
+        DefaultTableModel historyresult = (DefaultTableModel) View.VSH.HistoryResult.getModel();
+        historyresult.getDataVector().removeAllElements();
+        DefaultTableModel linkresult = (DefaultTableModel) View.VSH.LinkResult.getModel();
+        linkresult.getDataVector().removeAllElements();
+        DefaultTableModel portresult = (DefaultTableModel) View.VSH.PortResult.getModel();
+        portresult.getDataVector().removeAllElements();
+        DefaultTableModel fuzzresult = (DefaultTableModel) View.VSH.FuzzResult.getModel();
+        fuzzresult.getDataVector().removeAllElements();
+        DefaultTableModel otherresult = (DefaultTableModel) View.VSH.OtherResult.getModel();
+        otherresult.getDataVector().removeAllElements();
     }//GEN-LAST:event_DeleteActionPerformed
+
+    private void StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopActionPerformed
+//        for (int i = 0; i < 10; i++) {
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            EXECUTOR_SERVICE.shutdownNow();
+//            try {
+//                // TODO add your handling code here:
+//                EXECUTOR_SERVICE.awaitTermination(0, TimeUnit.MICROSECONDS);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//            Scan s = new Scan();
+//            s.service.shutdownNow();
+//            try {
+//                // TODO add your handling code here:
+//                s.service.awaitTermination(0, TimeUnit.MICROSECONDS);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+//        LOG_CONSOLE.append("Scan Cancel!!!" + "\n");
+    }//GEN-LAST:event_StopActionPerformed
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SaveActionPerformed
 
-    private void StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopActionPerformed
+    private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_StopActionPerformed
+        tfUrl.setText("");
+        tfDept.setText("");
+        tfThread.setText("");
+        tfUser.setText("");
+        tfPassword.setText("");
+    }//GEN-LAST:event_ClearActionPerformed
 
-    private void FuzzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuzzActionPerformed
+    private void btnScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScanActionPerformed
+        try {
+            setAllViewEnable(false);
+            btnScan.setEnabled(false);
+            
+            String url = tfUrl.getText();
+            if (!url.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")) {
+                JOptionPane.showMessageDialog(null, "Check url11");
+                return;
+            }
+            String deptText = tfDept.getText();
+            if (!deptText.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Check dept!!");
+                return;
+            }
+            dept = Integer.parseInt(deptText);
+            String threadText = tfThread.getText();
+            if (!threadText.matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Check number of threads!!");
+                return;
+            }
+            numberOfThreads = Integer.parseInt(threadText);
+            Scan s = new Scan();
+            s.Scan(url);
+        } catch (Exception ex) {
+            setAllViewEnable(true);
+            btnScan.setEnabled(true);
+            setViewAuthenEnable(cbAuthen.isSelected());
+            System.out.println("ERROR Button Scan!!!");
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnScanActionPerformed
+
+    private void cbAuthenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAuthenActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_FuzzActionPerformed
-
-    private void LOG_CONSOLEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LOG_CONSOLEMouseClicked
-        // TODO add your handling code here:
-        JTable source = (JTable)evt.getSource();
-            int row = source.rowAtPoint( evt.getPoint() );
-            int column = source.columnAtPoint( evt.getPoint() );
-            String s=source.getModel().getValueAt(row, column)+"";
-
-            JOptionPane.showMessageDialog(null, s);
-    }//GEN-LAST:event_LOG_CONSOLEMouseClicked
+        setViewAuthenEnable(cbAuthen.isSelected());
+    }//GEN-LAST:event_cbAuthenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -572,6 +693,35 @@ public class VSH extends javax.swing.JFrame {
             }
         });
     }
+    
+    public static void setAllViewEnable(boolean en) {
+        lbAuthen.setEnabled(en);
+        lbDept.setEnabled(en);
+        lbPassword.setEnabled(en);
+        lbThread.setEnabled(en);
+        lbUrl.setEnabled(en);
+        lbUser.setEnabled(en);
+        tfDept.setEnabled(en);
+        tfPassword.setEnabled(en);
+        tfThread.setEnabled(en);
+        tfUrl.setEnabled(en);
+        tfUser.setEnabled(en);
+        cbAuthen.setEnabled(en);
+    }
+    
+    public static void setViewAuthenEnable(boolean en) {
+        if (en) {
+            lbUser.setEnabled(true);
+            lbPassword.setEnabled(true);
+            tfUser.setEnabled(true);
+            tfPassword.setEnabled(true);
+        } else {
+            lbUser.setEnabled(false);
+            lbPassword.setEnabled(false);
+            tfUser.setEnabled(false);
+            tfPassword.setEnabled(false);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton About;
@@ -581,6 +731,7 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JButton Delete;
     private javax.swing.JButton Fuzz;
     public static javax.swing.JTable FuzzResult;
+    public static javax.swing.JTable HistoryResult;
     public static javax.swing.JTextArea Info;
     public static javax.swing.JTextArea LOG_CONSOLE;
     public static javax.swing.JTable LinkResult;
@@ -590,17 +741,14 @@ public class VSH extends javax.swing.JFrame {
     public static javax.swing.JTable PortResult;
     private javax.swing.JButton Report;
     private javax.swing.JButton Save;
-    private javax.swing.JButton Scan;
     private javax.swing.JButton Stop;
     private javax.swing.JTabbedPane Tabmenu;
     public static javax.swing.JTable VulnResult;
-    private javax.swing.JTable history;
+    public static javax.swing.JButton btnScan;
+    public static javax.swing.JCheckBox cbAuthen;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -611,8 +759,16 @@ public class VSH extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTextField txtDept;
-    private javax.swing.JTextField txtThread;
-    private javax.swing.JTextField txtUrl;
+    private static javax.swing.JLabel lbAuthen;
+    private static javax.swing.JLabel lbDept;
+    public static javax.swing.JLabel lbPassword;
+    private static javax.swing.JLabel lbThread;
+    private static javax.swing.JLabel lbUrl;
+    public static javax.swing.JLabel lbUser;
+    private static javax.swing.JTextField tfDept;
+    public static javax.swing.JTextField tfPassword;
+    public static javax.swing.JTextField tfThread;
+    private static javax.swing.JTextField tfUrl;
+    public static javax.swing.JTextField tfUser;
     // End of variables declaration//GEN-END:variables
 }

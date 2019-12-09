@@ -6,8 +6,10 @@
 package Information;
 
 import View.VSH;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,38 +24,48 @@ import javax.swing.table.DefaultTableModel;
 public class ScanPort {
 
     public static ArrayList<Integer> ListPort = new ArrayList<>();
-    public static String url = "";
+//    public static String url = "";
 
-    public void ScanPort() {
-        VSH.LOG_CONSOLE.append("Port Scan Start" + "\n");
-        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
-        ExecutorService executorService2 = Executors.newFixedThreadPool(1000);
-        int port = 0;
-        for (port = 1; port <= 10000; port++) {
-            executorService2.execute(new thread(port));
-        }
-        executorService2.shutdown();
-        //cehck done
-        new Thread(() -> {
-            while (!executorService2.isTerminated()) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ScanPort.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            VSH.LOG_CONSOLE.append("Scan done" + "\n");
+    public void ScanPort(String url) {
+        try {
+            // Fetch IP address by getByName() 
+            String ipx = new URL(url).getHost();
+
+            VSH.LOG_CONSOLE.append("Port Scan Start" + "\n");
+            VSH.LOG_CONSOLE.append("URL: " + ipx + "\n");
             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
-        }).start();
-
+            ExecutorService executorService2 = Executors.newFixedThreadPool(3000);
+            int port = 0;
+            for (port = 1; port <= 10000; port++) {
+                executorService2.execute(new thread(port, ipx));
+            }
+            executorService2.shutdown();
+            //cehck done
+            new Thread(() -> {
+                while (!executorService2.isTerminated()) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ScanPort.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                VSH.LOG_CONSOLE.append("Scan done" + "\n");
+                VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+            }).start();
+        } catch (Exception e) {
+            System.out.println("ERROR scan port!!!");
+            e.printStackTrace();
+        }
     }
 
     static class thread implements Runnable {
 
         private int port;
+        private String url;
 
-        public thread(int port) {
+        public thread(int port, String url) {
             this.port = port;
+            this.url = url;
         }
 
         @Override
@@ -68,8 +80,9 @@ public class ScanPort {
                 dtm.addRow(new Object[]{port, "Open"});
                 VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                 System.out.println("Port " + port + " is open");
-
             } catch (Exception ex) {
+                System.out.println("ERROR thread scan port!!!!");
+                ex.printStackTrace();
             }
         }
 

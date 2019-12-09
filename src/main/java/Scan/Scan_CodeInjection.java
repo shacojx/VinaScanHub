@@ -8,6 +8,7 @@ package Scan;
 import PaySig.psCodeInjection;
 import PaySig.psLFI;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -31,7 +32,9 @@ public class Scan_CodeInjection {
     public Scan_CodeInjection() {
     }
 
-    public void scanCI(Element element, String urlAction, String[] payload) throws IOException {
+    public void scanCI(Element element, String urlAction, String[] payload, String method, CookieManager cooki) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
         String vulnName = "Code Injection";
         String urlAttack = urlAction;
         boolean checkVuln = false;
@@ -40,6 +43,9 @@ public class Scan_CodeInjection {
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cooki != null) {
+            client.setCookieManager(cooki);
+        }
         List<NameValuePair> params;
         psCodeInjection psCI = new psCodeInjection();
 
@@ -77,11 +83,11 @@ public class Scan_CodeInjection {
                         }
                     }
                 }
-                String method = "";
-                try {
-                    method = element.attr("method");
-                } catch (Exception e) {
-                }
+//                String method = "";
+//                try {
+//                    method = element.attr("method");
+//                } catch (Exception e) {
+//                }
                 function.Scan scan = new Scan();
                 if (method.toLowerCase().contains("post")) {
                     requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);

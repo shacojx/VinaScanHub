@@ -7,8 +7,14 @@ package Scan;
 
 import PaySig.psDirectorylisting;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import function.Scan;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import javax.swing.table.DefaultTableModel;
 import org.jsoup.Jsoup;
@@ -23,13 +29,28 @@ public class Scan_DirList {
     public Scan_DirList() {
     }
 
-    public void Scan_DirList(HashSet<String> listurl) throws IOException {
+    public void Scan_DirList(HashSet<String> listurl, CookieManager cooki) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
+        WebRequest requestSettings;
+        WebClient client = new WebClient();
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cooki != null) {
+            client.setCookieManager(cooki);
+        }
+
         psDirectorylisting psDirList = new psDirectorylisting();
         Scan s = new Scan();
         for (String url : listurl) {
-            Document doc = Jsoup.connect(url).get();
+            requestSettings = new WebRequest(new URL(url), HttpMethod.GET);
+            HtmlPage page = client.getPage(requestSettings);
+            String tempBody = page.asXml();
+//            Document doc = Jsoup.connect(url).get();
             for (String sig : psDirList.getArrSigDL()) {
-                if (doc.body().toString().contains(sig)) {
+                if (tempBody.contains(sig)) {
+//                if (doc.body().toString().contains(sig)) {
                     s.list_vuln.add("Dir List: " + url);
                     DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                     dtm.addRow(new Object[]{"Dir List ", url, "", sig});

@@ -8,12 +8,14 @@ package Scan;
 import PaySig.psCMDInjection;
 import PaySig.psSQLi;
 import View.VSH;
+import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import function.Scan;
+import function.encodeValue;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,7 +33,9 @@ public class Scan_CMDinjection {
     public Scan_CMDinjection() {
     }
 
-    public void scanCMDi(Element element, String urlAction, String[] payload) throws IOException {
+    public void scanCMDi(Element element, String urlAction, String[] payload, String method, CookieManager cooki) throws IOException {
+        /* turn off annoying htmlunit warnings */
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
         String vulnName = "OS CMD Injection";
         String urlAttack = urlAction;
         boolean checkVuln = false;
@@ -40,8 +44,12 @@ public class Scan_CMDinjection {
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        if (cooki != null) {
+            client.setCookieManager(cooki);
+        }
         List<NameValuePair> params;
         psCMDInjection psCMDi = new psCMDInjection();
+        encodeValue encodeValue = new encodeValue();
 
         for (String sPay : payload) {
             params = new ArrayList<>();
@@ -72,16 +80,16 @@ public class Scan_CMDinjection {
                             params.add(new NameValuePair(e1.attr("name"), sPay));
                         } else {
                             if (e1.attr("name").length() != 0) {
-                                params.add(new NameValuePair(e1.attr("name"), e1.attr("value")));
+                                params.add(new NameValuePair(e1.attr("name"), encodeValue.encode(e1.attr("value"))));
                             }
                         }
                     }
                 }
-                String method = "";
-                try {
-                    method = element.attr("method");
-                } catch (Exception e) {
-                }
+//                String method = "";
+//                try {
+//                    method = element.attr("method");
+//                } catch (Exception e) {
+//                }
                 function.Scan scan = new Scan();
                 if (method.toLowerCase().contains("post")) {
                     requestSettings = new WebRequest(new URL(urlAction), HttpMethod.POST);
