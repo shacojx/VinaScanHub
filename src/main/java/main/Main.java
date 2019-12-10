@@ -46,9 +46,9 @@ public class Main {
         dept = scan.nextInt();
         scan.nextLine();
         spider.MAX_DEPTH = dept;
-        scanport.url = url;
+//        scanport.url = url;
         System.err.println("Scanning Port");
-        scanport.ScanPort();
+//        scanport.ScanPort();
         System.out.println("Scan port end");
 //        CheckSiteAdmin checkSite = new CheckSiteAdmin();
 //        checkSite.checkSiteAdmin(url);
