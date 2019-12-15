@@ -5,6 +5,17 @@
  */
 package View;
 
+import PaySig.psCMDInjection;
+import PaySig.psCodeInjection;
+import PaySig.psLFI;
+import PaySig.psSQLi;
+import PaySig.psXMLXpatchi;
+import PaySig.psXSS;
+import static View.VSH.FuzzResult;
+import function.SpiderWeb;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author Shaco JX
@@ -14,11 +25,13 @@ public class FuzzOut extends javax.swing.JDialog {
     /**
      * Creates new form FuzzOut
      */
+    FuzzOut2 fuzzout2;
     public FuzzOut(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+       fuzzout2 = new FuzzOut2(parent, true);
     }
 
     /**
@@ -49,6 +62,12 @@ public class FuzzOut extends javax.swing.JDialog {
                 "Link"
             }
         ));
+        FuzzOutResult.setVerifyInputWhenFocusTarget(false);
+        FuzzOutResult.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FuzzOutResultMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(FuzzOutResult);
 
         VulnName.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -69,7 +88,7 @@ public class FuzzOut extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(22, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(VulnName, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -93,6 +112,60 @@ public class FuzzOut extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void FuzzOutResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FuzzOutResultMouseClicked
+        // TODO add your handling code here:
+        
+        
+        DefaultTableModel dtmz = (DefaultTableModel) View.FuzzOut2.PayVuln.getModel();
+        int index = FuzzOutResult.getSelectedRow();
+        TableModel model = FuzzOutResult.getModel();
+        String vuln = this.VulnName.getText();
+        String link_pay = (String) model.getValueAt(index, 0);
+        SpiderWeb sp = new SpiderWeb();
+        fuzzout2.payvuln.setText(vuln);
+        fuzzout2.link_payload.setText(link_pay);
+        
+        if(vuln.equalsIgnoreCase("XSS")){
+            psXSS pxss = new psXSS();
+            for(String s : pxss.getArrPayXSS()){
+                dtmz.addRow(new Object[]{s});
+            }
+        }else if(vuln.equalsIgnoreCase("Blind SQL injection")){
+            psXSS pxss = new psXSS();
+            for(String s : pxss.getArrPayXSS()){
+                dtmz.addRow(new Object[]{s});
+            }
+        }else if(vuln.equalsIgnoreCase("OS CMD injection")){
+            psCMDInjection pcmdi = new psCMDInjection();
+            for(String s : pcmdi.getArrPayCMDi()){
+                dtmz.addRow(new Object[]{s});
+            }
+        }else if(vuln.equalsIgnoreCase("Code injection")){
+            psCodeInjection pci = new psCodeInjection();
+            for(String s : pci.getArrPayCI()){
+                dtmz.addRow(new Object[]{s});
+            }
+        }else if(vuln.equalsIgnoreCase("LFI")){
+            psLFI plfi = new psLFI();
+            for(String s : plfi.getArrPayLFI()){
+                dtmz.addRow(new Object[]{s});
+            }
+        }else if(vuln.equalsIgnoreCase("SQL injection")){
+            psSQLi psqli = new psSQLi();
+            for(String s : psqli.getArrPaySQLin()){
+                dtmz.addRow(new Object[]{s});
+            }
+        }else if(vuln.equalsIgnoreCase("XML Xpatch injection")){
+            psXMLXpatchi pxml = new psXMLXpatchi();
+            for(String s : pxml.getArrPayXMLXPathin()){
+                dtmz.addRow(new Object[]{s});
+            }
+        }
+        
+        
+        fuzzout2.setVisible(true);
+    }//GEN-LAST:event_FuzzOutResultMouseClicked
 
     /**
      * @param args the command line arguments
