@@ -76,6 +76,25 @@ public class History implements Serializable {
     public History() {
     }
 
+    public History(Date date, String url, Integer toal, String deleteFlg) {
+        this.date = date;
+        this.url = url;
+        this.toal = toal;
+        this.deleteFlg = deleteFlg;
+    }
+    
+    public History(Long id, Date date, String url, Integer toal, String deleteFlg) {
+        this.id = id;
+        this.date = date;
+        this.url = url;
+        this.toal = toal;
+        this.deleteFlg = deleteFlg;
+    }
+    
+    
+    
+    
+
 
 
 }

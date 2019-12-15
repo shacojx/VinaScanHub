@@ -49,8 +49,8 @@ public class VSH extends javax.swing.JFrame {
     public static int numberOfThreads = 0;
     public static ArrayList<FuzzEntity> fu = new ArrayList<>();
     public static ArrayList<VulnEntity> ve = new ArrayList<>();
-    private HistoryDao historyDao = new HistoryDao();
-    private VulnDao vulnDao = new VulnDao();
+    private final HistoryDao historyDao = new HistoryDao();
+    private final VulnDao vulnDao = new VulnDao();
     javax.swing.JFrame rootFrame = this;
 
     public VSH() {
