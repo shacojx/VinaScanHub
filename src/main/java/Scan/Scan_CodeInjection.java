@@ -5,6 +5,7 @@
  */
 package Scan;
 
+import Entity.FuzzEntity;
 import PaySig.psCodeInjection;
 import PaySig.psLFI;
 import View.VSH;
@@ -113,9 +114,11 @@ public class Scan_CodeInjection {
                         scan.list_vuln.add(method + vulnName + " : " + urlAction);
                         break;
                     } else {
-                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
-                        dtmz.addRow(new Object[]{urlAction, params.toString()});
-//                        View.FuzzResult.FuzzOutput.append(page.asXml());
+//                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
+//                        dtmz.addRow(new Object[]{urlAction, params.toString()});
+                        FuzzEntity f = new FuzzEntity(urlAction, vulnName, params.toString(), page.asXml());
+                        View.VSH.fu.add(f);
+
                     }
                 }
             } catch (IOException | RuntimeException e) {

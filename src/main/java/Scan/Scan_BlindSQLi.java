@@ -5,6 +5,7 @@
  */
 package Scan;
 
+import Entity.FuzzEntity;
 import PaySig.psSQLi;
 import View.VSH;
 import com.gargoylesoftware.htmlunit.CookieManager;
@@ -159,8 +160,10 @@ public class Scan_BlindSQLi {
                     scan.list_vuln.add(method + vulnName + " : " + urlAction);
                     break;
                 } else {
-                    DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
-                    dtmz.addRow(new Object[]{urlAction, params.toString()});
+//                    DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
+//                    dtmz.addRow(new Object[]{urlAction, params.toString()});
+                    FuzzEntity f = new FuzzEntity(urlAction, vulnName, params.toString(), page.asXml());
+                    View.VSH.fu.add(f);
                 }
             }
         } catch (IOException | RuntimeException e) {

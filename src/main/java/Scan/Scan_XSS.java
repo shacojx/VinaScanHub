@@ -5,6 +5,7 @@
  */
 package Scan;
 
+import Entity.FuzzEntity;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -163,8 +164,10 @@ public class Scan_XSS {
                                         scan.list_vuln.add(method + vulnName + " : " + urlAction);
                                         break;
                                     } else {
-                                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
-                                        dtmz.addRow(new Object[]{urlAction, params.toString()});
+//                                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
+//                                        dtmz.addRow(new Object[]{urlAction, params.toString()});
+                                        FuzzEntity f = new FuzzEntity(urlAction, vulnName, params.toString(), page.asXml());
+                                        View.VSH.fu.add(f);
                                     }
                                 }
                             } catch (Exception e) {

@@ -5,6 +5,7 @@
  */
 package View;
 
+import Entity.FuzzEntity;
 import Information.Info;
 import Information.ScanPort;
 import Report.ReportPDF;
@@ -40,6 +41,7 @@ public class VSH extends javax.swing.JFrame {
     String url = "";
     public static int dept = 0;
     public static int numberOfThreads = 0;
+    public static ArrayList<FuzzEntity> fu = new ArrayList<>();
 
     public VSH() {
         initComponents();
@@ -479,9 +481,14 @@ public class VSH extends javax.swing.JFrame {
 
             },
             new String [] {
-                "URL", "Status"
+                "Vuln"
             }
         ));
+        FuzzResult.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FuzzResultMouseClicked(evt);
+            }
+        });
         jScrollPane7.setViewportView(FuzzResult);
 
         Tabmenu.addTab("Fuzz", jScrollPane7);
@@ -541,6 +548,20 @@ public class VSH extends javax.swing.JFrame {
 
     private void FuzzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuzzActionPerformed
         // TODO add your handling code here:
+        SpiderWeb sp = new SpiderWeb();
+        DefaultTableModel dtm = (DefaultTableModel) View.VSH.FuzzResult.getModel();
+//        for(String url : sp.links){
+//            dtm.addRow(new Object[]{url,"SQL injection"});
+//        }
+        dtm.addRow(new Object[]{"SQL injection"});
+        dtm.addRow(new Object[]{"Blind SQL injection"});
+        dtm.addRow(new Object[]{"XSS"});
+        dtm.addRow(new Object[]{"LFI"});
+        dtm.addRow(new Object[]{"OS CMD injection"});
+        dtm.addRow(new Object[]{"Code injection"});
+        dtm.addRow(new Object[]{"XML Xpatch injection"});
+
+
     }//GEN-LAST:event_FuzzActionPerformed
 
     private void PortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PortActionPerformed
@@ -675,6 +696,21 @@ public class VSH extends javax.swing.JFrame {
         // TODO add your handling code here:
         setViewAuthenEnable(cbAuthen.isSelected());
     }//GEN-LAST:event_cbAuthenActionPerformed
+
+    private void FuzzResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FuzzResultMouseClicked
+        // TODO add your handling code here:
+        JTable table =(JTable) evt.getSource();
+        DefaultTableModel dtmz = (DefaultTableModel) View.FuzzOut.FuzzOutResult.getModel();
+        if (table.getSelectedRow() != -1 && evt.getClickCount() == 1) {
+            FuzzOut fuzzout = new FuzzOut(this, true);
+            fuzzout.setVisible(true);
+            for (FuzzEntity fe : fu) {
+                dtmz.addRow(new Object[]{fe.getLink(), fe.getPayload(), fe.getResponse()});
+            }
+        }
+
+
+    }//GEN-LAST:event_FuzzResultMouseClicked
 
     /**
      * @param args the command line arguments
