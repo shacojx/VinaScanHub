@@ -6,6 +6,7 @@
 package DBContent;
 
 import Entity.History;
+import Entity.VulnEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -28,6 +29,8 @@ public class DBContent {
                             .applySettings(configuration.getProperties()).build();
             
             configuration.addAnnotatedClass(History.class);
+            configuration.addAnnotatedClass(VulnEntity.class);
+            
             
             // builds a session factory from the service registry
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);

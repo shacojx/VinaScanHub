@@ -5,7 +5,11 @@
  */
 package View;
 
+import DBContent.HistoryDao;
+import DBContent.VulnDao;
 import Entity.FuzzEntity;
+import Entity.History;
+import Entity.VulnEntity;
 import Information.Info;
 import Information.ScanPort;
 import Report.ReportPDF;
@@ -22,6 +26,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import paramstatic.Param;
 import static paramstatic.Param.EXECUTOR_SERVICE;
 
@@ -42,6 +47,7 @@ public class VSH extends javax.swing.JFrame {
     public static int dept = 0;
     public static int numberOfThreads = 0;
     public static ArrayList<FuzzEntity> fu = new ArrayList<>();
+    public static ArrayList<VulnEntity> ve = new ArrayList<>();
 
     public VSH() {
         initComponents();
@@ -481,9 +487,10 @@ public class VSH extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Vuln"
+                "Attack with payload vuln"
             }
         ));
+        FuzzResult.setVerifyInputWhenFocusTarget(false);
         FuzzResult.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 FuzzResultMouseClicked(evt);
@@ -648,6 +655,13 @@ public class VSH extends javax.swing.JFrame {
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         // TODO add your handling code here:
+        
+        HistoryDao historyDao   = new HistoryDao();
+        History history = new History();
+        historyDao.save(history);
+        
+        VulnDao vulnDao = new VulnDao();
+        vulnDao.save(ve,history);
     }//GEN-LAST:event_SaveActionPerformed
 
     private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
@@ -699,15 +713,19 @@ public class VSH extends javax.swing.JFrame {
 
     private void FuzzResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FuzzResultMouseClicked
         // TODO add your handling code here:
-        JTable table =(JTable) evt.getSource();
+        
+        FuzzOut fuzzout = new FuzzOut(this, true);
         DefaultTableModel dtmz = (DefaultTableModel) View.FuzzOut.FuzzOutResult.getModel();
-        if (table.getSelectedRow() != -1 && evt.getClickCount() == 1) {
-            FuzzOut fuzzout = new FuzzOut(this, true);
-            fuzzout.setVisible(true);
-            for (FuzzEntity fe : fu) {
-                dtmz.addRow(new Object[]{fe.getLink(), fe.getPayload(), fe.getResponse()});
-            }
+        int index = FuzzResult.getSelectedRow();
+        TableModel model = FuzzResult.getModel();
+        String vuln = (String) model.getValueAt(index, 0);
+        SpiderWeb sp = new SpiderWeb();
+        View.FuzzOut.VulnName.setText(vuln);
+        for (String fe : sp.links) {
+                dtmz.addRow(new Object[]{fe});
+                
         }
+        fuzzout.setVisible(true);
 
 
     }//GEN-LAST:event_FuzzResultMouseClicked

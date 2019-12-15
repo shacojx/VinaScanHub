@@ -17,12 +17,12 @@ public class MyScan {
     private Date date;
     private String url;
     private int total_vuln;
-    private ArrayList<String> vuln;
+    private ArrayList<VulnEntity> vuln;
 
     public MyScan() {
     }
 
-    public MyScan(Date date, String url, int total_vuln, ArrayList<String> vuln) {
+    public MyScan(Date date, String url, int total_vuln, ArrayList<VulnEntity> vuln) {
         this.date = date;
         this.url = url;
         this.total_vuln = total_vuln;
@@ -53,11 +53,11 @@ public class MyScan {
         this.total_vuln = total_vuln;
     }
 
-    public ArrayList<String> getVuln() {
+    public ArrayList<VulnEntity> getVuln() {
         return vuln;
     }
 
-    public void setVuln(ArrayList<String> vuln) {
+    public void setVuln(ArrayList<VulnEntity> vuln) {
         this.vuln = vuln;
     }
 

@@ -10,27 +10,29 @@ package DBContent;
  * @author hunternight
  */
 import Entity.History;
+import Entity.VulnEntity;
 import java.util.ArrayList;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.List;
+import org.hibernate.HibernateException;
 
-public class HistoryDao {
+public class VulnDao {
 
     SessionFactory factory = DBContent.getSessionFactory();
 
-    public HistoryDao() {
+    public VulnDao() {
 
     }
 
-    public void save(History history) {
-        if (null != history) {
+    public void save(VulnEntity vuln) {
+        if (null != vuln) {
             try {
                 Session session = factory.openSession();
                 Transaction tx = session.beginTransaction();
-                session.save(history);
+                session.save(vuln);
                 tx.commit();
                 session.clear();
                 session.close();
@@ -40,30 +42,34 @@ public class HistoryDao {
         }
     }
 
-    public void save(List<History> history) {
-        if (null != history && history.size() > 0) {
+    public void save(List<VulnEntity> vuln,History history) {
+        if (null != vuln && vuln.size() > 0) {
             try {
                 Session session = factory.openSession();
                 Transaction tx = session.beginTransaction();
-
-                int i = 0;
-                history.forEach((History _item) -> {
-                    session.persist(_item);
+ 
+                vuln.stream().map((vul) -> {
+                    vul.setHistoryId(history.getId());
+                    return vul;
+                }).map((vul) -> {
+                    session.save(vul);
+                    return vul;
+                }).forEachOrdered((_item) -> {
                     tx.commit();
                 });
                 session.clear();
                 session.close();
-            } catch (Exception ex) {
+            } catch (HibernateException ex) {
                 throw new RuntimeException(ex.getMessage(), ex);
             }
         }
     }
 
-    public List<History> getListHistory() {
-        List<History> list = new ArrayList<>();
+    public List<VulnEntity> getListVulnEntity() {
+        List<VulnEntity> list = new ArrayList<>();
         try {
             Session session = factory.openSession();
-            list = (List<History>) session.createQuery("from History").list();
+            list = (List<VulnEntity>) session.createQuery("from VulnEntity").list();
             session.clear();
             session.close();
         } catch (Exception ex) {
@@ -72,13 +78,13 @@ public class HistoryDao {
         return list;
     }
 
-    public History getHistoryByID(History history) {
-        if (null != history) {
+    public VulnEntity getVulnEntityByID(VulnEntity vuln) {
+        if (null != vuln) {
             try {
                 Session session = factory.openSession();
                 Transaction tx = session.beginTransaction();
-                String sql = "from History";
-                History result = (History) session.createQuery(sql).uniqueResult();
+                String sql = "from VulnEntity";
+                VulnEntity result = (VulnEntity) session.createQuery(sql).uniqueResult();
                 tx.commit();
                 session.clear();
                 session.close();
@@ -90,12 +96,12 @@ public class HistoryDao {
         return null;
     }
 
-    public void delete(History history) {
-        if (null != history) {
+    public void delete(VulnEntity vuln) {
+        if (null != vuln) {
             try {
                 Session session = factory.openSession();
                 Transaction tx = session.beginTransaction();
-                session.delete(history);
+                session.delete(vuln);
                 tx.commit();
                 session.clear();
                 session.close();
@@ -103,22 +109,6 @@ public class HistoryDao {
                 throw new RuntimeException(ex.getMessage(), ex);
             }
         }
-    }
-
-    public Long getMaxHistoryId() {
-        try {
-            Session session = factory.openSession();
-            Transaction tx = session.beginTransaction();
-            String sql = "from History";
-            History result = (History) session.createQuery(sql).uniqueResult();
-            tx.commit();
-            session.clear();
-            session.close();
-            return result.getId();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage(), ex);
-        }
-
     }
 
 }
