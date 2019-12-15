@@ -18,6 +18,7 @@ import function.Scan;
 import function.SpiderWeb;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -48,12 +49,37 @@ public class VSH extends javax.swing.JFrame {
     public static int numberOfThreads = 0;
     public static ArrayList<FuzzEntity> fu = new ArrayList<>();
     public static ArrayList<VulnEntity> ve = new ArrayList<>();
+    private HistoryDao historyDao = new HistoryDao();
+    private VulnDao vulnDao = new VulnDao();
+    javax.swing.JFrame rootFrame = this;
 
     public VSH() {
         initComponents();
         this.setTitle("Vina Scan Hub");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+
+        HistoryResult.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                final int row = HistoryResult.getSelectedRow();
+
+                if (evt.getClickCount() == 2 && row != -1) {
+                    DetailHistoryView detailHistoryView = new DetailHistoryView(rootFrame, true);
+                    DefaultTableModel dtmz = (DefaultTableModel) View.DetailHistoryView.VulnResult.getModel();
+                    String valueInCell = (HistoryResult.getModel().getValueAt(row, 1)).toString();
+                    if (!valueInCell.equals("")) {
+                        List<VulnEntity> vulnEntitys = vulnDao.getListVulnEntityByHistoryId(Long.valueOf(valueInCell));
+                        for (VulnEntity h : vulnEntitys) {
+                            dtmz.addRow(new Object[]{h.getVuln_name(), h.getLink_vuln(), h.getPayload(), h.getSignature()});
+                        }
+                    }
+
+                    detailHistoryView.setVisible(true);
+                }
+
+            }
+        });
 
     }
 
@@ -421,6 +447,12 @@ public class VSH extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        Tabmenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TabmenuMouseClicked(evt);
+            }
+        });
+
         LOG_CONSOLE.setColumns(20);
         LOG_CONSOLE.setLineWrap(true);
         LOG_CONSOLE.setRows(5);
@@ -451,9 +483,17 @@ public class VSH extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "URL", "Total Vuln"
+                "No", "ID", "Date", "URL", "Total Vuln"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(HistoryResult);
 
         Tabmenu.addTab("History", jScrollPane2);
@@ -522,7 +562,7 @@ public class VSH extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Tabmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -583,6 +623,72 @@ public class VSH extends javax.swing.JFrame {
     }//GEN-LAST:event_ReportActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
+        final int row = HistoryResult.getSelectedRow();
+        DetailHistoryView detailHistoryView = new DetailHistoryView(rootFrame, true);
+        String valueInCell = (HistoryResult.getModel().getValueAt(row, 1)).toString();
+
+        if (!valueInCell.equals("")) {
+            List<History> history = historyDao.getListHistoryById(Long.valueOf(valueInCell));
+            List<VulnEntity> vulnEntitys = vulnDao.getListVulnEntityByHistoryId(Long.valueOf(valueInCell));
+            for (VulnEntity h : vulnEntitys) {
+                vulnDao.delete(h);
+            }
+            for (History h : history) {
+                historyDao.delete(h);
+            }
+            genHistoryTable();
+        }
+    }//GEN-LAST:event_DeleteActionPerformed
+
+    private void StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopActionPerformed
+//        for (int i = 0; i < 10; i++) {
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            EXECUTOR_SERVICE.shutdownNow();
+//            try {
+//                // TODO add your handling code here:
+//                EXECUTOR_SERVICE.awaitTermination(0, TimeUnit.MICROSECONDS);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//            Scan s = new Scan();
+//            s.service.shutdownNow();
+//            try {
+//                // TODO add your handling code here:
+//                s.service.awaitTermination(0, TimeUnit.MICROSECONDS);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+//        LOG_CONSOLE.append("Scan Cancel!!!" + "\n");
+    }//GEN-LAST:event_StopActionPerformed
+
+    private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
+        // TODO add your handling code here:
+        Date date = new Date();
+        List<History> list = historyDao.getListHistory();
+        if (ve.size() > 0) {
+            Long id = 0l;
+            if (list != null && list.size() > 0) {
+                id = list.get(list.size() - 1).getId();
+            }
+            History history = new History(id, date, tfUrl.getText(), ve.size(), "0");
+            historyDao.save(history);
+            vulnDao.save(ve, history);
+        }
+    }//GEN-LAST:event_SaveActionPerformed
+
+    private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
+        // TODO add your handling code here:
+        tfUrl.setText("");
+        tfDept.setText("");
+        tfThread.setText("");
+        tfUser.setText("");
+        tfPassword.setText("");
+
         // TODO add your handling code here:
         Scan s = new Scan();
         s.list_vuln = new ArrayList<>();
@@ -625,52 +731,6 @@ public class VSH extends javax.swing.JFrame {
 
         DefaultTableModel otherresult = (DefaultTableModel) View.VSH.OtherResult.getModel();
         otherresult.getDataVector().removeAllElements();
-    }//GEN-LAST:event_DeleteActionPerformed
-
-    private void StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopActionPerformed
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            EXECUTOR_SERVICE.shutdownNow();
-//            try {
-//                // TODO add your handling code here:
-//                EXECUTOR_SERVICE.awaitTermination(0, TimeUnit.MICROSECONDS);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//            Scan s = new Scan();
-//            s.service.shutdownNow();
-//            try {
-//                // TODO add your handling code here:
-//                s.service.awaitTermination(0, TimeUnit.MICROSECONDS);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//        LOG_CONSOLE.append("Scan Cancel!!!" + "\n");
-    }//GEN-LAST:event_StopActionPerformed
-
-    private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
-        // TODO add your handling code here:
-        
-        HistoryDao historyDao   = new HistoryDao();
-        History history = new History();
-        historyDao.save(history);
-        
-        VulnDao vulnDao = new VulnDao();
-        vulnDao.save(ve,history);
-    }//GEN-LAST:event_SaveActionPerformed
-
-    private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
-        // TODO add your handling code here:
-        tfUrl.setText("");
-        tfDept.setText("");
-        tfThread.setText("");
-        tfUser.setText("");
-        tfPassword.setText("");
     }//GEN-LAST:event_ClearActionPerformed
 
     private void btnScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScanActionPerformed
@@ -713,7 +773,7 @@ public class VSH extends javax.swing.JFrame {
 
     private void FuzzResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FuzzResultMouseClicked
         // TODO add your handling code here:
-        
+
         FuzzOut fuzzout = new FuzzOut(this, true);
         DefaultTableModel dtmz = (DefaultTableModel) View.FuzzOut.FuzzOutResult.getModel();
         int index = FuzzResult.getSelectedRow();
@@ -722,13 +782,43 @@ public class VSH extends javax.swing.JFrame {
         SpiderWeb sp = new SpiderWeb();
         View.FuzzOut.VulnName.setText(vuln);
         for (String fe : sp.links) {
-                dtmz.addRow(new Object[]{fe});
-                
+            dtmz.addRow(new Object[]{fe});
+
         }
         fuzzout.setVisible(true);
 
 
     }//GEN-LAST:event_FuzzResultMouseClicked
+
+    private void removeAll(DefaultTableModel myTableModel) {
+        try {
+            if (myTableModel.getRowCount() > 0) {
+                for (int i = myTableModel.getRowCount() - 1; i > -1; i--) {
+                    myTableModel.removeRow(i);
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void genHistoryTable() {
+        List<History> list = historyDao.getListHistory();
+        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.HistoryResult.getModel();
+
+        removeAll(dtmz);
+        int i = 0;
+        for (History h : list) {
+            i++;
+            dtmz.addRow(new Object[]{i, h.getId(), h.getDate().toString(), h.getUrl(), h.getToal()});
+        }
+
+    }
+
+    private void TabmenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabmenuMouseClicked
+        // TODO add your handling code here:
+        genHistoryTable();
+    }//GEN-LAST:event_TabmenuMouseClicked
 
     /**
      * @param args the command line arguments

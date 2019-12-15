@@ -10,12 +10,14 @@ package DBContent;
  * @author hunternight
  */
 import Entity.History;
+import Entity.VulnEntity;
 import java.util.ArrayList;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.List;
+import org.hibernate.Query;
 
 public class HistoryDao {
 
@@ -40,25 +42,6 @@ public class HistoryDao {
         }
     }
 
-    public void save(List<History> history) {
-        if (null != history && history.size() > 0) {
-            try {
-                Session session = factory.openSession();
-                Transaction tx = session.beginTransaction();
-
-                int i = 0;
-                history.forEach((History _item) -> {
-                    session.persist(_item);
-                    tx.commit();
-                });
-                session.clear();
-                session.close();
-            } catch (Exception ex) {
-                throw new RuntimeException(ex.getMessage(), ex);
-            }
-        }
-    }
-
     public List<History> getListHistory() {
         List<History> list = new ArrayList<>();
         try {
@@ -72,22 +55,20 @@ public class HistoryDao {
         return list;
     }
 
-    public History getHistoryByID(History history) {
-        if (null != history) {
-            try {
-                Session session = factory.openSession();
-                Transaction tx = session.beginTransaction();
-                String sql = "from History";
-                History result = (History) session.createQuery(sql).uniqueResult();
-                tx.commit();
-                session.clear();
-                session.close();
-                return null;
-            } catch (Exception ex) {
-                throw new RuntimeException(ex.getMessage(), ex);
-            }
+    public List<History> getListHistoryById(Long id) {
+        List<History> list = new ArrayList<>();
+        try {
+            Session session = factory.openSession();
+            String sql = "from History where id = :id";
+            Query query = session.createQuery(sql);
+            query.setParameter("id", id);
+            list = (List<History>) query.list();
+            session.clear();
+            session.close();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
         }
-        return null;
+        return list;
     }
 
     public void delete(History history) {
@@ -104,21 +85,4 @@ public class HistoryDao {
             }
         }
     }
-
-    public Long getMaxHistoryId() {
-        try {
-            Session session = factory.openSession();
-            Transaction tx = session.beginTransaction();
-            String sql = "from History";
-            History result = (History) session.createQuery(sql).uniqueResult();
-            tx.commit();
-            session.clear();
-            session.close();
-            return result.getId();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage(), ex);
-        }
-
-    }
-
 }
