@@ -620,7 +620,7 @@ public class VSH extends javax.swing.JFrame {
     }//GEN-LAST:event_PortActionPerformed
 
     private void ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportActionPerformed
-
+        
     }//GEN-LAST:event_ReportActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed

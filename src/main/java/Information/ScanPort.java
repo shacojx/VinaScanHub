@@ -36,7 +36,7 @@ public class ScanPort {
             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
             ExecutorService executorService2 = Executors.newFixedThreadPool(3000);
             int port = 0;
-            for (port = 1; port <= 10000; port++) {
+            for (port = 1; port <= 65535; port++) {
                 executorService2.execute(new thread(port, ipx));
             }
             executorService2.shutdown();
