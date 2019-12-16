@@ -676,7 +676,7 @@ public class VSH extends javax.swing.JFrame {
             if (list != null && list.size() > 0) {
                 id = list.get(list.size() - 1).getId();
             }
-            History history = new History(id, date, tfUrl.getText(), ve.size(), "0");
+            History history = new History(id, date, tfUrl.getText(), ve.size());
             historyDao.save(history);
             vulnDao.save(ve, history);
         }

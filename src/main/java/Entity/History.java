@@ -27,8 +27,7 @@ public class History implements Serializable {
     private String url;
     @Column(nullable = false)
     private Integer toal; 
-    @Column(nullable = false)
-    private String deleteFlg;
+    
 
     public Long getId() {
         return id;
@@ -62,33 +61,25 @@ public class History implements Serializable {
         this.toal = toal;
     } 
 
-    public String getDeleteFlg() {
-        return deleteFlg;
-    }
-
-    public void setDeleteFlg(String deleteFlg) {
-        this.deleteFlg = deleteFlg;
-    }
-    
     
     
 
     public History() {
     }
 
-    public History(Date date, String url, Integer toal, String deleteFlg) {
+    public History(Date date, String url, Integer toal) {
         this.date = date;
         this.url = url;
         this.toal = toal;
-        this.deleteFlg = deleteFlg;
+        
     }
     
-    public History(Long id, Date date, String url, Integer toal, String deleteFlg) {
+    public History(Long id, Date date, String url, Integer toal) {
         this.id = id;
         this.date = date;
         this.url = url;
         this.toal = toal;
-        this.deleteFlg = deleteFlg;
+        
     }
     
     

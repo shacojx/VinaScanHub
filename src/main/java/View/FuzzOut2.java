@@ -56,6 +56,7 @@ public class FuzzOut2 extends javax.swing.JDialog {
                 "Payload"
             }
         ));
+        PayVuln.setVerifyInputWhenFocusTarget(false);
         PayVuln.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 PayVulnMouseClicked(evt);
@@ -121,7 +122,7 @@ public class FuzzOut2 extends javax.swing.JDialog {
 //        for (FuzzEntity fe : View.VSH.fu) {
 //            if (fe.getLink().equalsIgnoreCase(link_payload.getText()) && fe.getVuln().equalsIgnoreCase(payvuln.getText())
 //                    && fe.getPayload().equalsIgnoreCase(pay)) {
-//                fuzzout3.Response.setText(fe.getResponse());
+                fuzzout3.Response.setText(View.VSH.fu.get(1).getResponse());
 //            }
 //
 //        }
