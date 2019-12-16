@@ -6,6 +6,7 @@
 package Scan;
 
 import Entity.FuzzEntity;
+import Entity.VulnEntity;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -158,6 +159,8 @@ public class Scan_XSS {
                                         System.out.println("        " + params.toString());
                                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                                         dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), params.toString()});
+                                        VulnEntity v = new VulnEntity(method + vulnName, urlAction, params.toString(), params.toString());
+                                        View.VSH.ve.add(v);
                                         VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
                                         VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
                                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());

@@ -5,6 +5,7 @@
  */
 package Scan;
 
+import Entity.VulnEntity;
 import PaySig.psUploadFile;
 import View.VSH;
 import com.gargoylesoftware.htmlunit.CookieManager;
@@ -49,6 +50,8 @@ public class Scan_FileUpload {
                 s.list_vuln.add("Upload File: " + url);
                 DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                 dtm.addRow(new Object[]{"Upload File ", url, "", x});
+                VulnEntity v = new VulnEntity("Upload File ", url, "", x);
+                View.VSH.ve.add(v);
                 VSH.LOG_CONSOLE.append("Upload File: " + url + "\n");
                 VSH.LOG_CONSOLE.append("        " + x + "\n");
                 VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());

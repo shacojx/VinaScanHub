@@ -6,6 +6,7 @@
 package Scan;
 
 import Entity.FuzzEntity;
+import Entity.VulnEntity;
 import PaySig.psSQLi;
 import View.VSH;
 import com.gargoylesoftware.htmlunit.CookieManager;
@@ -120,16 +121,20 @@ public class Scan_SQLi {
                                 System.out.println("        " + params.toString());
                                 DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                                 dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), sSig});
+                                VulnEntity v = new VulnEntity(method + vulnName, urlAction, params.toString(), sSig);
+                                View.VSH.ve.add(v);
                                 VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
                                 VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
                                 VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                                 scan.list_vuln.add(method + vulnName + " : " + urlAction);
+
                                 break;
                             } else {
 //                                DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
 //                                dtmz.addRow(new Object[]{urlAction, params.toString()});
                                 FuzzEntity f = new FuzzEntity(urlAction, vulnName, params.toString(), page.asXml());
                                 View.VSH.fu.add(f);
+                                View.VSH.fuLink.add(urlAction);
 
                             }
                         }

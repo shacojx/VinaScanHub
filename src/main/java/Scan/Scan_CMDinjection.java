@@ -6,6 +6,7 @@
 package Scan;
 
 import Entity.FuzzEntity;
+import Entity.VulnEntity;
 import PaySig.psCMDInjection;
 import PaySig.psSQLi;
 import View.VSH;
@@ -110,6 +111,8 @@ public class Scan_CMDinjection {
                         System.out.println("        " + params.toString());
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                         dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), sSig});
+                        VulnEntity v = new VulnEntity(method + vulnName, urlAction, params.toString(), sSig);
+                        View.VSH.ve.add(v);
                         VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
                         VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());

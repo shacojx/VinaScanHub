@@ -49,6 +49,7 @@ public class VSH extends javax.swing.JFrame {
     public static int numberOfThreads = 0;
     public static ArrayList<FuzzEntity> fu = new ArrayList<>();
     public static ArrayList<VulnEntity> ve = new ArrayList<>();
+    public static ArrayList<String> fuLink = new ArrayList<>();
     private final HistoryDao historyDao = new HistoryDao();
     private final VulnDao vulnDao = new VulnDao();
     javax.swing.JFrame rootFrame = this;
@@ -781,7 +782,7 @@ public class VSH extends javax.swing.JFrame {
         String vuln = (String) model.getValueAt(index, 0);
         SpiderWeb sp = new SpiderWeb();
         View.FuzzOut.VulnName.setText(vuln);
-        for (String fe : sp.links) {
+        for (String fe : fuLink) {
             dtmz.addRow(new Object[]{fe});
 
         }

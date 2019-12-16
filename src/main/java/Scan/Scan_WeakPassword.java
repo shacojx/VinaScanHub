@@ -5,6 +5,7 @@
  */
 package Scan;
 
+import Entity.VulnEntity;
 import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -193,6 +194,8 @@ public class Scan_WeakPassword {
                     System.out.println("User: " + user + " ---- Password: " + pass);
                     DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                     dtm.addRow(new Object[]{"Weak password", sURL, "Username: " + user, "Password: " + pass});
+                    VulnEntity v = new VulnEntity("Weak password", sURL, "Username: " + user, "Password: " + pass);
+                    View.VSH.ve.add(v);
                     if (checkLogin) {
                         cookieManager = client.getCookieManager();
                         urlS = page.getUrl().toString();

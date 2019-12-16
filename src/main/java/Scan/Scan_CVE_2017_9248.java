@@ -5,6 +5,7 @@
  */
 package Scan;
 
+import Entity.VulnEntity;
 import PaySig.CVE_2017_9248;
 import View.VSH;
 import com.gargoylesoftware.htmlunit.CookieManager;
@@ -49,6 +50,8 @@ public class Scan_CVE_2017_9248 {
                         System.out.println("CVE-2017-9248: " + url + pay + " sig: " + sig);
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                         dtm.addRow(new Object[]{"CVE-2017-9248", url, pay, sig});
+                        VulnEntity v = new VulnEntity("CVE-2017-9248", url, pay, sig);
+                        View.VSH.ve.add(v);
                         VSH.LOG_CONSOLE.append("CVE-2017-9248: " + url + "\n");
                         VSH.LOG_CONSOLE.append("        " + pay + " " + sig + "\n");
                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
