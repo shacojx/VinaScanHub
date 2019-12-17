@@ -741,27 +741,27 @@ public class VSH extends javax.swing.JFrame {
 
             String url = tfUrl.getText();
             if (!url.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")) {
-                JOptionPane.showMessageDialog(null, "Check url11");
                 setAllViewEnable(true);
                 btnScan.setEnabled(true);
                 setViewAuthenEnable(cbAuthen.isSelected());
+                JOptionPane.showMessageDialog(null, "Check url11");
                 return;
             }
             String deptText = tfDept.getText();
             if (!deptText.matches("\\d+")) {
-                JOptionPane.showMessageDialog(null, "Check dept!!");
                 setAllViewEnable(true);
                 btnScan.setEnabled(true);
                 setViewAuthenEnable(cbAuthen.isSelected());
+                JOptionPane.showMessageDialog(null, "Check dept!!");
                 return;
             }
             dept = Integer.parseInt(deptText);
             String threadText = tfThread.getText();
             if (!threadText.matches("\\d+")) {
-                JOptionPane.showMessageDialog(null, "Check number of threads!!");
                 setAllViewEnable(true);
                 btnScan.setEnabled(true);
                 setViewAuthenEnable(cbAuthen.isSelected());
+                JOptionPane.showMessageDialog(null, "Check number of threads!!");
                 return;
             }
             numberOfThreads = Integer.parseInt(threadText);
