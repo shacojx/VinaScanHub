@@ -474,101 +474,109 @@ public class VSH extends javax.swing.JFrame {
             new String [] {
                 "Vulnerability", "Link", "Payload", "Signature", "Level"
             }
-        ));
-        jScrollPane3.setViewportView(VulnResult);
+        )
+        {public boolean isCellEditable(int row, int column){return false;}}
+    );
+    jScrollPane3.setViewportView(VulnResult);
 
-        Tabmenu.addTab("Vulnerability", jScrollPane3);
+    Tabmenu.addTab("Vulnerability", jScrollPane3);
 
-        HistoryResult.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+    HistoryResult.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
 
-            },
-            new String [] {
-                "No", "ID", "Date", "URL", "Total Vuln"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
+        },
+        new String [] {
+            "No", "ID", "Date", "URL", "Total Vuln"
+        }
+    ) {
+        boolean[] canEdit = new boolean [] {
+            false, false, false, false, false
+        };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(HistoryResult);
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit [columnIndex];
+        }
+    });
+    jScrollPane2.setViewportView(HistoryResult);
 
-        Tabmenu.addTab("History", jScrollPane2);
+    Tabmenu.addTab("History", jScrollPane2);
 
-        LinkResult.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+    LinkResult.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
 
-            },
-            new String [] {
-                "URL", "Status"
-            }
-        ));
-        jScrollPane5.setViewportView(LinkResult);
+        },
+        new String [] {
+            "URL", "Status"
+        }
+    )
+    {public boolean isCellEditable(int row, int column){return false;}}
+    );
+    jScrollPane5.setViewportView(LinkResult);
 
-        Tabmenu.addTab("Link", jScrollPane5);
+    Tabmenu.addTab("Link", jScrollPane5);
 
-        PortResult.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+    PortResult.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
 
-            },
-            new String [] {
-                "Port", "Status"
-            }
-        ));
-        jScrollPane6.setViewportView(PortResult);
+        },
+        new String [] {
+            "Port", "Status"
+        }
+    )
+    {public boolean isCellEditable(int row, int column){return false;}}
+    );
+    jScrollPane6.setViewportView(PortResult);
 
-        Tabmenu.addTab("Port", jScrollPane6);
+    Tabmenu.addTab("Port", jScrollPane6);
 
-        FuzzResult.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+    FuzzResult.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
 
-            },
-            new String [] {
-                "Attack with payload vuln"
-            }
-        ));
-        FuzzResult.setVerifyInputWhenFocusTarget(false);
-        FuzzResult.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                FuzzResultMouseClicked(evt);
-            }
-        });
-        jScrollPane7.setViewportView(FuzzResult);
+        },
+        new String [] {
+            "Attack with payload vuln"
+        }
+    ));
+    FuzzResult.setVerifyInputWhenFocusTarget(false);
+    FuzzResult.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            FuzzResultMouseClicked(evt);
+        }
+    });
+    jScrollPane7.setViewportView(FuzzResult);
 
-        Tabmenu.addTab("Fuzz", jScrollPane7);
+    Tabmenu.addTab("Fuzz", jScrollPane7);
 
-        OtherResult.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+    OtherResult.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
 
-            },
-            new String [] {
-                "Action"
-            }
-        ));
-        jScrollPane8.setViewportView(OtherResult);
+        },
+        new String [] {
+            "Action"
+        }
+    )
+    {public boolean isCellEditable(int row, int column){return false;}}
+    );
+    jScrollPane8.setViewportView(OtherResult);
 
-        Tabmenu.addTab("Other", jScrollPane8);
+    Tabmenu.addTab("Other", jScrollPane8);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1067, Short.MAX_VALUE)
-            .addComponent(Tabmenu, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Tabmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1067, Short.MAX_VALUE)
+        .addComponent(Tabmenu, javax.swing.GroupLayout.Alignment.TRAILING)
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(Tabmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
+    );
 
-        pack();
+    pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -614,6 +622,7 @@ public class VSH extends javax.swing.JFrame {
 
     private void PortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PortActionPerformed
         // TODO add your handling code here:
+        VSH.Port.setEnabled(false);
         ScanPort scanport = new ScanPort();
         scanport.ScanPort(tfUrl.getText());
 
@@ -908,7 +917,7 @@ public class VSH extends javax.swing.JFrame {
     public static javax.swing.JTable LinkResult;
     public static javax.swing.JLabel Loading;
     public static javax.swing.JTable OtherResult;
-    private javax.swing.JButton Port;
+    public static javax.swing.JButton Port;
     public static javax.swing.JTable PortResult;
     private javax.swing.JButton Report;
     private javax.swing.JButton Save;

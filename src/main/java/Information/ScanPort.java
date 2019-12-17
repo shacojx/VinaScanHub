@@ -33,28 +33,37 @@ public class ScanPort {
 
             VSH.LOG_CONSOLE.append("Port Scan Start" + "\n");
             VSH.LOG_CONSOLE.append("URL: " + ipx + "\n");
+            VSH.Action.setText("Scanning Port!!!");
+            VSH.Loading.setText("");
             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
             ExecutorService executorService2 = Executors.newFixedThreadPool(3000);
             int port = 0;
             for (port = 1; port <= 65535; port++) {
                 executorService2.execute(new thread(port, ipx));
             }
-            executorService2.shutdown();
-            //cehck done
+            //check done
             new Thread(() -> {
+//                VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+                executorService2.shutdown();
+                // Wait until all threads are finish
                 while (!executorService2.isTerminated()) {
                     try {
-                        Thread.sleep(500);
+                        // Running ...
+                        Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ScanPort.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                VSH.LOG_CONSOLE.append("Scan done" + "\n");
-                VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+
+                System.out.println("Finished Scan Port!!!");
+                VSH.LOG_CONSOLE.append("Scan Port Done!!!" + "\n");
+                VSH.Loading.setText("Loading |===================>|");
+                VSH.Action.setText("Do Nothing");
+                VSH.Port.setEnabled(true);
             }).start();
         } catch (Exception e) {
-            System.out.println("ERROR scan port!!!");
-            e.printStackTrace();
+//            System.out.println("ERROR port!!!");
+//            e.printStackTrace();
         }
     }
 
@@ -81,8 +90,9 @@ public class ScanPort {
                 VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
                 System.out.println("Port " + port + " is open");
             } catch (Exception ex) {
-                System.out.println("ERROR thread scan port!!!!");
-                ex.printStackTrace();
+//                System.out.println("ERROR thread scan port!!!!");
+//                ex.printStackTrace();
+                System.out.println("Port " + port + " is'n open!!!!");
             }
         }
 

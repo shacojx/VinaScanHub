@@ -92,7 +92,7 @@ public class Scan {
         Info in = new Info();
         in.info(urlScan, cookieM);
         scan_telerik.scan(urlScan, cookieM);
-        VSH.Action.setText("Scaning");
+        VSH.Action.setText("Scanning Vuln!!!");
         VSH.Loading.setText("");
         System.out.println("Spider level: " + VSH.dept);
         VSH.LOG_CONSOLE.append("Spider level: " + VSH.dept + "\n");
@@ -222,16 +222,13 @@ public class Scan {
         service.shutdown();
         System.out.println("Scan end!");
         VSH.LOG_CONSOLE.append("Scan end!" + "\n");
+        VSH.Loading.setText("Loading |===================>|");
+        VSH.Action.setText("Do Nothing");
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
         VSH.setAllViewEnable(true);
         VSH.btnScan.setEnabled(true);
         VSH.setViewAuthenEnable(VSH.cbAuthen.isSelected());
-//        if (!VSH.cbAuthen.isSelected()) {
-//            VSH.lbUser.setEnabled(false);
-//            VSH.lbPassword.setEnabled(false);
-//            VSH.tfUser.setEnabled(false);
-//            VSH.tfPassword.setEnabled(false);
-//        }
+        shutdownAndAwaitTermination(service);
     }
 
     public void BruteForce(HashSet<String> listURL, CookieManager cooki) throws IOException {
@@ -386,5 +383,24 @@ public class Scan {
             }
         });
 
+    }
+
+    private void shutdownAndAwaitTermination(ExecutorService pool) {
+        pool.shutdown(); // Disable new tasks from being submitted
+        try {
+            // Wait a while for existing tasks to terminate
+            if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                pool.shutdownNow(); // Cancel currently executing tasks
+                // Wait a while for tasks to respond to being cancelled
+                if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                    System.err.println("Pool did not terminate");
+                }
+            }
+        } catch (InterruptedException ie) {
+            // (Re-)Cancel if current thread also interrupted
+            pool.shutdownNow();
+            // Preserve interrupt status
+            Thread.currentThread().interrupt();
+        }
     }
 }
