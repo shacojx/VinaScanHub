@@ -620,7 +620,7 @@ public class VSH extends javax.swing.JFrame {
     }//GEN-LAST:event_PortActionPerformed
 
     private void ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportActionPerformed
-        
+
     }//GEN-LAST:event_ReportActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
@@ -742,17 +742,26 @@ public class VSH extends javax.swing.JFrame {
             String url = tfUrl.getText();
             if (!url.matches("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)")) {
                 JOptionPane.showMessageDialog(null, "Check url11");
+                setAllViewEnable(true);
+                btnScan.setEnabled(true);
+                setViewAuthenEnable(cbAuthen.isSelected());
                 return;
             }
             String deptText = tfDept.getText();
             if (!deptText.matches("\\d+")) {
                 JOptionPane.showMessageDialog(null, "Check dept!!");
+                setAllViewEnable(true);
+                btnScan.setEnabled(true);
+                setViewAuthenEnable(cbAuthen.isSelected());
                 return;
             }
             dept = Integer.parseInt(deptText);
             String threadText = tfThread.getText();
             if (!threadText.matches("\\d+")) {
                 JOptionPane.showMessageDialog(null, "Check number of threads!!");
+                setAllViewEnable(true);
+                btnScan.setEnabled(true);
+                setViewAuthenEnable(cbAuthen.isSelected());
                 return;
             }
             numberOfThreads = Integer.parseInt(threadText);
