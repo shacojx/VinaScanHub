@@ -44,6 +44,7 @@ public class Scan_LFI {
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        client.getOptions().setThrowExceptionOnScriptError(false);
         if (cooki != null) {
             client.setCookieManager(cooki);
         }

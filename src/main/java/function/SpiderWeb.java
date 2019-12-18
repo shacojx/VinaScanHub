@@ -51,6 +51,12 @@ public class SpiderWeb {
                 && !URL.contains("logout")
                 && !URL.contains("dangxuat")
                 && !URL.contains("thoat")) {
+
+            if (URL.toLowerCase().contains(".jpg")
+                    || URL.toLowerCase().contains(".pdf")
+                    || URL.toLowerCase().contains(".png")) {
+                return;
+            }
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
             VSH.LOG_CONSOLE.append(">> Depth: " + depth + " [" + URL + "]" + "\n");
             VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
@@ -107,8 +113,8 @@ public class SpiderWeb {
 
                 }
             } catch (Exception e) {
-                System.err.println("ERROR spiderWeb : " + URL);
-                e.printStackTrace();
+                System.err.println("ERROR spiderWeb : " + URL + " || " + e.toString());
+//                e.printStackTrace();
             }
         }
     }
@@ -130,7 +136,7 @@ public class SpiderWeb {
         @Override
         public void run() {
             try {
-                getPageLinks(url, dept, root_url, cooki);
+                getPageLinks(url, dept, root_url, cooki);                
             } catch (Exception e) {
                 System.out.println("ERROR thread spider!!!");
                 e.printStackTrace();
