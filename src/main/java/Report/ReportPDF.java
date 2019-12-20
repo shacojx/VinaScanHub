@@ -51,13 +51,14 @@ public class ReportPDF {
             }
             pay = x.split(": ")[2];
             if(pay.contains("<") && pay.contains(">")){
-                pay.replace("<", "(tagOpen)");
-                pay.replace(">", "tagClose");
+//                pay.replaceAll('<', '[');
+//                pay.replaceAll('>', ']');
+                
             }
             sig = x.split(": ")[3];
             if(sig.contains("<") && sig.contains(">")){
-                sig.replace("<", "(tagOpen)");
-                sig.replace(">", "tagClose");
+                sig.replaceAll("<", "(tagOpen)");
+                sig.replaceAll(">", "(tagClose)");
             }
 
             vuln = vuln + "<tr>\n"

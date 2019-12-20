@@ -632,9 +632,9 @@ public class VSH extends javax.swing.JFrame {
         try {
             ReportPDF rp = new ReportPDF();
             rp.genFileHTML(tfUrl.getText());
-            String inputFile = "reportscan.html";
-            String outputFile = "ReportScan.pdf";
-            rp.generatePDF(inputFile, outputFile);
+//            String inputFile = "reportscan.html";
+//            String outputFile = "ReportScan.pdf";
+//            rp.generatePDF(inputFile, outputFile);
             JOptionPane.showMessageDialog(this, "Generate File Report Done !!!");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Generate File Report Error !!!");
