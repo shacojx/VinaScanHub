@@ -15,15 +15,25 @@ public class FuzzEntity {
     private String vuln;
     private String payload;
     private String response;
+    private String header_response;
 
     public FuzzEntity() {
     }
 
-    public FuzzEntity(String link, String vuln, String payload, String response) {
+    public FuzzEntity(String link, String vuln, String payload, String response, String header_response) {
         this.link = link;
         this.vuln = vuln;
         this.payload = payload;
         this.response = response;
+        this.header_response = header_response;
+    }
+
+    public String getHeader_response() {
+        return header_response;
+    }
+
+    public void setHeader_response(String header_response) {
+        this.header_response = header_response;
     }
 
     public String getLink() {
@@ -60,7 +70,7 @@ public class FuzzEntity {
 
     @Override
     public String toString() {
-        return "FuzzEntity{" + "link=" + link + ", vuln=" + vuln + ", payload=" + payload + ", response=" + response + '}';
+        return "FuzzEntity{" + "link=" + link + ", vuln=" + vuln + ", payload=" + payload + ", response=" + response + ", header_response=" + header_response + '}';
     }
 
 }

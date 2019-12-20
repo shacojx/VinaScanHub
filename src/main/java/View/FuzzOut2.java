@@ -123,6 +123,7 @@ public class FuzzOut2 extends javax.swing.JDialog {
             if (fe.getLink().equalsIgnoreCase(link_payload.getText()) && fe.getVuln().equalsIgnoreCase(payvuln.getText())
                     && fe.getPayload().contains(pay)) {
                 fuzzout3.Response.setText(fe.getResponse());
+                fuzzout3.Header_response.setText(fe.getHeader_response());
             }
 
         }

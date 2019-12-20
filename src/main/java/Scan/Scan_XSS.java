@@ -22,6 +22,7 @@ import function.encodeValue;
 import PaySig.psSQLi;
 import View.VSH;
 import com.gargoylesoftware.htmlunit.CookieManager;
+import com.gargoylesoftware.htmlunit.WebResponse;
 import function.Scan;
 import javax.swing.table.DefaultTableModel;
 
@@ -164,12 +165,14 @@ public class Scan_XSS {
                                         VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
                                         VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
                                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
-                                        scan.list_vuln.add(method + vulnName + " : " + urlAction + " : "+params.toString() +" : "+params.toString());
+                                        scan.list_vuln.add(method + vulnName + " : " + urlAction + " : " + params.toString() + " : " + params.toString());
                                         break;
                                     } else {
 //                                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
 //                                        dtmz.addRow(new Object[]{urlAction, params.toString()});
-                                        FuzzEntity f = new FuzzEntity(urlAction, vulnName, params.toString(), page.asXml());
+                                        WebResponse response = page.getWebResponse();
+                                        List<NameValuePair> li = response.getResponseHeaders();
+                                        FuzzEntity f = new FuzzEntity(urlAction, vulnName, params.toString(), page.asXml(), li.toString());
                                         View.VSH.fu.add(f);
                                     }
                                 }
