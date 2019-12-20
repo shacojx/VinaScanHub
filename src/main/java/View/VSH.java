@@ -629,7 +629,18 @@ public class VSH extends javax.swing.JFrame {
     }//GEN-LAST:event_PortActionPerformed
 
     private void ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportActionPerformed
-
+        try {
+            ReportPDF rp = new ReportPDF();
+            rp.genFileHTML(tfUrl.getText());
+            String inputFile = "reportscan.html";
+            String outputFile = "ReportScan.pdf";
+            rp.generatePDF(inputFile, outputFile);
+            JOptionPane.showMessageDialog(this, "Generate File Report Done !!!");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Generate File Report Error !!!");
+            System.out.println("Gen file report error :"+ ex);
+            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_ReportActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
@@ -693,6 +704,7 @@ public class VSH extends javax.swing.JFrame {
 
     private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
         // TODO add your handling code here:
+        ve = new ArrayList<>();
         tfUrl.setText("");
         tfDept.setText("");
         tfThread.setText("");

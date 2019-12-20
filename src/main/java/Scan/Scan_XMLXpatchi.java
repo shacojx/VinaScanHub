@@ -113,7 +113,7 @@ public class Scan_XMLXpatchi {
                         VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
                         VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
-                        scan.list_vuln.add(method + vulnName + " : " + urlAction);
+                        scan.list_vuln.add(method + vulnName + " : " + urlAction + " : "+params.toString() +" : "+sSig);
                         break;
                     } else {
 //                        DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();

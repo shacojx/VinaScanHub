@@ -196,6 +196,7 @@ public class Scan_WeakPassword {
                     dtm.addRow(new Object[]{"Weak password", sURL, "Username: " + user, "Password: " + pass});
                     VulnEntity v = new VulnEntity("Weak password", sURL, "Username: " + user, "Password: " + pass);
                     View.VSH.ve.add(v);
+                    function.Scan.list_vuln.add("Weak Password" + " : " + sURL + " : "+user +" : "+pass);
                     if (checkLogin) {
                         cookieManager = client.getCookieManager();
                         urlS = page.getUrl().toString();

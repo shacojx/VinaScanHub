@@ -55,6 +55,7 @@ public class Scan_CVE_2017_9248 {
                         VSH.LOG_CONSOLE.append("CVE-2017-9248: " + url + "\n");
                         VSH.LOG_CONSOLE.append("        " + pay + " " + sig + "\n");
                         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+                        function.Scan.list_vuln.add("CVE-2017-9248" + " : " + url + " : "+pay +" : "+sig);
                     }
                 }
             } catch (Exception e) {
