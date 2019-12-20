@@ -119,13 +119,13 @@ public class FuzzOut2 extends javax.swing.JDialog {
         fuzzout3.link.setText(link_payload.getText());
         fuzzout3.pay.setText(pay);
 
-//        for (FuzzEntity fe : View.VSH.fu) {
-//            if (fe.getLink().equalsIgnoreCase(link_payload.getText()) && fe.getVuln().equalsIgnoreCase(payvuln.getText())
-//                    && fe.getPayload().equalsIgnoreCase(pay)) {
-                fuzzout3.Response.setText(View.VSH.fu.get(1).getResponse());
-//            }
-//
-//        }
+        for (FuzzEntity fe : View.VSH.fu) {
+            if (fe.getLink().equalsIgnoreCase(link_payload.getText()) && fe.getVuln().equalsIgnoreCase(payvuln.getText())
+                    && fe.getPayload().contains(pay)) {
+                fuzzout3.Response.setText(fe.getResponse());
+            }
+
+        }
         fuzzout3.setVisible(true);
     }//GEN-LAST:event_PayVulnMouseClicked
 
