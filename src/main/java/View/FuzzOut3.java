@@ -5,6 +5,11 @@
  */
 package View;
 
+import Entity.LinkEntity;
+import fun.mike.dmp.Diff;
+import fun.mike.dmp.DiffMatchPatch;
+import java.util.LinkedList;
+
 /**
  *
  * @author Shaco JX
@@ -14,9 +19,14 @@ public class FuzzOut3 extends javax.swing.JDialog {
     /**
      * Creates new form FuzzOut3
      */
+    DiffResult diffresult;
+
     public FuzzOut3(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        diffresult = new DiffResult(parent, true);
     }
 
     /**
@@ -136,9 +146,40 @@ public class FuzzOut3 extends javax.swing.JDialog {
 
     private void DiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DiffActionPerformed
         // TODO add your handling code here:
-        
-        
-        
+        String root_resp_heaer = "";
+        String root_resp = "";
+        String vuln_resp_header = this.Header_response.getText();
+        String vuln_resp = Response.getText();
+
+        diffresult.vuln_resp_header.setText(vuln_resp_header);
+        diffresult.vuln_resp.setText(vuln_resp);
+
+        for (LinkEntity le : View.VSH.LinkEntt) {
+            if (le.getLink().equalsIgnoreCase(link.getText())) {
+                root_resp_heaer = le.getHeader_response();
+                root_resp = le.getResponse();
+            }
+        }
+        diffresult.root_resp_header.setText(root_resp_heaer);
+        diffresult.root_resp.setText(root_resp);
+
+        DiffMatchPatch dmp = new DiffMatchPatch();
+        LinkedList<Diff> diff_header = dmp.diff_main(root_resp_heaer, vuln_resp_header);
+        LinkedList<Diff> diff_resp = dmp.diff_main(root_resp, vuln_resp);
+
+        dmp.diff_cleanupEfficiency(diff_header);
+        for (int i = 0; i < diff_header.size(); i++) {
+            if (diff_header.get(i).toString().contains("DELETE") || diff_header.get(i).toString().contains("INSERT")) {
+                diffresult.diff_resp_header.append(diff_header.get(i).toString()+"\n");
+            }
+        }
+        dmp.diff_cleanupEfficiency(diff_resp);
+        for (int i = 0; i < diff_resp.size(); i++) {
+            if(diff_resp.get(i).toString().contains("DELETE") || diff_resp.get(i).toString().contains("INSERT")){
+                diffresult.diff_resp.append(diff_resp.get(i).toString()+"\n");
+            }
+        }
+        diffresult.setVisible(true);
     }//GEN-LAST:event_DiffActionPerformed
 
     /**

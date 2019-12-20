@@ -9,6 +9,7 @@ import DBContent.HistoryDao;
 import DBContent.VulnDao;
 import Entity.FuzzEntity;
 import Entity.History;
+import Entity.LinkEntity;
 import Entity.VulnEntity;
 import Information.Info;
 import Information.ScanPort;
@@ -50,6 +51,7 @@ public class VSH extends javax.swing.JFrame {
     public static ArrayList<FuzzEntity> fu = new ArrayList<>();
     public static ArrayList<VulnEntity> ve = new ArrayList<>();
     public static ArrayList<String> fuLink = new ArrayList<>();
+    public static ArrayList<LinkEntity> LinkEntt = new ArrayList<>();
     private final HistoryDao historyDao = new HistoryDao();
     private final VulnDao vulnDao = new VulnDao();
     javax.swing.JFrame rootFrame = this;

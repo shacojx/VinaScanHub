@@ -5,13 +5,16 @@
  */
 package function;
 
+import Entity.LinkEntity;
 import View.VSH;
 import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.WebResponse;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
@@ -48,13 +51,17 @@ public class SpiderWeb {
         if ((!links.contains(URL)
                 && (depth < VSH.dept))
                 && URL.contains(root_url)
+                && !URL.contains("sigout")
                 && !URL.contains("logout")
                 && !URL.contains("dangxuat")
                 && !URL.contains("thoat")) {
 
             if (URL.toLowerCase().contains(".jpg")
                     || URL.toLowerCase().contains(".pdf")
-                    || URL.toLowerCase().contains(".png")) {
+                    || URL.toLowerCase().contains(".png")
+                    || URL.toLowerCase().contains(".svg")
+                    || URL.toLowerCase().contains(".doc")
+                    || URL.toLowerCase().contains(".docx")) {
                 return;
             }
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
@@ -78,6 +85,11 @@ public class SpiderWeb {
                 List<HtmlAnchor> htmlAnchor = htmlPage.getAnchors();
                 DefaultTableModel dtm = (DefaultTableModel) View.VSH.LinkResult.getModel();
                 dtm.addRow(new Object[]{URL, htmlPage.getWebResponse().getStatusCode()});
+
+                WebResponse response = htmlPage.getWebResponse();
+                List<NameValuePair> li = response.getResponseHeaders();
+                LinkEntity lin = new LinkEntity(URL, li.toString(), htmlPage.asXml());
+                View.VSH.LinkEntt.add(lin);
 
 //                Document document = Jsoup.connect(URL).get();
 //                Connection.Response resp = (Connection.Response) Jsoup.connect(URL).execute();
@@ -136,7 +148,7 @@ public class SpiderWeb {
         @Override
         public void run() {
             try {
-                getPageLinks(url, dept, root_url, cooki);                
+                getPageLinks(url, dept, root_url, cooki);
             } catch (Exception e) {
                 System.out.println("ERROR thread spider!!!");
                 e.printStackTrace();

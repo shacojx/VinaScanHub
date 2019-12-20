@@ -17,6 +17,8 @@ public class DetailHistoryView extends javax.swing.JDialog {
     public DetailHistoryView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
     }
 
     /**

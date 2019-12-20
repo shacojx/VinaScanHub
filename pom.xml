@@ -67,6 +67,11 @@
             <artifactId>sqlite-dialect</artifactId>
             <version>master</version>
         </dependency>
+        <dependency>
+            <groupId>fun.mike</groupId>
+            <artifactId>diff-match-patch</artifactId>
+            <version>0.0.2</version>
+        </dependency>
         <!--         hibernate 
         <dependency>
             <groupId>org.hibernate</groupId>
