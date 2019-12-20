@@ -43,10 +43,15 @@ public class DiffResult extends javax.swing.JDialog {
         jScrollPane4 = new javax.swing.JScrollPane();
         vuln_resp_header = new javax.swing.JTextArea();
         jScrollPane6 = new javax.swing.JScrollPane();
-        diff_resp_header = new javax.swing.JTextArea();
+        diff_resp_header_delete = new javax.swing.JTextArea();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        diff_resp_header_insert = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
-        diff_resp = new javax.swing.JTextArea();
+        diff_resp_delete = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        diff_resp_insert = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -88,13 +93,21 @@ public class DiffResult extends javax.swing.JDialog {
         vuln_resp_header.setWrapStyleWord(true);
         jScrollPane4.setViewportView(vuln_resp_header);
 
-        diff_resp_header.setBackground(new java.awt.Color(0, 0, 0));
-        diff_resp_header.setColumns(20);
-        diff_resp_header.setForeground(new java.awt.Color(255, 0, 0));
-        diff_resp_header.setLineWrap(true);
-        diff_resp_header.setRows(5);
-        diff_resp_header.setWrapStyleWord(true);
-        jScrollPane6.setViewportView(diff_resp_header);
+        diff_resp_header_delete.setBackground(new java.awt.Color(0, 0, 0));
+        diff_resp_header_delete.setColumns(20);
+        diff_resp_header_delete.setForeground(new java.awt.Color(255, 0, 0));
+        diff_resp_header_delete.setLineWrap(true);
+        diff_resp_header_delete.setRows(5);
+        diff_resp_header_delete.setWrapStyleWord(true);
+        jScrollPane6.setViewportView(diff_resp_header_delete);
+
+        diff_resp_header_insert.setBackground(new java.awt.Color(0, 0, 0));
+        diff_resp_header_insert.setColumns(20);
+        diff_resp_header_insert.setForeground(new java.awt.Color(255, 255, 255));
+        diff_resp_header_insert.setLineWrap(true);
+        diff_resp_header_insert.setRows(5);
+        diff_resp_header_insert.setWrapStyleWord(true);
+        jScrollPane7.setViewportView(diff_resp_header_insert);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -106,7 +119,9 @@ public class DiffResult extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,19 +130,31 @@ public class DiffResult extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                     .addComponent(jScrollPane4)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
-        diff_resp.setBackground(new java.awt.Color(0, 0, 0));
-        diff_resp.setColumns(20);
-        diff_resp.setForeground(new java.awt.Color(255, 0, 0));
-        diff_resp.setLineWrap(true);
-        diff_resp.setRows(5);
-        diff_resp.setWrapStyleWord(true);
-        jScrollPane5.setViewportView(diff_resp);
+        diff_resp_delete.setBackground(new java.awt.Color(0, 0, 0));
+        diff_resp_delete.setColumns(20);
+        diff_resp_delete.setForeground(new java.awt.Color(255, 0, 0));
+        diff_resp_delete.setLineWrap(true);
+        diff_resp_delete.setRows(5);
+        diff_resp_delete.setWrapStyleWord(true);
+        jScrollPane5.setViewportView(diff_resp_delete);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("Response Diff");
+        jLabel3.setText("Response Diff Delete");
+
+        diff_resp_insert.setBackground(new java.awt.Color(0, 0, 0));
+        diff_resp_insert.setColumns(20);
+        diff_resp_insert.setForeground(new java.awt.Color(255, 255, 255));
+        diff_resp_insert.setLineWrap(true);
+        diff_resp_insert.setRows(5);
+        diff_resp_insert.setWrapStyleWord(true);
+        jScrollPane8.setViewportView(diff_resp_insert);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Response Diff Insert");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -139,16 +166,20 @@ public class DiffResult extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addGap(318, 318, 318)
                 .addComponent(jLabel2)
+                .addGap(165, 165, 165)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(134, 134, 134))
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane5))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,12 +189,14 @@ public class DiffResult extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane8))
                 .addContainerGap())
         );
 
@@ -228,11 +261,14 @@ public class DiffResult extends javax.swing.JDialog {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JTextArea diff_resp;
-    public static javax.swing.JTextArea diff_resp_header;
+    public static javax.swing.JTextArea diff_resp_delete;
+    public static javax.swing.JTextArea diff_resp_header_delete;
+    public static javax.swing.JTextArea diff_resp_header_insert;
+    public static javax.swing.JTextArea diff_resp_insert;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -241,6 +277,8 @@ public class DiffResult extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     public static javax.swing.JTextArea root_resp;
     public static javax.swing.JTextArea root_resp_header;
     public static javax.swing.JTextArea vuln_resp;

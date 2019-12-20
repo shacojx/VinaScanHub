@@ -8,6 +8,7 @@ package View;
 import Entity.LinkEntity;
 import fun.mike.dmp.Diff;
 import fun.mike.dmp.DiffMatchPatch;
+import java.awt.Color;
 import java.util.LinkedList;
 
 /**
@@ -173,14 +174,18 @@ public class FuzzOut3 extends javax.swing.JDialog {
 
         dmp.diff_cleanupEfficiency(diff_header);
         for (int i = 0; i < diff_header.size(); i++) {
-            if (diff_header.get(i).toString().contains("DELETE") || diff_header.get(i).toString().contains("INSERT")) {
-                diffresult.diff_resp_header.append(diff_header.get(i).toString()+"\n");
+            if (diff_header.get(i).toString().contains("DELETE")) {
+                diffresult.diff_resp_header_delete.append(diff_header.get(i).toString()+"\n");
+            }else if(diff_header.get(i).toString().contains("INSERT")){
+                diffresult.diff_resp_header_insert.append(diff_header.get(i).toString()+"\n");
             }
         }
         dmp.diff_cleanupEfficiency(diff_resp);
         for (int i = 0; i < diff_resp.size(); i++) {
-            if(diff_resp.get(i).toString().contains("DELETE") || diff_resp.get(i).toString().contains("INSERT")){
-                diffresult.diff_resp.append(diff_resp.get(i).toString()+"\n");
+            if(diff_resp.get(i).toString().contains("DELETE")){
+                diffresult.diff_resp_delete.append(diff_resp.get(i).toString()+"\n");
+            }else if(diff_resp.get(i).toString().contains("INSERT")){
+                diffresult.diff_resp_insert.append(diff_resp.get(i).toString()+"\n");
             }
         }
         diffresult.setVisible(true);
