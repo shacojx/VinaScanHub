@@ -42,6 +42,7 @@ public class ReportPDF {
         String vulnx = "";
         String pay = "";
         String sig = "";
+
         for (String x : function.Scan.list_vuln) {
             if (x.split(": ")[1].contains("&")) {
                 x.split(": ")[1].split("&");
@@ -51,14 +52,14 @@ public class ReportPDF {
             }
             pay = x.split(": ")[2];
             if(pay.contains("<") && pay.contains(">")){
-//                pay.replaceAll('<', '[');
-//                pay.replaceAll('>', ']');
+                pay = pay.replaceAll("<", "(tagOpen)");
+                pay = pay.replaceAll(">", "(tagClose)");
                 
             }
             sig = x.split(": ")[3];
             if(sig.contains("<") && sig.contains(">")){
-                sig.replaceAll("<", "(tagOpen)");
-                sig.replaceAll(">", "(tagClose)");
+                sig = sig.replaceAll("<", "(tagOpen)");
+                sig = sig.replaceAll(">", "(tagClose)");
             }
 
             vuln = vuln + "<tr>\n"

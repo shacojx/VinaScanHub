@@ -56,6 +56,7 @@ public class FuzzOut2 extends javax.swing.JDialog {
                 "Payload"
             }
         ));
+        PayVuln.setRequestFocusEnabled(false);
         PayVuln.setVerifyInputWhenFocusTarget(false);
         PayVuln.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
