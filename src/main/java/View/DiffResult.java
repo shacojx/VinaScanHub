@@ -72,7 +72,7 @@ public class DiffResult extends javax.swing.JDialog {
         jScrollPane2.setViewportView(vuln_resp);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Root Response");
+        jLabel1.setText("Original Response");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Response with payload");
