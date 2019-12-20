@@ -55,7 +55,9 @@ public class FuzzOut3 extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Response Link");
 
+        Response.setBackground(new java.awt.Color(0, 0, 0));
         Response.setColumns(20);
+        Response.setForeground(new java.awt.Color(51, 255, 51));
         Response.setLineWrap(true);
         Response.setRows(5);
         Response.setWrapStyleWord(true);
@@ -73,7 +75,9 @@ public class FuzzOut3 extends javax.swing.JDialog {
             }
         });
 
+        Header_response.setBackground(new java.awt.Color(0, 0, 0));
         Header_response.setColumns(20);
+        Header_response.setForeground(new java.awt.Color(51, 255, 51));
         Header_response.setLineWrap(true);
         Header_response.setRows(5);
         Header_response.setWrapStyleWord(true);

@@ -50,13 +50,17 @@ public class DiffResult extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        root_resp.setBackground(new java.awt.Color(0, 0, 0));
         root_resp.setColumns(20);
+        root_resp.setForeground(new java.awt.Color(204, 255, 0));
         root_resp.setLineWrap(true);
         root_resp.setRows(5);
         root_resp.setWrapStyleWord(true);
         jScrollPane1.setViewportView(root_resp);
 
+        vuln_resp.setBackground(new java.awt.Color(0, 0, 0));
         vuln_resp.setColumns(20);
+        vuln_resp.setForeground(new java.awt.Color(51, 255, 51));
         vuln_resp.setLineWrap(true);
         vuln_resp.setRows(5);
         vuln_resp.setWrapStyleWord(true);
@@ -68,19 +72,25 @@ public class DiffResult extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Response with payload");
 
+        root_resp_header.setBackground(new java.awt.Color(0, 0, 0));
         root_resp_header.setColumns(20);
+        root_resp_header.setForeground(new java.awt.Color(204, 255, 0));
         root_resp_header.setLineWrap(true);
         root_resp_header.setRows(5);
         root_resp_header.setWrapStyleWord(true);
         jScrollPane3.setViewportView(root_resp_header);
 
+        vuln_resp_header.setBackground(new java.awt.Color(0, 0, 0));
         vuln_resp_header.setColumns(20);
+        vuln_resp_header.setForeground(new java.awt.Color(51, 255, 51));
         vuln_resp_header.setLineWrap(true);
         vuln_resp_header.setRows(5);
         vuln_resp_header.setWrapStyleWord(true);
         jScrollPane4.setViewportView(vuln_resp_header);
 
+        diff_resp_header.setBackground(new java.awt.Color(0, 0, 0));
         diff_resp_header.setColumns(20);
+        diff_resp_header.setForeground(new java.awt.Color(255, 0, 0));
         diff_resp_header.setLineWrap(true);
         diff_resp_header.setRows(5);
         diff_resp_header.setWrapStyleWord(true);
@@ -108,7 +118,9 @@ public class DiffResult extends javax.swing.JDialog {
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
+        diff_resp.setBackground(new java.awt.Color(0, 0, 0));
         diff_resp.setColumns(20);
+        diff_resp.setForeground(new java.awt.Color(255, 0, 0));
         diff_resp.setLineWrap(true);
         diff_resp.setRows(5);
         diff_resp.setWrapStyleWord(true);

@@ -125,7 +125,7 @@ public class VSH extends javax.swing.JFrame {
         lbUser = new javax.swing.JLabel();
         tfUser = new javax.swing.JTextField();
         lbPassword = new javax.swing.JLabel();
-        tfPassword = new javax.swing.JTextField();
+        tfPassword = new javax.swing.JPasswordField();
         Tabmenu = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         LOG_CONSOLE = new javax.swing.JTextArea();
@@ -237,7 +237,9 @@ public class VSH extends javax.swing.JFrame {
         });
 
         Info.setEditable(false);
+        Info.setBackground(new java.awt.Color(0, 0, 0));
         Info.setColumns(20);
+        Info.setForeground(new java.awt.Color(51, 255, 51));
         Info.setLineWrap(true);
         Info.setRows(5);
         Info.setText("[ Information website ]\n");
@@ -315,8 +317,6 @@ public class VSH extends javax.swing.JFrame {
         lbPassword.setText("Password :");
         lbPassword.setEnabled(false);
 
-        tfPassword.setEnabled(false);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -348,15 +348,15 @@ public class VSH extends javax.swing.JFrame {
                             .addComponent(lbPassword)
                             .addComponent(lbUser))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfUser, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(tfPassword)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lbAuthen)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbAuthen)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,7 +456,9 @@ public class VSH extends javax.swing.JFrame {
             }
         });
 
+        LOG_CONSOLE.setBackground(new java.awt.Color(0, 0, 0));
         LOG_CONSOLE.setColumns(20);
+        LOG_CONSOLE.setForeground(new java.awt.Color(51, 255, 51));
         LOG_CONSOLE.setLineWrap(true);
         LOG_CONSOLE.setRows(5);
         LOG_CONSOLE.setWrapStyleWord(true);
@@ -608,9 +610,6 @@ public class VSH extends javax.swing.JFrame {
         // TODO add your handling code here:
         SpiderWeb sp = new SpiderWeb();
         DefaultTableModel dtm = (DefaultTableModel) View.VSH.FuzzResult.getModel();
-//        for(String url : sp.links){
-//            dtm.addRow(new Object[]{url,"SQL injection"});
-//        }
         dtm.addRow(new Object[]{"SQL injection"});
         dtm.addRow(new Object[]{"Blind SQL injection"});
         dtm.addRow(new Object[]{"XSS"});
@@ -618,7 +617,7 @@ public class VSH extends javax.swing.JFrame {
         dtm.addRow(new Object[]{"OS CMD injection"});
         dtm.addRow(new Object[]{"Code injection"});
         dtm.addRow(new Object[]{"XML Xpatch injection"});
-
+        JOptionPane.showMessageDialog(this, "Tab Fuzz add link Done !!!");
 
     }//GEN-LAST:event_FuzzActionPerformed
 
@@ -960,7 +959,7 @@ public class VSH extends javax.swing.JFrame {
     private static javax.swing.JLabel lbUrl;
     public static javax.swing.JLabel lbUser;
     private static javax.swing.JTextField tfDept;
-    public static javax.swing.JTextField tfPassword;
+    public static javax.swing.JPasswordField tfPassword;
     public static javax.swing.JTextField tfThread;
     private static javax.swing.JTextField tfUrl;
     public static javax.swing.JTextField tfUser;
