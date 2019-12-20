@@ -602,8 +602,9 @@ public class VSH extends javax.swing.JFrame {
 
     private void AddpayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddpayActionPerformed
         // TODO add your handling code here:
-        AddPay ap = new AddPay(this, false);
-        ap.setVisible(true);
+        
+        AddFileView addfile = new AddFileView(this, false);
+        addfile.setVisible(true);
     }//GEN-LAST:event_AddpayActionPerformed
 
     private void FuzzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuzzActionPerformed
