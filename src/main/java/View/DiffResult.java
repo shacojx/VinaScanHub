@@ -19,6 +19,14 @@ public class DiffResult extends javax.swing.JDialog {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        root_resp.removeAll();
+        root_resp_header.removeAll();
+        vuln_resp.removeAll();
+        vuln_resp_header.removeAll();
+        diff_resp_delete.removeAll();
+        diff_resp_header_delete.removeAll();
+        diff_resp_insert.removeAll();
+        diff_resp_header_insert.removeAll();
     }
 
     /**

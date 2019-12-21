@@ -6,6 +6,14 @@
 package View;
 
 import Entity.LinkEntity;
+import static View.DiffResult.diff_resp_delete;
+import static View.DiffResult.diff_resp_header_delete;
+import static View.DiffResult.diff_resp_header_insert;
+import static View.DiffResult.diff_resp_insert;
+import static View.DiffResult.root_resp;
+import static View.DiffResult.root_resp_header;
+import static View.DiffResult.vuln_resp;
+import static View.DiffResult.vuln_resp_header;
 import fun.mike.dmp.Diff;
 import fun.mike.dmp.DiffMatchPatch;
 import java.awt.Color;
@@ -21,6 +29,8 @@ public class FuzzOut3 extends javax.swing.JDialog {
      * Creates new form FuzzOut3
      */
     DiffResult diffresult;
+    String root_resp_heaer = "";
+    String root_resp = "";
 
     public FuzzOut3(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -28,6 +38,7 @@ public class FuzzOut3 extends javax.swing.JDialog {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         diffresult = new DiffResult(parent, true);
+
     }
 
     /**
@@ -151,13 +162,18 @@ public class FuzzOut3 extends javax.swing.JDialog {
 
     private void DiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DiffActionPerformed
         // TODO add your handling code here:
-        String root_resp_heaer = "";
-        String root_resp = "";
-        String vuln_resp_header = this.Header_response.getText();
-        String vuln_resp = Response.getText();
+        
+        diffresult.root_resp.removeAll();
+        diffresult.root_resp_header.removeAll();
+        diffresult.vuln_resp.removeAll();
+        diffresult.vuln_resp_header.removeAll();
+        diffresult.diff_resp_delete.removeAll();
+        diffresult.diff_resp_header_delete.removeAll();
+        diffresult.diff_resp_insert.removeAll();
+        diffresult.diff_resp_header_insert.removeAll();
 
-        diffresult.vuln_resp_header.setText(vuln_resp_header);
-        diffresult.vuln_resp.setText(vuln_resp);
+        diffresult.vuln_resp_header.setText(this.Header_response.getText());
+        diffresult.vuln_resp.setText(Response.getText());
 
         for (LinkEntity le : View.VSH.LinkEntt) {
             if (le.getLink().equalsIgnoreCase(link.getText())) {
@@ -169,23 +185,23 @@ public class FuzzOut3 extends javax.swing.JDialog {
         diffresult.root_resp.setText(root_resp);
 
         DiffMatchPatch dmp = new DiffMatchPatch();
-        LinkedList<Diff> diff_header = dmp.diff_main(root_resp_heaer, vuln_resp_header);
-        LinkedList<Diff> diff_resp = dmp.diff_main(root_resp, vuln_resp);
+        LinkedList<Diff> diff_header = dmp.diff_main(root_resp_heaer, this.Header_response.getText());
+        LinkedList<Diff> diff_resp = dmp.diff_main(root_resp, Response.getText());
 
         dmp.diff_cleanupEfficiency(diff_header);
         for (int i = 0; i < diff_header.size(); i++) {
             if (diff_header.get(i).toString().contains("DELETE")) {
-                diffresult.diff_resp_header_delete.append(diff_header.get(i).toString()+"\n");
-            }else if(diff_header.get(i).toString().contains("INSERT")){
-                diffresult.diff_resp_header_insert.append(diff_header.get(i).toString()+"\n");
+                diffresult.diff_resp_header_delete.append(diff_header.get(i).toString() + "\n");
+            } else if (diff_header.get(i).toString().contains("INSERT")) {
+                diffresult.diff_resp_header_insert.append(diff_header.get(i).toString() + "\n");
             }
         }
         dmp.diff_cleanupEfficiency(diff_resp);
         for (int i = 0; i < diff_resp.size(); i++) {
-            if(diff_resp.get(i).toString().contains("DELETE")){
-                diffresult.diff_resp_delete.append(diff_resp.get(i).toString()+"\n");
-            }else if(diff_resp.get(i).toString().contains("INSERT")){
-                diffresult.diff_resp_insert.append(diff_resp.get(i).toString()+"\n");
+            if (diff_resp.get(i).toString().contains("DELETE")) {
+                diffresult.diff_resp_delete.append(diff_resp.get(i).toString() + "\n");
+            } else if (diff_resp.get(i).toString().contains("INSERT")) {
+                diffresult.diff_resp_insert.append(diff_resp.get(i).toString() + "\n");
             }
         }
         diffresult.setVisible(true);
