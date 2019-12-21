@@ -260,6 +260,16 @@ public class Scan {
         });
         service.execute(() -> {
             try {
+                this.sSQLi.scanSQLin(null, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
+            } catch (Exception ex) {
+                System.out.println("ERROR scanMethodGET SQLi!!!");
+                ex.printStackTrace();
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
+        service.execute(() -> {
+            try {
                 this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin(), method, cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
@@ -267,7 +277,23 @@ public class Scan {
         });
         service.execute(() -> {
             try {
+                this.sXMLXpatchi.scanXMLXpatchin(null, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
                 this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS(), method, cooki);
+            } catch (Exception ex) {
+                System.out.println("ERROR scanMethodGET XSS!!!");
+                ex.printStackTrace();
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sXSS.scanXSS(null, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
             } catch (Exception ex) {
                 System.out.println("ERROR scanMethodGET XSS!!!");
                 ex.printStackTrace();
@@ -291,6 +317,14 @@ public class Scan {
         });
         service.execute(() -> {
             try {
+                this.sLFI.scanLFI(null, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        service.execute(() -> {
+            try {
                 this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI(), method, cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
@@ -298,7 +332,21 @@ public class Scan {
         });
         service.execute(() -> {
             try {
+                this.sCI.scanCI(null, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
                 this.sCMDi.scanCMDi(null, urlAction, this.psCMDi.getArrPayCMDi(), method, cooki);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sCMDi.scanCMDi(null, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -332,6 +380,15 @@ public class Scan {
         });
         service.execute(() -> {
             try {
+                this.sSQLi.scanSQLin(element, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
+            } catch (Exception ex) {
+                System.out.println("ERROR scanMethodGETPOST SQLi!!!");
+                ex.printStackTrace();
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
                 this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, this.psXMLXpatchin.getArrPayXMLXPathin(), method, cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
@@ -339,7 +396,23 @@ public class Scan {
         });
         service.execute(() -> {
             try {
+                this.sXMLXpatchi.scanXMLXpatchin(element, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
                 this.sXSS.scanXSS(element, urlAction, this.psXSS.getArrPayXSS(), method, cooki);
+            } catch (Exception ex) {
+                System.out.println("ERROR scanMethodGET XSS!!!");
+                ex.printStackTrace();
+//                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sXSS.scanXSS(element, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
             } catch (Exception ex) {
                 System.out.println("ERROR scanMethodGET XSS!!!");
                 ex.printStackTrace();
@@ -361,6 +434,13 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+         service.execute(() -> {
+            try {
+                this.sLFI.scanLFI(element, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         service.execute(() -> {
             try {
                 this.sCI.scanCI(element, urlAction, this.psCI.getArrPayCI(), method, cooki);
@@ -368,9 +448,23 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+         service.execute(() -> {
+            try {
+                this.sCI.scanCI(element, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         service.execute(() -> {
             try {
                 this.sCMDi.scanCMDi(element, urlAction, this.psCMDi.getArrPayCMDi(), method, cooki);
+            } catch (IOException ex) {
+                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        service.execute(() -> {
+            try {
+                this.sCMDi.scanCMDi(element, urlAction, (String[]) View.VSH.PayloadAdd.toArray(), method, cooki);
             } catch (IOException ex) {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -17,6 +17,10 @@ import Report.ReportPDF;
 import Scan.Scan_WeakPassword;
 import function.Scan;
 import function.SpiderWeb;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,6 +59,7 @@ public class VSH extends javax.swing.JFrame {
     private final HistoryDao historyDao = new HistoryDao();
     private final VulnDao vulnDao = new VulnDao();
     javax.swing.JFrame rootFrame = this;
+    public static ArrayList<String> PayloadAdd = new ArrayList<>();
 
     public VSH() {
         initComponents();
@@ -601,10 +606,33 @@ public class VSH extends javax.swing.JFrame {
     }//GEN-LAST:event_AboutActionPerformed
 
     private void AddpayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddpayActionPerformed
-        // TODO add your handling code here:
-        
-        AddFileView addfile = new AddFileView(this, false);
-        addfile.setVisible(true);
+
+        FileReader fr = null;
+        try {
+            // TODO add your handling code here:
+
+            AddFileView addfile = new AddFileView(this, false);
+            addfile.setVisible(true);
+            File file = new File(addfile.fileName);
+            fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                //process the line
+                PayloadAdd.add(line);
+//                System.out.println(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fr.close();
+            } catch (IOException ex) {
+                Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_AddpayActionPerformed
 
     private void FuzzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuzzActionPerformed
@@ -640,7 +668,7 @@ public class VSH extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Generate File Report Done !!!");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Generate File Report Error !!!");
-            System.out.println("Gen file report error :"+ ex);
+            System.out.println("Gen file report error :" + ex);
             Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_ReportActionPerformed
