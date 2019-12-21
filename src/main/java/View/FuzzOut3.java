@@ -162,7 +162,7 @@ public class FuzzOut3 extends javax.swing.JDialog {
 
     private void DiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DiffActionPerformed
         // TODO add your handling code here:
-        
+
         diffresult.root_resp.removeAll();
         diffresult.root_resp_header.removeAll();
         diffresult.vuln_resp.removeAll();
@@ -188,6 +188,10 @@ public class FuzzOut3 extends javax.swing.JDialog {
         LinkedList<Diff> diff_header = dmp.diff_main(root_resp_heaer, this.Header_response.getText());
         LinkedList<Diff> diff_resp = dmp.diff_main(root_resp, Response.getText());
 
+        diffresult.diff_resp_header_delete.setText("");
+        diffresult.diff_resp_header_insert.setText("");
+        diffresult.diff_resp_delete.setText("");
+        diffresult.diff_resp_insert.setText("");
         dmp.diff_cleanupEfficiency(diff_header);
         for (int i = 0; i < diff_header.size(); i++) {
             if (diff_header.get(i).toString().contains("DELETE")) {
