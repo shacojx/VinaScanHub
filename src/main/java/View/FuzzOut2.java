@@ -19,7 +19,7 @@ public class FuzzOut2 extends javax.swing.JDialog {
      * Creates new form FuzzOut2
      */
     FuzzOut3 fuzzout3;
-
+    
     public FuzzOut2(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -119,14 +119,18 @@ public class FuzzOut2 extends javax.swing.JDialog {
         String pay = (String) model.getValueAt(index, 0);
         fuzzout3.link.setText(link_payload.getText());
         fuzzout3.pay.setText(pay);
-
+        
         for (FuzzEntity fe : View.VSH.fu) {
             if (fe.getLink().equalsIgnoreCase(link_payload.getText()) && fe.getVuln().equalsIgnoreCase(payvuln.getText())
                     && fe.getPayload().contains(pay)) {
                 fuzzout3.Response.setText(fe.getResponse());
                 fuzzout3.Header_response.setText(fe.getHeader_response());
+            } else if (fe.getLink().equalsIgnoreCase(link_payload.getText()) && fe.getPayload().contains(pay)
+                    && fe.getVuln().equalsIgnoreCase("Other")) {
+                fuzzout3.Response.setText(fe.getResponse());
+                fuzzout3.Header_response.setText(fe.getHeader_response());
             }
-
+            
         }
         fuzzout3.setVisible(true);
     }//GEN-LAST:event_PayVulnMouseClicked

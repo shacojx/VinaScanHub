@@ -77,6 +77,8 @@ public class AddFileView extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void FilePayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FilePayActionPerformed
 
         FileReader fr = null;
@@ -90,8 +92,8 @@ public class AddFileView extends javax.swing.JDialog {
             while ((line = br.readLine()) != null) {
                 //process the line
                 View.VSH.PayloadAdd.add(line);
-                System.out.println(line);
             }
+            
             JOptionPane.showMessageDialog(this, "Load file payload Done !!!");
             this.setVisible(false);
         } catch (FileNotFoundException ex) {
