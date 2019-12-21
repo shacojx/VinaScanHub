@@ -646,6 +646,7 @@ public class VSH extends javax.swing.JFrame {
         dtm.addRow(new Object[]{"OS CMD injection"});
         dtm.addRow(new Object[]{"Code injection"});
         dtm.addRow(new Object[]{"XML Xpatch injection"});
+         dtm.addRow(new Object[]{"Other (Payload add this device)"});
         JOptionPane.showMessageDialog(this, "Tab Fuzz add link Done !!!");
 
     }//GEN-LAST:event_FuzzActionPerformed

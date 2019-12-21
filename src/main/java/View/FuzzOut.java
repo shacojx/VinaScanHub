@@ -161,6 +161,10 @@ public class FuzzOut extends javax.swing.JDialog {
             for(String s : pxml.getArrPayXMLXPathin()){
                 dtmz.addRow(new Object[]{s});
             }
+        }else{
+            for(String s : View.VSH.PayloadAdd){
+                dtmz.addRow(new Object[]{s});
+            }
         }
         
         
