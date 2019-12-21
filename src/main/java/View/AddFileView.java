@@ -7,6 +7,7 @@ package View;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -77,12 +78,34 @@ public class AddFileView extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void FilePayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FilePayActionPerformed
-        
+
+        FileReader fr = null;
+        try {
             // TODO add your handling code here:
             fileName = FilePay.getSelectedFile().toString();
+            File file = new File(fileName);
+            fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                //process the line
+                View.VSH.PayloadAdd.add(line);
+                System.out.println(line);
+            }
             JOptionPane.showMessageDialog(this, "Load file payload Done !!!");
             this.setVisible(false);
-        
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AddFileView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AddFileView.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fr.close();
+            } catch (IOException ex) {
+                Logger.getLogger(AddFileView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }//GEN-LAST:event_FilePayActionPerformed
 
     /**

@@ -607,32 +607,11 @@ public class VSH extends javax.swing.JFrame {
 
     private void AddpayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddpayActionPerformed
 
-        FileReader fr = null;
-        try {
             // TODO add your handling code here:
 
             AddFileView addfile = new AddFileView(this, false);
             addfile.setVisible(true);
-            File file = new File(addfile.fileName);
-            fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            String line;
-            while ((line = br.readLine()) != null) {
-                //process the line
-                PayloadAdd.add(line);
-//                System.out.println(line);
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                fr.close();
-            } catch (IOException ex) {
-                Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+
     }//GEN-LAST:event_AddpayActionPerformed
 
     private void FuzzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FuzzActionPerformed
