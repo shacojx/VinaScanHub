@@ -22,22 +22,27 @@ import org.hibernate.Query;
 
 public class VulnDao {
 
-    SessionFactory factory = DBContent.getSessionFactory();
+    SessionFactory factory;
 
     public VulnDao() {
+        try{
+            factory = DBContent.getSessionFactory();
+        }catch(Exception ex){
+            factory = DBContent.getSessionFactory();
+        }
 
     }
 
     public void save(VulnEntity vuln) {
         if (null != vuln) {
             try {
-                Session session = factory.openSession();
-                Transaction tx = session.beginTransaction();
-                session.save(vuln);
-                tx.commit();
-                session.clear();
-                session.close();
-            } catch (Exception ex) {
+                try (Session session = factory.openSession()) {
+                    Transaction tx = session.beginTransaction();
+                    session.save(vuln);
+                    tx.commit();
+                    session.clear();
+                }
+            } catch (HibernateException ex) {
                 throw new RuntimeException(ex.getMessage(), ex);
             }
         }
@@ -59,11 +64,11 @@ public class VulnDao {
     public List<VulnEntity> getListVulnEntity() {
         List<VulnEntity> list = new ArrayList<>();
         try {
-            Session session = factory.openSession();
-            list = (List<VulnEntity>) session.createQuery("from VulnEntity").list();
-            session.clear();
-            session.close();
-        } catch (Exception ex) {
+            try (Session session = factory.openSession()) {
+                list = (List<VulnEntity>) session.createQuery("from VulnEntity").list();
+                session.clear();
+            }
+        } catch (HibernateException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
         return list;
@@ -72,14 +77,14 @@ public class VulnDao {
     public List<VulnEntity> getListVulnEntityByHistoryId(Long id) {
         List<VulnEntity> list = new ArrayList<>();
         try {
-            Session session = factory.openSession();
-            String sql = "from VulnEntity where historyId = :id";
-            Query query = session.createQuery(sql);
-            query.setParameter("id", id);
-            list = (List<VulnEntity>) query.list();
-            session.clear();
-            session.close();
-        } catch (Exception ex) {
+            try (Session session = factory.openSession()) {
+                String sql = "from VulnEntity where historyId = :id";
+                Query query = session.createQuery(sql);
+                query.setParameter("id", id);
+                list = (List<VulnEntity>) query.list();
+                session.clear();
+            }
+        } catch (HibernateException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
         return list;
@@ -88,13 +93,13 @@ public class VulnDao {
     public void delete(VulnEntity vuln) {
         if (null != vuln) {
             try {
-                Session session = factory.openSession();
-                Transaction tx = session.beginTransaction();
-                session.delete(vuln);
-                tx.commit();
-                session.clear();
-                session.close();
-            } catch (Exception ex) {
+                try (Session session = factory.openSession()) {
+                    Transaction tx = session.beginTransaction();
+                    session.delete(vuln);
+                    tx.commit();
+                    session.clear();
+                }
+            } catch (HibernateException ex) {
                 throw new RuntimeException(ex.getMessage(), ex);
             }
         }

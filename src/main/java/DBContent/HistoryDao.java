@@ -10,33 +10,37 @@ package DBContent;
  * @author hunternight
  */
 import Entity.History;
-import Entity.VulnEntity;
 import java.util.ArrayList;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.List;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 public class HistoryDao {
 
-    SessionFactory factory = DBContent.getSessionFactory();
+    SessionFactory factory;
 
     public HistoryDao() {
-
+        try{
+            factory = DBContent.getSessionFactory();
+        }catch(Exception ex){
+            factory = DBContent.getSessionFactory();
+        }
     }
 
     public void save(History history) {
         if (null != history) {
             try {
-                Session session = factory.openSession();
-                Transaction tx = session.beginTransaction();
-                session.save(history);
-                tx.commit();
-                session.clear();
-                session.close();
-            } catch (Exception ex) {
+                try (Session session = factory.openSession()) {
+                    Transaction tx = session.beginTransaction();
+                    session.save(history);
+                    tx.commit();
+                    session.clear();
+                }
+            } catch (HibernateException ex) {
                 throw new RuntimeException(ex.getMessage(), ex);
             }
         }
@@ -45,11 +49,11 @@ public class HistoryDao {
     public List<History> getListHistory() {
         List<History> list = new ArrayList<>();
         try {
-            Session session = factory.openSession();
-            list = (List<History>) session.createQuery("from History").list();
-            session.clear();
-            session.close();
-        } catch (Exception ex) {
+            try (Session session = factory.openSession()) {
+                list = (List<History>) session.createQuery("from History").list();
+                session.clear();
+            }
+        } catch (HibernateException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
         return list;
@@ -58,14 +62,14 @@ public class HistoryDao {
     public List<History> getListHistoryById(Long id) {
         List<History> list = new ArrayList<>();
         try {
-            Session session = factory.openSession();
-            String sql = "from History where id = :id";
-            Query query = session.createQuery(sql);
-            query.setParameter("id", id);
-            list = (List<History>) query.list();
-            session.clear();
-            session.close();
-        } catch (Exception ex) {
+            try (Session session = factory.openSession()) {
+                String sql = "from History where id = :id";
+                Query query = session.createQuery(sql);
+                query.setParameter("id", id);
+                list = (List<History>) query.list();
+                session.clear();
+            }
+        } catch (HibernateException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
         return list;
@@ -74,13 +78,13 @@ public class HistoryDao {
     public void delete(History history) {
         if (null != history) {
             try {
-                Session session = factory.openSession();
-                Transaction tx = session.beginTransaction();
-                session.delete(history);
-                tx.commit();
-                session.clear();
-                session.close();
-            } catch (Exception ex) {
+                try (Session session = factory.openSession()) {
+                    Transaction tx = session.beginTransaction();
+                    session.delete(history);
+                    tx.commit();
+                    session.clear();
+                }
+            } catch (HibernateException ex) {
                 throw new RuntimeException(ex.getMessage(), ex);
             }
         }

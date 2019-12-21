@@ -7,6 +7,10 @@ package DBContent;
 
 import Entity.History;
 import Entity.VulnEntity;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -22,20 +26,29 @@ public class DBContent {
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
-            // loads configuration and mappings
-            Configuration configuration = new Configuration().configure();
-            ServiceRegistry serviceRegistry
-                    = new StandardServiceRegistryBuilder()
-                            .applySettings(configuration.getProperties()).build();
-            
-            configuration.addAnnotatedClass(History.class);
-            configuration.addAnnotatedClass(VulnEntity.class);
-            
-            
-            // builds a session factory from the service registry
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        }
+            try {
+                // loads configuration and mappings
+                disableLogging();
+                Configuration configuration = new Configuration().configure();
+                ServiceRegistry serviceRegistry
+                        = new StandardServiceRegistryBuilder()
+                                .applySettings(configuration.getProperties()).build();
 
+                configuration.addAnnotatedClass(History.class);
+                configuration.addAnnotatedClass(VulnEntity.class);
+
+                // builds a session factory from the service registry
+                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            } catch (HibernateException ex) {
+
+            }
+        }
         return sessionFactory;
+    }
+
+    private static void disableLogging() {
+        LogManager logManager = LogManager.getLogManager();
+        Logger logger = logManager.getLogger("");
+        logger.setLevel(Level.OFF); //could be Level.OFF
     }
 }
