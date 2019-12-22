@@ -16,7 +16,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import main.Main;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import paramstatic.Param;
