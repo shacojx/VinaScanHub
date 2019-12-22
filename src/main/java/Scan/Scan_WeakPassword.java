@@ -193,7 +193,7 @@ public class Scan_WeakPassword {
                     System.out.println("Login Thanh Cong : " + sURL);
                     System.out.println("User: " + user + " ---- Password: " + pass);
                     DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                    dtm.addRow(new Object[]{"Weak password", sURL, "Username: " + user, "Password: " + pass});
+                    dtm.addRow(new Object[]{"Weak password", sURL, "Username: " + user, "Password: " + pass, "https://www.owasp.org/index.php/Testing_for_Weak_password_policy_(OTG-AUTHN-007)"});
                     VulnEntity v = new VulnEntity("Weak password", sURL, "Username: " + user, "Password: " + pass);
                     View.VSH.ve.add(v);
                     function.Scan.list_vuln.add("Weak Password" + " : " + sURL + " : "+user +" : "+pass);

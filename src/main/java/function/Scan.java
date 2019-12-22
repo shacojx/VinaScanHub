@@ -54,7 +54,6 @@ public class Scan {
     Scan_LFI sLFI = new Scan_LFI();
     Scan_CMDinjection sCMDi = new Scan_CMDinjection();
     Scan_WeakPassword sWeakPass = new Scan_WeakPassword();
-    Scan_DirList sDirList = new Scan_DirList();
     Scan_CVE_2017_9248 scan_telerik = new Scan_CVE_2017_9248();
     Scan_FileUpload sFileUp = new Scan_FileUpload();
     Scan_Unknow sUnknow = new Scan_Unknow();

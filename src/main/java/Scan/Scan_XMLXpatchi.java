@@ -108,7 +108,7 @@ public class Scan_XMLXpatchi {
                         System.out.println(method + vulnName + " : " + urlAction);
                         System.out.println("        " + params.toString());
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                        dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), sSig});
+                        dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), sSig, "https://www.owasp.org/index.php/XPATH_Injection"});
                         VulnEntity v = new VulnEntity(method + vulnName, urlAction, params.toString(), sSig);
                         View.VSH.ve.add(v);
                         VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");

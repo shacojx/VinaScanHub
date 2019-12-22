@@ -49,7 +49,7 @@ public class Scan_CVE_2017_9248 {
 //                    if (doc.body().toString().contains(sig)) {
                         System.out.println("CVE-2017-9248: " + url + pay + " sig: " + sig);
                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                        dtm.addRow(new Object[]{"CVE-2017-9248", url, pay, sig});
+                        dtm.addRow(new Object[]{"CVE-2017-9248", url, pay, sig, "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-9248"});
                         VulnEntity v = new VulnEntity("CVE-2017-9248", url, pay, sig);
                         View.VSH.ve.add(v);
                         VSH.LOG_CONSOLE.append("CVE-2017-9248: " + url + "\n");

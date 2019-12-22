@@ -49,7 +49,7 @@ public class Scan_FileUpload {
 //            if (doc.body().toString().contains(x)) {
                 s.list_vuln.add("Upload File: " + url);
                 DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                dtm.addRow(new Object[]{"Upload File ", url, "", x});
+                dtm.addRow(new Object[]{"Upload File ", url, "", x, "https://www.owasp.org/index.php/Unrestricted_File_Upload"});
                 VulnEntity v = new VulnEntity("Upload File ", url, "", x);
                 View.VSH.ve.add(v);
                 VSH.LOG_CONSOLE.append("Upload File: " + url + "\n");

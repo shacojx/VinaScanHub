@@ -165,7 +165,7 @@ public class VSH extends javax.swing.JFrame {
         });
 
         lbDept.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lbDept.setText(" Dept");
+        lbDept.setText("Depth");
 
         Clear.setBackground(new java.awt.Color(51, 51, 255));
         Clear.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -250,7 +250,7 @@ public class VSH extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,7 +264,7 @@ public class VSH extends javax.swing.JFrame {
 
         Fuzz.setBackground(new java.awt.Color(204, 204, 0));
         Fuzz.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        Fuzz.setText("Fuzz");
+        Fuzz.setText("Analysis");
         Fuzz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FuzzActionPerformed(evt);
@@ -296,7 +296,7 @@ public class VSH extends javax.swing.JFrame {
 
         lbAuthen.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lbAuthen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbAuthen.setText("Authen ");
+        lbAuthen.setText("Authentication");
         lbAuthen.setFocusable(false);
         lbAuthen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
@@ -316,6 +316,8 @@ public class VSH extends javax.swing.JFrame {
         lbPassword.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lbPassword.setText("Password :");
         lbPassword.setEnabled(false);
+
+        tfPassword.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -381,7 +383,7 @@ public class VSH extends javax.swing.JFrame {
                         .addComponent(Loading)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Action, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -476,10 +478,10 @@ public class VSH extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Vulnerability", "Link", "Payload", "Signature", "Level"
+                "Vulnerability", "Link", "Payload", "Signature", "Reference"
             }
         )
-        {public boolean isCellEditable(int row, int column){return false;}}
+        {public boolean isCellEditable(int row, int column){return true;}}
     );
     jScrollPane3.setViewportView(VulnResult);
 
@@ -549,7 +551,7 @@ public class VSH extends javax.swing.JFrame {
     });
     jScrollPane7.setViewportView(FuzzResult);
 
-    Tabmenu.addTab("Fuzz", jScrollPane7);
+    Tabmenu.addTab("Analysis", jScrollPane7);
 
     OtherResult.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {

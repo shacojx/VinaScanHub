@@ -159,7 +159,7 @@ public class Scan_XSS {
                                         System.out.println(method + vulnName + " : " + urlAction);
                                         System.out.println("        " + params.toString());
                                         DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
-                                        dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), params.toString()});
+                                        dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), params.toString(), "https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)"});
                                         VulnEntity v = new VulnEntity(method + vulnName, urlAction, params.toString(), params.toString());
                                         View.VSH.ve.add(v);
                                         VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
