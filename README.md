@@ -1,6 +1,5 @@
 # VinaScanHub
 - Software scan vulnerability web application
-![snap1](https://a.imge.to/2019/12/23/vnVKBh.jpg)
 
 # About My Team
 - Eyes Of God team
