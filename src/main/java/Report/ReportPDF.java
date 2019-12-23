@@ -130,7 +130,7 @@ public class ReportPDF {
         db.append("<div class=\"text-center text-muted\" id=\"Items\">");
         db.append("<h1>Vina Scan Hub <br>Report Scan</h1>");
         db.append("<p class=\"pt-5\">VSH website audit</p>");
-        db.append("<p class=\"pt-5\">12 December 2019</p>");
+        db.append("<p class=\"pt-5\">===================</p>");
         db.append("</div>");
         db.append("<div class=\"pt-5 text-center\">");
         db.append("<div>");
@@ -155,9 +155,6 @@ public class ReportPDF {
         db.append("<th colspan=\"2\">Scan information </th>");
         db.append("</tr>");
         db.append("<tr>");
-        db.append("<td>Start time</td>");
-        db.append("<td>10/12/2019, 23:35:52 </td>");
-        db.append("</tr>");
         db.append("<tr>");
         db.append("<td>Start url</td>");
         db.append("<td>" + url + "</td>");
@@ -167,9 +164,6 @@ public class ReportPDF {
         db.append("<td>" + url + "</td>");
         db.append("</tr>");
         db.append("<tr>");
-        db.append("<td>Scan time</td>");
-        db.append("<td>792 minutes, 4 seconds</td>");
-        db.append("</tr>");
         db.append("</table>");
         db.append("</div>");
         db.append("<br>");
