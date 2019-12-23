@@ -604,10 +604,9 @@ public class VSH extends javax.swing.JFrame {
 
     private void AddpayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddpayActionPerformed
 
-            // TODO add your handling code here:
-
-            AddFileView addfile = new AddFileView(this, false);
-            addfile.setVisible(true);
+        // TODO add your handling code here:
+        AddFileView addfile = new AddFileView(this, false);
+        addfile.setVisible(true);
 
     }//GEN-LAST:event_AddpayActionPerformed
 
@@ -622,8 +621,8 @@ public class VSH extends javax.swing.JFrame {
         dtm.addRow(new Object[]{"OS CMD injection"});
         dtm.addRow(new Object[]{"Code injection"});
         dtm.addRow(new Object[]{"XML Xpatch injection"});
-         dtm.addRow(new Object[]{"Other (Payload add this device)"});
-        JOptionPane.showMessageDialog(this, "Tab Fuzz add link Done !!!");
+        dtm.addRow(new Object[]{"Other (Payload add this device)"});
+        JOptionPane.showMessageDialog(this, "Tab add link Done !!!");
 
     }//GEN-LAST:event_FuzzActionPerformed
 
@@ -817,11 +816,27 @@ public class VSH extends javax.swing.JFrame {
         int index = FuzzResult.getSelectedRow();
         TableModel model = FuzzResult.getModel();
         String vuln = (String) model.getValueAt(index, 0);
-        SpiderWeb sp = new SpiderWeb();
+        ArrayList<String> tmp_link = new ArrayList<>();
         View.FuzzOut.VulnName.setText(vuln);
-        for (String fe : fuLink) {
-            dtmz.addRow(new Object[]{fe});
+        for (FuzzEntity fe : fu) {
+            if (vuln.equalsIgnoreCase(fe.getVuln())) {
+                if (tmp_link.size() != 0) {
+                    for (String x : tmp_link) {
+                        if (x.equalsIgnoreCase(fe.getLink())) {
+                            System.out.println();
+                        } else {
+                            dtmz.addRow(new Object[]{fe.getLink()});
+                            tmp_link.add(fe.getLink());
+                        }
+                    }
+                } else {
+                    dtmz.addRow(new Object[]{fe.getLink()});
+                    tmp_link.add(fe.getLink());
+                }
+                dtmz.addRow(new Object[]{fe.getLink()});
+                tmp_link.add(fe.getLink());
 
+            }
         }
         fuzzout.setVisible(true);
 

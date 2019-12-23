@@ -16,6 +16,7 @@ public class psSQLi {
 
     public psSQLi() {
         arrSigSQLin = new String[]{
+            "Syntax error",
             "Incorrect syntax near",
             "You have an error in your SQL syntax",
             "supplied argument is not a valid MySQL",

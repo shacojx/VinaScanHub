@@ -147,22 +147,35 @@ public class Scan_BlindSQLi {
                     || (page.asXml().equals(page3.asXml()) == true && page.asXml().equals(page4.asXml()) == false)) {
                 check_blind = true;
             }
+            boolean sqli = false;
+            for (String u : function.Scan.list_vuln) {
+                if ((urlAction.equalsIgnoreCase(u.split(": ")[1]) && u.split(": ")[0].equalsIgnoreCase("|GET|SQL Injection"))
+                        || (urlAction.equalsIgnoreCase(u.split(": ")[1]) && u.split(": ")[0].equalsIgnoreCase("|POST|SQL Injection"))) {
+                    sqli = true;
+                }
 
-            for (String sSig : psSQLi.getArrSigSQLin()) {
+            }
+            boolean check_sig = false;
+            for(String sSig : psSQLi.getArrSigSQLin()){
+                if(page4.asXml().contains(sSig) == true){
+                    check_sig = true;
+                }
+            }
+           
 
-                if (page.asXml().contains(sSig) == false && check_blind == true) {
+                if (check_sig == false && check_blind == true && sqli == false) {
 
                     System.out.println(method + vulnName + " : " + urlAction);
                     System.out.println("        " + params.toString());
                     DefaultTableModel dtm = (DefaultTableModel) View.VSH.VulnResult.getModel();
                     dtm.addRow(new Object[]{method + vulnName, urlAction, params.toString(), "", "https://www.owasp.org/index.php/Blind_SQL_Injection"});
-                    VulnEntity v = new VulnEntity(method + vulnName, urlAction, params.toString(), sSig);
+                    VulnEntity v = new VulnEntity(method + vulnName, urlAction, params.toString(), "");
                     View.VSH.ve.add(v);
                     VSH.LOG_CONSOLE.append(method + vulnName + " : " + urlAction + "\n");
                     VSH.LOG_CONSOLE.append("        " + params.toString() + "\n");
                     VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
-                    scan.list_vuln.add(method + vulnName + " : " + urlAction + " : " + params.toString() + " : " + sSig);
-                    break;
+                    scan.list_vuln.add(method + vulnName + " : " + urlAction + " : " + params.toString() + " : " + "");
+                    
                 } else {
 //                    DefaultTableModel dtmz = (DefaultTableModel) View.VSH.FuzzResult.getModel();
 //                    dtmz.addRow(new Object[]{urlAction, params.toString()});
@@ -171,7 +184,7 @@ public class Scan_BlindSQLi {
                     FuzzEntity f = new FuzzEntity(urlAction, vulnName, params.toString(), page.asXml(), li.toString());
                     View.VSH.fu.add(f);
                 }
-            }
+            
         } catch (IOException | RuntimeException e) {
 //                System.out.println("Error attackVulnSQLin: " + urlAction + " ||| " + e);
         }
