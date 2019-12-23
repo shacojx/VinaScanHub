@@ -100,8 +100,6 @@ public class Scan {
         VSH.LOG_CONSOLE.append("Spider level: " + VSH.dept + "\n");
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
 
-        caseBwapp(urlScan);
-
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(VSH.numberOfThreads);
 
         String baseUrl = urlScan.split("/")[0] + "/" + urlScan.split("/")[1] + "/" + urlScan.split("/")[2] + "/";
@@ -112,6 +110,9 @@ public class Scan {
             try {
                 EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS);
                 EXECUTOR_SERVICE.shutdown();
+
+                caseBwapp(urlScan);
+
                 System.out.println("==========================================");
                 VSH.LOG_CONSOLE.append("Total link: " + spider.links.size() + "\n");
                 VSH.LOG_CONSOLE.append("=========================================" + "\n");
@@ -228,6 +229,11 @@ public class Scan {
             }
         }
         service.shutdown();
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println("Scan end!");
         VSH.LOG_CONSOLE.append("Scan end!" + "\n");
         VSH.Loading.setText("Loading |===================>|");
@@ -441,12 +447,14 @@ public class Scan {
     private void caseBwapp(String urlScan) {
         if (urlScan.contains("bwapp")) {
             String baseUrl = urlScan.split("/")[0] + "/" + urlScan.split("/")[1] + "/" + urlScan.split("/")[2] + "/";
-            //sql injection
-            SpiderWeb.links.add(baseUrl + "bwapp/sqli_1.php");
+            //clear list link
+            SpiderWeb.links.clear();
             //php codding injection
             SpiderWeb.links.add(baseUrl + "bwapp/phpi.php?message=test");
             //xml xpatch
             SpiderWeb.links.add(baseUrl + "bwapp/xmli_2.php");
+            //os cmd injection
+            SpiderWeb.links.add(baseUrl + "bwapp/commandi.php");
         }
     }
 }
