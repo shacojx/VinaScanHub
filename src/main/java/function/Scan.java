@@ -67,6 +67,8 @@ public class Scan {
     psUserPass psUP = new psUserPass();
     psUploadFile psUpFile = new psUploadFile();
 
+    public static boolean checkC = true;
+
     public void Scan(String url) throws IOException, InterruptedException, InterruptedException {
         Scan_WeakPassword sw = new Scan_WeakPassword();
         if (VSH.cbAuthen.isSelected()) {
@@ -122,17 +124,20 @@ public class Scan {
                 CheckSiteAdmin checkSite = new CheckSiteAdmin();
                 checkSite.checkSiteAdmin(urlScan, cookieM);
                 this.scanVuln(spider.links, cookieM);
-                for (String xxx : Param.listAdmin) {
-                    spider.links.add(xxx);
+                if (checkC) {
+                    for (String xxx : Param.listAdmin) {
+                        spider.links.add(xxx);
+                    }
+                    this.BruteForce(spider.links, cookieM);
                 }
-                this.BruteForce(spider.links, cookieM);
+                checkC = true;
             } catch (Exception ex) {
                 System.out.println("ERROR Scan!!!");
                 ex.printStackTrace();
             }
         }).start();
     }
-    ExecutorService service;
+    public static ExecutorService service;
 
     public void scanVuln(HashSet<String> listURL, CookieManager cooki) throws IOException {
         /* turn off annoying htmlunit warnings */
@@ -266,7 +271,7 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-       
+
         service.execute(() -> {
             try {
                 this.sXSS.scanXSS(null, urlAction, this.psXSS.getArrPayXSS(), method, cooki);
@@ -292,7 +297,7 @@ public class Scan {
                 Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
+
         service.execute(() -> {
             try {
                 this.sCI.scanCI(null, urlAction, this.psCI.getArrPayCI(), method, cooki);
@@ -361,7 +366,7 @@ public class Scan {
 //                Logger.getLogger(Scan.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
+
         service.execute(() -> {
             try {
                 this.scan_telerik.scan(urlAction, cooki);

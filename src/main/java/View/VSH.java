@@ -668,29 +668,37 @@ public class VSH extends javax.swing.JFrame {
     }//GEN-LAST:event_DeleteActionPerformed
 
     private void StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopActionPerformed
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            EXECUTOR_SERVICE.shutdownNow();
-//            try {
-//                // TODO add your handling code here:
-//                EXECUTOR_SERVICE.awaitTermination(0, TimeUnit.MICROSECONDS);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//            Scan s = new Scan();
-//            s.service.shutdownNow();
-//            try {
-//                // TODO add your handling code here:
-//                s.service.awaitTermination(0, TimeUnit.MICROSECONDS);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
+        setAllViewEnable(true);
+        btnScan.setEnabled(true);
+        setViewAuthenEnable(cbAuthen.isSelected());
+        try {
+            Param.EXECUTOR_SERVICE.shutdownNow();
+        } catch (Exception e) {
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Scan.service.shutdownNow();
+        } catch (Exception e) {
+        }
+//        while (!Scan.service.isTerminated()) {
+//            // Running ...
 //        }
-//        LOG_CONSOLE.append("Scan Cancel!!!" + "\n");
+        Scan.checkC = false;
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        VSH.Loading.setText("Loading |===================>|");
+        VSH.Action.setText("Do Nothing");
+        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+        VSH.LOG_CONSOLE.append("Stop!!!" + "\n");
+        VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+        System.out.println("Stop!!!");
     }//GEN-LAST:event_StopActionPerformed
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
