@@ -715,6 +715,7 @@ public class VSH extends javax.swing.JFrame {
             historyDao.save(history);
             vulnDao.save(ve, history);
         }
+        JOptionPane.showMessageDialog(this, "Save DB Done !");
     }//GEN-LAST:event_SaveActionPerformed
 
     private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
