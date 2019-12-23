@@ -690,7 +690,7 @@ public class VSH extends javax.swing.JFrame {
 //        }
         Scan.checkC = false;
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException ex) {
             Logger.getLogger(VSH.class.getName()).log(Level.SEVERE, null, ex);
         }
