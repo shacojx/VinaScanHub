@@ -20,3 +20,7 @@
  - PHP Code Injection
  - XML XPath Injection
  - Unrestricted File Upload
+# Method Scan
+- BlackBox Pentesting
+- GrayBox Pentesting (Authentication)
+- Analysis response and Compare origin response with response sent payload
