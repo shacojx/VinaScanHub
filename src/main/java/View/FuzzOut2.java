@@ -131,6 +131,11 @@ public class FuzzOut2 extends javax.swing.JDialog {
 
                 fuzzout3.Response.setText(fe.getResponse());
                 fuzzout3.Header_response.setText(fe.getHeader_response());
+            }else if (fe.getLink().equalsIgnoreCase(link_payload.getText()) && fe.getPayload().contains(pay)
+                    && fe.getVuln().equalsIgnoreCase("Blind SQL Injection")) {
+
+                fuzzout3.Response.setText(fe.getResponse());
+                fuzzout3.Header_response.setText(fe.getHeader_response());
             }
 
         }

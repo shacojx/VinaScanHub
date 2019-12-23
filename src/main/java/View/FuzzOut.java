@@ -5,6 +5,7 @@
  */
 package View;
 
+import PaySig.psBlindSQLi;
 import PaySig.psCMDInjection;
 import PaySig.psCodeInjection;
 import PaySig.psLFI;
@@ -132,8 +133,8 @@ public class FuzzOut extends javax.swing.JDialog {
                 dtmz.addRow(new Object[]{s});
             }
         }else if(vuln.equalsIgnoreCase("Blind SQL injection")){
-            psXSS pxss = new psXSS();
-            for(String s : pxss.getArrPayXSS()){
+            psBlindSQLi pblind = new psBlindSQLi();
+            for(String s : pblind.getArrPaySQLin()){
                 dtmz.addRow(new Object[]{s});
             }
         }else if(vuln.equalsIgnoreCase("OS CMD injection")){
