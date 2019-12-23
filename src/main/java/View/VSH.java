@@ -671,6 +671,7 @@ public class VSH extends javax.swing.JFrame {
         setAllViewEnable(true);
         btnScan.setEnabled(true);
         setViewAuthenEnable(cbAuthen.isSelected());
+        Scan.checkC = false;
         try {
             Param.EXECUTOR_SERVICE.shutdownNow();
         } catch (Exception e) {

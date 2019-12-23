@@ -121,10 +121,10 @@ public class Scan {
 //                    System.out.println(s);
 //                });
                 System.out.println("---------------------------------------------------------------------------------");
-                CheckSiteAdmin checkSite = new CheckSiteAdmin();
-                checkSite.checkSiteAdmin(urlScan, cookieM);
-                this.scanVuln(spider.links, cookieM);
                 if (checkC) {
+                    CheckSiteAdmin checkSite = new CheckSiteAdmin();
+                    checkSite.checkSiteAdmin(urlScan, cookieM);
+                    this.scanVuln(spider.links, cookieM);
                     for (String xxx : Param.listAdmin) {
                         spider.links.add(xxx);
                     }
