@@ -99,6 +99,9 @@ public class Scan {
         System.out.println("Spider level: " + VSH.dept);
         VSH.LOG_CONSOLE.append("Spider level: " + VSH.dept + "\n");
         VSH.LOG_CONSOLE.setCaretPosition(VSH.LOG_CONSOLE.getDocument().getLength());
+
+        caseBwapp(urlScan);
+
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(VSH.numberOfThreads);
 
         String baseUrl = urlScan.split("/")[0] + "/" + urlScan.split("/")[1] + "/" + urlScan.split("/")[2] + "/";
@@ -432,6 +435,18 @@ public class Scan {
             pool.shutdownNow();
             // Preserve interrupt status
             Thread.currentThread().interrupt();
+        }
+    }
+
+    private void caseBwapp(String urlScan) {
+        if (urlScan.contains("bwapp")) {
+            String baseUrl = urlScan.split("/")[0] + "/" + urlScan.split("/")[1] + "/" + urlScan.split("/")[2] + "/";
+            //sql injection
+            SpiderWeb.links.add(baseUrl + "bwapp/sqli_1.php");
+            //php codding injection
+            SpiderWeb.links.add(baseUrl + "bwapp/phpi.php?message=test");
+            //xml xpatch
+            SpiderWeb.links.add(baseUrl + "bwapp/xmli_2.php");
         }
     }
 }
