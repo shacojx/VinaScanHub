@@ -818,24 +818,32 @@ public class VSH extends javax.swing.JFrame {
         String vuln = (String) model.getValueAt(index, 0);
         ArrayList<String> tmp_link = new ArrayList<>();
         View.FuzzOut.VulnName.setText(vuln);
+        boolean check_exits = false;
         for (FuzzEntity fe : fu) {
             if (vuln.equalsIgnoreCase(fe.getVuln())) {
-                if (tmp_link.size() != 0) {
-                    for (String x : tmp_link) {
-                        if (x.equalsIgnoreCase(fe.getLink())) {
-                            System.out.println();
-                        } else {
-                            dtmz.addRow(new Object[]{fe.getLink()});
-                            tmp_link.add(fe.getLink());
-                        }
+                for (String x : tmp_link) {
+                    if (fe.getLink().equalsIgnoreCase(x)) {
+                        check_exits = true;
                     }
-                } else {
+                }
+                if (check_exits == false) {
                     dtmz.addRow(new Object[]{fe.getLink()});
                     tmp_link.add(fe.getLink());
                 }
-                dtmz.addRow(new Object[]{fe.getLink()});
-                tmp_link.add(fe.getLink());
 
+//                if (tmp_link.size() != 0) {
+//                    for (String x : tmp_link) {
+//                        if (x.equalsIgnoreCase(fe.getLink())) {
+//                            System.out.println();
+//                        } else {
+//                            dtmz.addRow(new Object[]{fe.getLink()});
+//                            tmp_link.add(fe.getLink());
+//                        }
+//                    }
+//                } else {
+//                    dtmz.addRow(new Object[]{fe.getLink()});
+//                    tmp_link.add(fe.getLink());
+//                }
             }
         }
         fuzzout.setVisible(true);
