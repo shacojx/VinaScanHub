@@ -86,7 +86,7 @@ public class About extends javax.swing.JDialog {
         jTextArea2.setColumns(20);
         jTextArea2.setLineWrap(true);
         jTextArea2.setRows(5);
-        jTextArea2.setText("Name: Trung La Bao\nNick name: Trung Baor Lax\n(Trung Bay Lắc)\nFB: fb.com/laxbaortrung\nGit: github.com/laxbaortrung96");
+        jTextArea2.setText("Name: Trung La Bao\nNick name: Trung Baor Lax\nFB: fb.com/laxbaortrung\nGit: github.com/laxbaortrung96");
         jTextArea2.setWrapStyleWord(true);
         jScrollPane2.setViewportView(jTextArea2);
 

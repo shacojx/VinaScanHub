@@ -183,7 +183,7 @@
                 <Property name="columns" type="int" value="20"/>
                 <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="Name: Trung La Bao&#xa;Nick name: Trung Baor Lax&#xa;(Trung Bay L&#x1eaf;c)&#xa;FB: fb.com/laxbaortrung&#xa;Git: github.com/laxbaortrung96"/>
+                <Property name="text" type="java.lang.String" value="Name: Trung La Bao&#xa;Nick name: Trung Baor Lax&#xa;FB: fb.com/laxbaortrung&#xa;Git: github.com/laxbaortrung96"/>
                 <Property name="wrapStyleWord" type="boolean" value="true"/>
               </Properties>
             </Component>
