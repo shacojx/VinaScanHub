@@ -830,16 +830,18 @@ public class VSH extends javax.swing.JFrame {
         View.FuzzOut.VulnName.setText(vuln);
         boolean check_exits = false;
         for (FuzzEntity fe : fu) {
-            if (vuln.equalsIgnoreCase(fe.getVuln())) {
-                for (String x : tmp_link) {
-                    if (fe.getLink().equalsIgnoreCase(x)) {
-                        check_exits = true;
-                    }
-                }
-                if (check_exits == false) {
-                    dtmz.addRow(new Object[]{fe.getLink()});
-                    tmp_link.add(fe.getLink());
-                }
+            dtmz.addRow(new Object[]{fe.getLink()});
+            tmp_link.add(fe.getLink());
+//            if (vuln.equalsIgnoreCase(fe.getVuln())) {
+//                for (String x : tmp_link) {
+//                    if (fe.getLink().equalsIgnoreCase(x)) {
+//                        check_exits = true;
+//                    }
+//                }
+//                if (check_exits == false) {
+//                    dtmz.addRow(new Object[]{fe.getLink()});
+//                    tmp_link.add(fe.getLink());
+//                }
 
 //                if (tmp_link.size() != 0) {
 //                    for (String x : tmp_link) {
@@ -854,7 +856,7 @@ public class VSH extends javax.swing.JFrame {
 //                    dtmz.addRow(new Object[]{fe.getLink()});
 //                    tmp_link.add(fe.getLink());
 //                }
-            }
+//            }
         }
         fuzzout.setVisible(true);
 
