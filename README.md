@@ -1,5 +1,5 @@
 # VinaScanHub
-- Software scan vulnerability web application
+- Software scan vulnerability web application php, dotNet (aspx), Java (jsp)
 
 # About My Team
 - Eyes Of God team
