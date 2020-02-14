@@ -1,4 +1,4 @@
-# VinaScanHub
+# VinaScanHub version 1.1
 - Software scan vulnerability web application PHP, dotNet (aspx), Java (jsp)
 
 # About My Team
