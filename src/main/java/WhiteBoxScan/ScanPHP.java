@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class ScanPHP {
 
-    public static void checkSQLi(ArrayList<String> ContextFile) {
+    public void checkSQLi(ArrayList<String> ContextFile) {
         boolean check_sqli_1 = false;
         boolean check_sqli_2 = false;
         int line = 0;
@@ -51,7 +51,7 @@ public class ScanPHP {
 
     }
 
-    public static void checkXSS(ArrayList<String> ContextFile) {
+    public void checkXSS(ArrayList<String> ContextFile) {
         boolean check_xss_1 = false;
         int line = 0;
         String code_line = null;
@@ -76,23 +76,23 @@ public class ScanPHP {
         }
     }
     
-    public static void main(String[] args) {
-        ArrayList<String> ContextFile = new ArrayList<>();
-        try (FileReader reader = new FileReader("C:\\Users\\toanvv1\\Downloads\\DVWA-master\\dvwa\\vulnerabilities\\xss_r\\source\\low.php");
-             BufferedReader br = new BufferedReader(reader)) {
-
-            // read line by line
-            String line;
-            while ((line = br.readLine()) != null) {
-                ContextFile.add(line);
-            }
-            
-            checkSQLi(ContextFile);
-            checkXSS(ContextFile);
-
-        } catch (IOException e) {
-            System.err.format("IOException: %s%n", e);
-        }
-    }
+//    public static void main(String[] args) {
+//        ArrayList<String> ContextFile = new ArrayList<>();
+//        try (FileReader reader = new FileReader("C:\\Users\\toanvv1\\Downloads\\DVWA-master\\dvwa\\vulnerabilities\\xss_r\\source\\low.php");
+//             BufferedReader br = new BufferedReader(reader)) {
+//
+//            // read line by line
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                ContextFile.add(line);
+//            }
+//            
+//            checkSQLi(ContextFile);
+//            checkXSS(ContextFile);
+//
+//        } catch (IOException e) {
+//            System.err.format("IOException: %s%n", e);
+//        }
+//    }
 
 }
