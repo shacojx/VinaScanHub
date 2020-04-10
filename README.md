@@ -3,7 +3,7 @@
 
 # About My Team
 - Eyes Of God team
-- Member: Shaco JX (Toan Vu Van), Trung Lax (Trung La Bao), @ daitvd1997 (Dai Trinh Van)
+- Member: Shaco JX (Toan Vu Van), Trung Lax (Trung La Bao), Daitvd1997 (Dai Trinh Van - https://github.com/daitvd1997)
 
 # Requirement
 - JDK 11 (https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
