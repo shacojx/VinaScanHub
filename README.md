@@ -1,13 +1,13 @@
 # VinaScanHub version 1.1
 - Software scan vulnerability web application PHP, dotNet (aspx), Java (jsp)
-
-   - Đây chỉ là tài liệu mang tính chất học tập. Chỉ xem tham khảo và đừng làm phiền chính quyền.
-   - This content is for educational purposes only. Use for reference only and do not contact the police.
+  
+- Đây chỉ là tài liệu mang tính chất học tập. Chỉ xem tham khảo và đừng làm phiền chính quyền.
+- This content is for educational purposes only. Use for reference only and do not contact the police.
 
 
 # About My Team
 - Eyes Of God team
-- Member: Shaco JX (Toan Vu Van), Trung Lax (Trung La Bao), Daitvd1997 (Dai Trinh Van - https://github.com/daitvd1997)
+- Member: Shaco JX (Toan Vu Van), Trung Lax (Trung La Bao), Daitvd1997
 
 # Requirement
 - JDK 11
